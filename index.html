@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vigenère Cipher Analyzer</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <h1><i class="fas fa-key"></i> Vigenère Cipher Analyzer</h1>
+            <p class="subtitle">Advanced analysis tool with custom alphabets and multi-threaded key search</p>
+        </header>
+
+        <main class="main-content">
+            <div class="input-section">
+                <div class="text-input">
+                    <label for="ciphertext">Ciphertext:</label>
+                    <textarea id="ciphertext" placeholder="Enter ciphertext here..."></textarea>
+                </div>
+                
+                <div class="controls">
+                    <div class="control-group">
+                        <label for="alphabet">Custom Alphabet:</label>
+                        <input type="text" id="alphabet" value="abcdefghijklmnopqrstuvwxyz" placeholder="Custom alphabet (e.g., abc...xyz)">
+                    </div>
+                    
+                    <div class="control-group">
+                        <label for="known-key">Known Key (optional):</label>
+                        <input type="text" id="known-key" placeholder="Enter known key for encryption/decryption">
+                    </div>
+                    
+                    <div class="control-group">
+                        <label for="known-plaintext">Known Plaintext Fragment (optional):</label>
+                        <input type="text" id="known-plaintext" placeholder="Known part of plaintext">
+                    </div>
+                    
+                    <div class="control-group">
+                        <label for="key-length">Key Length (or range):</label>
+                        <div class="range-input">
+                            <input type="number" id="min-key-length" min="1" max="50" value="1">
+                            <span>to</span>
+                            <input type="number" id="max-key-length" min="1" max="50" value="10">
+                        </div>
+                    </div>
+                    
+                    <div class="control-group">
+                        <label>Analysis Options:</label>
+                        <div class="checkboxes">
+                            <label><input type="checkbox" id="use-ic" checked> Use Index of Coincidence</label>
+                            <label><input type="checkbox" id="use-ngrams" checked> Use N-gram Analysis</label>
+                            <label><input type="checkbox" id="use-dict" checked> Use Dictionary Check</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="action-buttons">
+                <button id="decrypt-btn" class="btn primary"><i class="fas fa-lock-open"></i> Decrypt with Known Key</button>
+                <button id="analyze-btn" class="btn secondary"><i class="fas fa-search"></i> Analyze & Find Key</button>
+                <button id="encrypt-btn" class="btn"><i class="fas fa-lock"></i> Encrypt</button>
+                <button id="clear-btn" class="btn danger"><i class="fas fa-trash"></i> Clear</button>
+            </div>
+            
+            <div class="results-section">
+                <div class="results-header">
+                    <h2>Results</h2>
+                    <div class="result-controls">
+                        <label for="result-display">Display:</label>
+                        <select id="result-display">
+                            <option value="top10">Top 10 Candidates</option>
+                            <option value="all">All Candidates</option>
+                            <option value="best">Best Candidate Only</option>
+                        </select>
+                        <label for="sort-by">Sort by:</label>
+                        <select id="sort-by">
+                            <option value="score">Total Score</option>
+                            <option value="ic">Index of Coincidence</option>
+                            <option value="ngram">N-gram Score</option>
+                            <option value="dict">Dictionary Match</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="progress-container" id="progress-container" style="display: none;">
+                    <div class="progress-bar" id="progress-bar"></div>
+                    <span class="progress-text" id="progress-text">0%</span>
+                </div>
+                
+                <div class="results-container" id="results">
+                    <div class="empty-state">
+                        <i class="fas fa-microscope"></i>
+                        <p>No results yet. Enter ciphertext and click "Analyze" to begin.</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+        
+        <footer class="app-footer">
+            <p>Advanced Vigenère Cipher Analyzer | Uses multi-threaded key search with custom alphabet support</p>
+        </footer>
+    </div>
+
+    <script src="english-ngrams.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
