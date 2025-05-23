@@ -198,7 +198,7 @@ class VigenereAnalyzer {
             
             if (workerKeyLengths.length === 0) continue;
             
-            const worker = new Worker('worker.js');
+            const worker = new Worker('./worker.js');
             this.workers.push(worker);
             
             worker.onmessage = (e) => {
