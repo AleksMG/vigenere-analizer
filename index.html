@@ -1,109 +1,739 @@
 <!DOCTYPE html>
-<script src="./app.js"></script>
-<script src="./english-ngrams.js"></script>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vigenère Cipher Analyzer</title>
-    <link rel="stylesheet" href="./styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Advanced Vigenère Cipher Breaker</title>
+    <style>
+        :root {
+            --primary: #4a6fa5;
+            --secondary: #166088;
+            --accent: #4fc3f7;
+            --light: #f8f9fa;
+            --dark: #343a40;
+            --success: #28a745;
+            --warning: #ffc107;
+            --danger: #dc3545;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f7fa;
+        }
+        
+        h1, h2, h3 {
+            color: var(--secondary);
+        }
+        
+        .container {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 30px;
+        }
+        
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 20px;
+        }
+        
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+        
+        .tab:hover {
+            color: var(--primary);
+        }
+        
+        .tab.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+            font-weight: 500;
+        }
+        
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        textarea, input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+        
+        textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+        
+        button {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        
+        button:hover {
+            background-color: var(--secondary);
+        }
+        
+        .progress-container {
+            margin: 20px 0;
+        }
+        
+        .progress-bar {
+            height: 20px;
+            background-color: #e9ecef;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background-color: var(--accent);
+            width: 0%;
+            transition: width 0.3s;
+            text-align: center;
+            color: white;
+            font-size: 12px;
+            line-height: 20px;
+        }
+        
+        .result-box {
+            background: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 15px;
+            margin-top: 15px;
+            white-space: pre-wrap;
+        }
+        
+        .results-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        
+        .results-table th, .results-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .results-table th {
+            background-color: #f8f9fa;
+            font-weight: 500;
+        }
+        
+        .results-table tr:hover {
+            background-color: #f1f5f9;
+        }
+        
+        .worker-status {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .worker {
+            background: #e9ecef;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+        
+        .worker.active {
+            background: var(--accent);
+            color: white;
+        }
+    </style>
 </head>
 <body>
-    <div class="app-container">
-        <header class="app-header">
-            <h1><i class="fas fa-key"></i> Vigenère Cipher Analyzer</h1>
-            <p class="subtitle">Advanced analysis tool with custom alphabets and multi-threaded key search</p>
-        </header>
-
-        <main class="main-content">
-            <div class="input-section">
-                <div class="text-input">
-                    <label for="ciphertext">Ciphertext:</label>
-                    <textarea id="ciphertext" placeholder="Enter ciphertext here..."></textarea>
-                </div>
-                
-                <div class="controls">
-                    <div class="control-group">
-                        <label for="alphabet">Custom Alphabet:</label>
-                        <input type="text" id="alphabet" value="abcdefghijklmnopqrstuvwxyz" placeholder="Custom alphabet (e.g., abc...xyz)">
-                    </div>
-                    
-                    <div class="control-group">
-                        <label for="known-key">Known Key (optional):</label>
-                        <input type="text" id="known-key" placeholder="Enter known key for encryption/decryption">
-                    </div>
-                    
-                    <div class="control-group">
-                        <label for="known-plaintext">Known Plaintext Fragment (optional):</label>
-                        <input type="text" id="known-plaintext" placeholder="Known part of plaintext">
-                    </div>
-                    
-                    <div class="control-group">
-                        <label for="key-length">Key Length (or range):</label>
-                        <div class="range-input">
-                            <input type="number" id="min-key-length" min="1" max="50" value="1">
-                            <span>to</span>
-                            <input type="number" id="max-key-length" min="1" max="50" value="10">
-                        </div>
-                    </div>
-                    
-                    <div class="control-group">
-                        <label>Analysis Options:</label>
-                        <div class="checkboxes">
-                            <label><input type="checkbox" id="use-ic" checked> Use Index of Coincidence</label>
-                            <label><input type="checkbox" id="use-ngrams" checked> Use N-gram Analysis</label>
-                            <label><input type="checkbox" id="use-dict" checked> Use Dictionary Check</label>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="action-buttons">
-                <button id="decrypt-btn" class="btn primary"><i class="fas fa-lock-open"></i> Decrypt with Known Key</button>
-                <button id="analyze-btn" class="btn secondary"><i class="fas fa-search"></i> Analyze & Find Key</button>
-                <button id="encrypt-btn" class="btn"><i class="fas fa-lock"></i> Encrypt</button>
-                <button id="clear-btn" class="btn danger"><i class="fas fa-trash"></i> Clear</button>
-            </div>
-            
-            <div class="results-section">
-                <div class="results-header">
-                    <h2>Results</h2>
-                    <div class="result-controls">
-                        <label for="result-display">Display:</label>
-                        <select id="result-display">
-                            <option value="top10">Top 10 Candidates</option>
-                            <option value="all">All Candidates</option>
-                            <option value="best">Best Candidate Only</option>
-                        </select>
-                        <label for="sort-by">Sort by:</label>
-                        <select id="sort-by">
-                            <option value="score">Total Score</option>
-                            <option value="ic">Index of Coincidence</option>
-                            <option value="ngram">N-gram Score</option>
-                            <option value="dict">Dictionary Match</option>
-                        </select>
-                    </div>
-                </div>
-                
-                <div class="progress-container" id="progress-container" style="display: none;">
-                    <div class="progress-bar" id="progress-bar"></div>
-                    <span class="progress-text" id="progress-text">0%</span>
-                </div>
-                
-                <div class="results-container" id="results">
-                    <div class="empty-state">
-                        <i class="fas fa-microscope"></i>
-                        <p>No results yet. Enter ciphertext and click "Analyze" to begin.</p>
-                    </div>
-                </div>
-            </div>
-        </main>
+    <div class="container">
+        <h1>Advanced Vigenère Cipher Breaker</h1>
+        <p>A professional tool for analyzing and breaking Vigenère ciphers with n-gram statistics and parallel processing</p>
         
-        <footer class="app-footer">
-            <p>Advanced Vigenère Cipher Analyzer | Uses multi-threaded key search with custom alphabet support</p>
-        </footer>
+        <div class="tabs">
+            <div class="tab active" data-tab="encrypt">Encrypt</div>
+            <div class="tab" data-tab="decrypt">Decrypt</div>
+            <div class="tab" data-tab="break">Break Cipher</div>
+            <div class="tab" data-tab="analyze">Analyze</div>
+        </div>
+        
+        <div id="encrypt" class="tab-content active">
+            <h2>Encrypt Text</h2>
+            <textarea id="encrypt-text" placeholder="Enter plaintext to encrypt"></textarea>
+            <input type="text" id="encrypt-key" placeholder="Encryption key">
+            <input type="text" id="encrypt-alphabet" placeholder="Custom alphabet (default: A-Z)" value="ABCDEFGHIJKLMNOPQRSTUVWXYZ">
+            <button id="encrypt-btn">Encrypt</button>
+            <div id="encrypt-result" class="result-box"></div>
+        </div>
+        
+        <div id="decrypt" class="tab-content">
+            <h2>Decrypt Text</h2>
+            <textarea id="decrypt-text" placeholder="Enter ciphertext to decrypt"></textarea>
+            <input type="text" id="decrypt-key" placeholder="Decryption key">
+            <input type="text" id="decrypt-alphabet" placeholder="Custom alphabet (default: A-Z)" value="ABCDEFGHIJKLMNOPQRSTUVWXYZ">
+            <button id="decrypt-btn">Decrypt</button>
+            <div id="decrypt-result" class="result-box"></div>
+        </div>
+        
+        <div id="break" class="tab-content">
+            <h2>Break Cipher</h2>
+            <textarea id="break-text" placeholder="Enter ciphertext to break"></textarea>
+            <input type="text" id="break-alphabet" placeholder="Custom alphabet (default: A-Z)" value="ABCDEFGHIJKLMNOPQRSTUVWXYZ">
+            
+            <div style="display: flex; gap: 15px;">
+                <div style="flex: 1;">
+                    <label>Min Key Length:</label>
+                    <input type="number" id="min-key-length" min="1" value="2">
+                </div>
+                <div style="flex: 1;">
+                    <label>Max Key Length:</label>
+                    <input type="number" id="max-key-length" min="2" value="20">
+                </div>
+            </div>
+            
+            <input type="text" id="known-text" placeholder="Known plaintext fragment (optional)">
+            
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div id="break-progress" class="progress-fill">0%</div>
+                </div>
+            </div>
+            
+            <div id="worker-status" class="worker-status"></div>
+            
+            <button id="break-btn">Break Cipher</button>
+            <button id="cancel-btn" style="background-color: var(--danger); margin-left: 10px;">Cancel</button>
+            
+            <div id="break-result" class="result-box"></div>
+            
+            <h3>Analysis Details</h3>
+            <table id="results-table" class="results-table">
+                <thead>
+                    <tr>
+                        <th>Key Length</th>
+                        <th>Possible Key</th>
+                        <th>Score</th>
+                        <th>Decrypted Sample</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+        
+        <div id="analyze" class="tab-content">
+            <h2>Frequency Analysis</h2>
+            <textarea id="analyze-text" placeholder="Enter text to analyze"></textarea>
+            <input type="text" id="analyze-alphabet" placeholder="Custom alphabet (default: A-Z)" value="ABCDEFGHIJKLMNOPQRSTUVWXYZ">
+            <button id="analyze-btn">Analyze</button>
+            <div id="analyze-result" class="result-box"></div>
+        </div>
     </div>
 
+    <script>
+        // N-gram statistics (log probabilities)
+        const NGRAMS = {
+            // English quadgrams (log10 probabilities)
+            quadgrams: {
+                'TION': 6.513, 'NTHE': 6.468, 'THER': 6.359, 'THAT': 6.216, 
+                'INGT': 6.183, 'INTH': 6.117, 'THIS': 6.062, 'FTHE': 6.048,
+                'THES': 6.036, 'ATIO': 6.020, 'TING': 6.005, 'ETHE': 5.991,
+                'SAND': 5.953, 'STHE': 5.942, 'HERE': 5.921, 'THEC': 5.908,
+                'IONS': 5.893, 'MENT': 5.880, 'ANDT': 5.868, 'EDTH': 5.853
+            },
+            
+            // English trigrams (log10 probabilities)
+            trigrams: {
+                'THE': 6.508, 'AND': 5.863, 'ING': 5.853, 'ION': 5.623,
+                'ENT': 5.623, 'HER': 5.556, 'FOR': 5.531, 'THA': 5.518,
+                'NTH': 5.518, 'INT': 5.505, 'TIO': 5.491, 'ERE': 5.491,
+                'TER': 5.477, 'EST': 5.447, 'ERS': 5.447, 'HAT': 5.415,
+                'ATI': 5.415, 'ATE': 5.398, 'ALL': 5.398, 'VER': 5.380
+            },
+            
+            // English bigrams (log10 probabilities)
+            bigrams: {
+                'TH': 6.181, 'HE': 6.107, 'IN': 5.973, 'ER': 5.973,
+                'AN': 5.914, 'RE': 5.833, 'ND': 5.799, 'AT': 5.771,
+                'ON': 5.756, 'NT': 5.748, 'HA': 5.748, 'ES': 5.748,
+                'ST': 5.740, 'EN': 5.740, 'ED': 5.716, 'TO': 5.716,
+                'IT': 5.699, 'OU': 5.699, 'EA': 5.690, 'HI': 5.690
+            }
+        };
+
+        // Core Vigenère functions
+        function vigenereEncrypt(text, key, alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ') {
+            alphabet = alphabet.toUpperCase();
+            const cleanText = text.toUpperCase().replace(new RegExp(`[^${alphabet}]`, 'g'), '');
+            const cleanKey = key.toUpperCase().replace(new RegExp(`[^${alphabet}]`, 'g'), '');
+            
+            if (!cleanText || !cleanKey) return '';
+            
+            const alphaLen = alphabet.length;
+            const keyLen = cleanKey.length;
+            let result = '';
+            
+            for (let i = 0; i < cleanText.length; i++) {
+                const textIdx = alphabet.indexOf(cleanText[i]);
+                const keyIdx = alphabet.indexOf(cleanKey[i % keyLen]);
+                result += alphabet[(textIdx + keyIdx) % alphaLen];
+            }
+            
+            return result;
+        }
+
+        function vigenereDecrypt(text, key, alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ') {
+            alphabet = alphabet.toUpperCase();
+            const cleanText = text.toUpperCase().replace(new RegExp(`[^${alphabet}]`, 'g'), '');
+            const cleanKey = key.toUpperCase().replace(new RegExp(`[^${alphabet}]`, 'g'), '');
+            
+            if (!cleanText || !cleanKey) return '';
+            
+            const alphaLen = alphabet.length;
+            const keyLen = cleanKey.length;
+            let result = '';
+            
+            for (let i = 0; i < cleanText.length; i++) {
+                const textIdx = alphabet.indexOf(cleanText[i]);
+                const keyIdx = alphabet.indexOf(cleanKey[i % keyLen]);
+                result += alphabet[(textIdx - keyIdx + alphaLen) % alphaLen];
+            }
+            
+            return result;
+        }
+
+        // Advanced n-gram analysis
+        function calculateNgramScore(text, ngrams, n) {
+            let score = 0;
+            let count = 0;
+            
+            for (let i = 0; i <= text.length - n; i++) {
+                const ngram = text.substr(i, n).toUpperCase();
+                if (ngrams[ngram] !== undefined) {
+                    score += ngrams[ngram];
+                    count++;
+                }
+            }
+            
+            return count > 0 ? score / count : -100;
+        }
+
+        function calculateFitness(text) {
+            const quadScore = calculateNgramScore(text, NGRAMS.quadgrams, 4);
+            const triScore = calculateNgramScore(text, NGRAMS.trigrams, 3);
+            const biScore = calculateNgramScore(text, NGRAMS.bigrams, 2);
+            
+            // Weighted combination favoring longer n-grams
+            return (quadScore * 0.5 + triScore * 0.3 + biScore * 0.2);
+        }
+
+        // Kasiski examination to find likely key lengths
+        function kasiskiExamination(ciphertext) {
+            const sequences = {};
+            
+            // Find repeated sequences of 3-5 characters
+            for (let len = 3; len <= 5; len++) {
+                for (let i = 0; i <= ciphertext.length - len; i++) {
+                    const seq = ciphertext.substr(i, len);
+                    if (!sequences[seq]) sequences[seq] = [];
+                    sequences[seq].push(i);
+                }
+            }
+            
+            // Calculate distances between repeated sequences
+            const distances = [];
+            for (const seq in sequences) {
+                const positions = sequences[seq];
+                if (positions.length > 1) {
+                    for (let i = 1; i < positions.length; i++) {
+                        distances.push(positions[i] - positions[0]);
+                    }
+                }
+            }
+            
+            // Find common factors of distances
+            function getFactors(n) {
+                const factors = new Set();
+                for (let i = 2; i <= Math.sqrt(n); i++) {
+                    if (n % i === 0) {
+                        factors.add(i);
+                        factors.add(n / i);
+                    }
+                }
+                return factors;
+            }
+            
+            const factorCounts = {};
+            for (const d of distances) {
+                const factors = getFactors(d);
+                for (const f of factors) {
+                    factorCounts[f] = (factorCounts[f] || 0) + 1;
+                }
+            }
+            
+            // Get most common factors (likely key lengths)
+            return Object.entries(factorCounts)
+                .filter(([_, count]) => count > 1)
+                .sort((a, b) => b[1] - a[1])
+                .map(([len]) => parseInt(len));
+        }
+
+        // Friedman test to estimate key length
+        function friedmanTest(ciphertext, alphabet) {
+            const n = ciphertext.length;
+            const alphaLen = alphabet.length;
+            
+            // Calculate index of coincidence
+            const freq = {};
+            for (const char of ciphertext) {
+                freq[char] = (freq[char] || 0) + 1;
+            }
+            
+            let ic = 0;
+            for (const char in freq) {
+                ic += freq[char] * (freq[char] - 1);
+            }
+            ic /= n * (n - 1);
+            
+            // Estimate key length
+            const kappa_p = 1 / alphaLen;  // Random text
+            let kappa_r = 0;               // English
+            
+            // Calculate expected coincidence for English
+            const englishFreq = {
+                'A': 0.08167, 'B': 0.01492, 'C': 0.02782, 'D': 0.04253,
+                'E': 0.12702, 'F': 0.02228, 'G': 0.02015, 'H': 0.06094,
+                'I': 0.06966, 'J': 0.00153, 'K': 0.00772, 'L': 0.04025,
+                'M': 0.02406, 'N': 0.06749, 'O': 0.07507, 'P': 0.01929,
+                'Q': 0.00095, 'R': 0.05987, 'S': 0.06327, 'T': 0.09056,
+                'U': 0.02758, 'V': 0.00978, 'W': 0.02360, 'X': 0.00150,
+                'Y': 0.01974, 'Z': 0.00074
+            };
+            
+            for (const char in englishFreq) {
+                if (alphabet.includes(char)) {
+                    kappa_r += Math.pow(englishFreq[char], 2);
+                }
+            }
+            
+            if (ic <= kappa_p) return 1;
+            return Math.round((kappa_r - kappa_p) / (ic - kappa_p));
+        }
+
+        // Web Worker based cipher breaking
+        class CipherBreaker {
+            constructor() {
+                this.workers = [];
+                this.activeWorkers = 0;
+                this.totalTasks = 0;
+                this.completedTasks = 0;
+                this.bestResult = null;
+                this.isCancelled = false;
+            }
+            
+            initWorkers(count = 4) {
+                this.workerStatusEl = document.getElementById('worker-status');
+                this.workerStatusEl.innerHTML = '';
+                
+                for (let i = 0; i < count; i++) {
+                    const worker = new Worker(URL.createObjectURL(new Blob([`
+                        onmessage = function(e) {
+                            const { ciphertext, alphabet, keyLength, startShift, endShift } = e.data;
+                            let bestKey = '';
+                            let bestScore = -Infinity;
+                            let bestDecrypted = '';
+                            
+                            const alphaLen = alphabet.length;
+                            const groups = Array.from({length: keyLength}, () => []);
+                            
+                            for (let i = 0; i < ciphertext.length; i++) {
+                                groups[i % keyLength].push(ciphertext[i]);
+                            }
+                            
+                            // Try all possible shifts for the first character
+                            for (let shift = startShift; shift < endShift; shift++) {
+                                if (shift >= alphaLen) continue;
+                                
+                                const key = alphabet[shift] + '?'.repeat(keyLength - 1);
+                                const decrypted = vigenereDecrypt(ciphertext, key, alphabet);
+                                const score = calculateFitness(decrypted);
+                                
+                                if (score > bestScore) {
+                                    bestScore = score;
+                                    bestKey = key;
+                                    bestDecrypted = decrypted;
+                                }
+                            }
+                            
+                            postMessage({
+                                keyLength,
+                                bestKey,
+                                bestScore,
+                                bestDecrypted: bestDecrypted.substring(0, 100)
+                            });
+                        };
+                        
+                        ${vigenereDecrypt.toString()}
+                        ${calculateFitness.toString()}
+                        ${calculateNgramScore.toString()}
+                    `], { type: 'text/javascript' })));
+                    
+                    worker.id = i;
+                    worker.isBusy = false;
+                    this.workers.push(worker);
+                    
+                    const workerEl = document.createElement('div');
+                    workerEl.className = 'worker';
+                    workerEl.id = `worker-${i}`;
+                    workerEl.textContent = `Worker ${i + 1}`;
+                    this.workerStatusEl.appendChild(workerEl);
+                    
+                    worker.onmessage = (e) => this.handleWorkerResponse(e, i);
+                }
+            }
+            
+            handleWorkerResponse(e, workerId) {
+                if (this.isCancelled) return;
+                
+                this.completedTasks++;
+                this.updateProgress();
+                
+                const workerEl = document.getElementById(`worker-${workerId}`);
+                workerEl.classList.remove('active');
+                this.workers[workerId].isBusy = false;
+                
+                const result = e.data;
+                this.processResult(result);
+                
+                // Assign new task if available
+                this.assignTasks();
+            }
+            
+            processResult(result) {
+                if (!this.bestResult || result.bestScore > this.bestResult.score) {
+                    this.bestResult = {
+                        keyLength: result.keyLength,
+                        key: result.bestKey,
+                        score: result.bestScore,
+                        decrypted: result.bestDecrypted
+                    };
+                    
+                    this.updateResultsTable();
+                }
+            }
+            
+            updateResultsTable() {
+                if (!this.bestResult) return;
+                
+                const tbody = document.querySelector('#results-table tbody');
+                tbody.innerHTML = '';
+                
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${this.bestResult.keyLength}</td>
+                    <td>${this.bestResult.key}</td>
+                    <td>${this.bestResult.score.toFixed(2)}</td>
+                    <td>${this.bestResult.decrypted}...</td>
+                `;
+                tbody.appendChild(row);
+            }
+            
+            updateProgress() {
+                const progress = Math.floor((this.completedTasks / this.totalTasks) * 100);
+                const progressEl = document.getElementById('break-progress');
+                progressEl.style.width = `${progress}%`;
+                progressEl.textContent = `${progress}%`;
+                
+                if (this.completedTasks === this.totalTasks) {
+                    document.getElementById('break-result').textContent = 
+                        `Best key found: ${this.bestResult.key}\nDecrypted text: ${this.bestResult.decrypted}...`;
+                }
+            }
+            
+            assignTasks() {
+                if (this.isCancelled) return;
+                
+                for (let i = 0; i < this.workers.length; i++) {
+                    if (!this.workers[i].isBusy && this.pendingTasks.length > 0) {
+                        const task = this.pendingTasks.shift();
+                        this.workers[i].isBusy = true;
+                        this.workers[i].postMessage(task);
+                        
+                        const workerEl = document.getElementById(`worker-${i}`);
+                        workerEl.classList.add('active');
+                    }
+                }
+            }
+            
+            breakCipher(ciphertext, alphabet, minKeyLength, maxKeyLength) {
+                this.isCancelled = false;
+                this.bestResult = null;
+                this.completedTasks = 0;
+                this.totalTasks = 0;
+                this.pendingTasks = [];
+                
+                // Initialize workers
+                this.initWorkers(4);
+                
+                // Determine likely key lengths
+                const kasiskiLengths = kasiskiExamination(ciphertext);
+                const friedmanLength = friedmanTest(ciphertext, alphabet);
+                
+                let keyLengths = new Set();
+                if (friedmanLength >= minKeyLength && friedmanLength <= maxKeyLength) {
+                    keyLengths.add(friedmanLength);
+                }
+                
+                for (const len of kasiskiLengths) {
+                    if (len >= minKeyLength && len <= maxKeyLength) {
+                        keyLengths.add(len);
+                    }
+                }
+                
+                // If no good candidates, try a range
+                if (keyLengths.size === 0) {
+                    for (let len = minKeyLength; len <= maxKeyLength; len++) {
+                        keyLengths.add(len);
+                    }
+                }
+                
+                // Create tasks for each key length
+                keyLengths = Array.from(keyLengths);
+                const alphaLen = alphabet.length;
+                
+                for (const keyLength of keyLengths) {
+                    // Split alphabet into chunks for parallel processing
+                    const chunkSize = Math.ceil(alphaLen / 4);
+                    
+                    for (let i = 0; i < alphaLen; i += chunkSize) {
+                        this.pendingTasks.push({
+                            ciphertext,
+                            alphabet,
+                            keyLength,
+                            startShift: i,
+                            endShift: Math.min(i + chunkSize, alphaLen)
+                        });
+                        this.totalTasks++;
+                    }
+                }
+                
+                // Start processing
+                this.assignTasks();
+            }
+            
+            cancel() {
+                this.isCancelled = true;
+                this.workers.forEach(worker => worker.terminate());
+                this.workers = [];
+            }
+        }
+
+        // UI Event Handlers
+        document.addEventListener('DOMContentLoaded', () => {
+            const cipherBreaker = new CipherBreaker();
+            
+            // Tab switching
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.addEventListener('click', () => {
+                    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                    
+                    tab.classList.add('active');
+                    document.getElementById(tab.dataset.tab).classList.add('active');
+                });
+            });
+            
+            // Encrypt
+            document.getElementById('encrypt-btn').addEventListener('click', () => {
+                const text = document.getElementById('encrypt-text').value;
+                const key = document.getElementById('encrypt-key').value;
+                const alphabet = document.getElementById('encrypt-alphabet').value || 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                
+                const result = vigenereEncrypt(text, key, alphabet);
+                document.getElementById('encrypt-result').textContent = result;
+            });
+            
+            // Decrypt
+            document.getElementById('decrypt-btn').addEventListener('click', () => {
+                const text = document.getElementById('decrypt-text').value;
+                const key = document.getElementById('decrypt-key').value;
+                const alphabet = document.getElementById('decrypt-alphabet').value || 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                
+                const result = vigenereDecrypt(text, key, alphabet);
+                document.getElementById('decrypt-result').textContent = result;
+            });
+            
+            // Break Cipher
+            document.getElementById('break-btn').addEventListener('click', () => {
+                const ciphertext = document.getElementById('break-text').value.toUpperCase();
+                const alphabet = document.getElementById('break-alphabet').value.toUpperCase() || 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                const minLen = parseInt(document.getElementById('min-key-length').value) || 2;
+                const maxLen = parseInt(document.getElementById('max-key-length').value) || 20;
+                
+                // Filter to only include alphabet characters
+                const filteredText = ciphertext.split('').filter(c => alphabet.includes(c)).join('');
+                
+                document.getElementById('break-result').textContent = 'Analyzing ciphertext...';
+                document.querySelector('#results-table tbody').innerHTML = '';
+                
+                cipherBreaker.breakCipher(filteredText, alphabet, minLen, maxLen);
+            });
+            
+            // Cancel
+            document.getElementById('cancel-btn').addEventListener('click', () => {
+                cipherBreaker.cancel();
+                document.getElementById('break-result').textContent = 'Analysis cancelled';
+            });
+            
+            // Analyze
+            document.getElementById('analyze-btn').addEventListener('click', () => {
+                const text = document.getElementById('analyze-text').value.toUpperCase();
+                const alphabet = document.getElementById('analyze-alphabet').value.toUpperCase() || 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                
+                // Filter to only include alphabet characters
+                const filteredText = text.split('').filter(c => alphabet.includes(c)).join('');
+                
+                const quadScore = calculateNgramScore(filteredText, NGRAMS.quadgrams, 4);
+                const triScore = calculateNgramScore(filteredText, NGRAMS.trigrams, 3);
+                const biScore = calculateNgramScore(filteredText, NGRAMS.bigrams, 2);
+                
+                const result = `Quadgram score: ${quadScore.toFixed(2)}\n` +
+                               `Trigram score: ${triScore.toFixed(2)}\n` +
+                               `Bigram score: ${biScore.toFixed(2)}\n` +
+                               `Overall fitness: ${calculateFitness(filteredText).toFixed(2)}`;
+                
+                document.getElementById('analyze-result').textContent = result;
+            });
+        });
+    </script>
 </body>
 </html>
