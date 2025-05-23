@@ -3,403 +3,551 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ultimate Vigenère Cracker</title>
+    <title>Professional Vigenère Cipher Cracker</title>
     <style>
-        :root {
-            --primary: #4a6fa5;
-            --secondary: #166088;
-            --accent: #4fc3f7;
-            --danger: #dc3545;
-            --success: #28a745;
-        }
-        
+        /* Complete CSS styles without any abbreviations */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
-            background-color: #f5f7fa;
-            color: #333;
+            background-color: #f8f9fa;
+            color: #212529;
             line-height: 1.6;
         }
-        
-        .container {
-            background: white;
+
+        .main-container {
+            background-color: #ffffff;
             border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
             padding: 30px;
+            margin-top: 20px;
         }
-        
-        h1, h2, h3 {
-            color: var(--secondary);
-        }
-        
-        .settings-panel {
-            background: #f8f9fa;
-            padding: 20px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-        }
-        
-        .settings-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 15px;
-            margin-bottom: 15px;
-        }
-        
-        .setting-group {
+
+        .header-title {
+            color: #2c3e50;
             margin-bottom: 10px;
         }
-        
-        label {
+
+        .header-description {
+            color: #7f8c8d;
+            margin-bottom: 30px;
+        }
+
+        .settings-panel {
+            background-color: #f8f9fa;
+            padding: 25px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            border: 1px solid #e9ecef;
+        }
+
+        .settings-title {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 1.4em;
+        }
+
+        .settings-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-label {
             display: block;
-            margin-bottom: 5px;
-            font-weight: 500;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #495057;
         }
-        
-        input[type="number"], input[type="text"], select, textarea {
+
+        .form-control {
             width: 100%;
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-family: monospace;
-        }
-        
-        textarea {
-            min-height: 100px;
-        }
-        
-        button {
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 4px;
-            cursor: pointer;
+            padding: 10px;
             font-size: 16px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            transition: border-color 0.15s;
+        }
+
+        .form-control:focus {
+            border-color: #80bdff;
+            outline: 0;
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+        }
+
+        .btn {
+            display: inline-block;
+            font-weight: 400;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: middle;
+            user-select: none;
+            border: 1px solid transparent;
+            padding: 10px 20px;
+            font-size: 1rem;
+            line-height: 1.5;
+            border-radius: 4px;
+            transition: all 0.15s;
+            cursor: pointer;
             margin-right: 10px;
-            transition: background-color 0.3s;
         }
-        
-        button:hover {
-            background-color: var(--secondary);
+
+        .btn-primary {
+            color: #fff;
+            background-color: #007bff;
+            border-color: #007bff;
         }
-        
-        button.danger {
-            background-color: var(--danger);
+
+        .btn-primary:hover {
+            background-color: #0069d9;
+            border-color: #0062cc;
         }
-        
-        button.success {
-            background-color: var(--success);
+
+        .btn-danger {
+            color: #fff;
+            background-color: #dc3545;
+            border-color: #dc3545;
         }
-        
-        button:disabled {
-            background-color: #cccccc;
+
+        .btn-danger:hover {
+            background-color: #c82333;
+            border-color: #bd2130;
+        }
+
+        .btn-success {
+            color: #fff;
+            background-color: #28a745;
+            border-color: #28a745;
+        }
+
+        .btn-success:hover {
+            background-color: #218838;
+            border-color: #1e7e34;
+        }
+
+        .btn:disabled {
+            opacity: 0.65;
             cursor: not-allowed;
         }
-        
+
         .progress-container {
-            margin: 20px 0;
+            margin: 25px 0;
         }
-        
+
         .progress-bar {
-            height: 20px;
+            height: 25px;
             background-color: #e9ecef;
             border-radius: 4px;
             overflow: hidden;
         }
-        
+
         .progress-fill {
             height: 100%;
-            background-color: var(--accent);
+            background-color: #17a2b8;
             width: 0%;
-            transition: width 0.3s;
+            transition: width 0.3s ease;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 12px;
             color: white;
+            font-size: 14px;
+            font-weight: bold;
         }
-        
+
         .stats-container {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 15px;
-            margin: 20px 0;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 20px;
+            margin: 25px 0;
         }
-        
-        .stat-box {
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: 4px;
+
+        .stat-card {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #6c757d;
         }
-        
+
+        .stat-title {
+            font-size: 14px;
+            color: #6c757d;
+            margin-bottom: 5px;
+        }
+
         .stat-value {
             font-size: 24px;
             font-weight: bold;
-            color: var(--primary);
+            color: #343a40;
         }
-        
-        .results-container {
-            display: flex;
-            gap: 20px;
-            margin-top: 30px;
+
+        .results-section {
+            margin-top: 40px;
         }
-        
+
+        .results-title {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 1.4em;
+        }
+
         .results-table {
-            flex: 1;
-            overflow-x: auto;
-        }
-        
-        table {
             width: 100%;
             border-collapse: collapse;
+            margin-bottom: 30px;
         }
-        
-        th, td {
+
+        .results-table th {
+            background-color: #f8f9fa;
             padding: 12px;
             text-align: left;
-            border-bottom: 1px solid #ddd;
+            border-bottom: 2px solid #dee2e6;
+            color: #495057;
+            font-weight: 600;
         }
-        
-        th {
-            background-color: #f8f9fa;
-            font-weight: 500;
+
+        .results-table td {
+            padding: 12px;
+            border-bottom: 1px solid #dee2e6;
+            vertical-align: top;
         }
-        
-        tr:hover {
+
+        .results-table tr:hover {
             background-color: #f1f5f9;
         }
-        
-        .best-result {
-            background: #f0f8ff;
-            padding: 20px;
+
+        .best-result-card {
+            background-color: #f0f8ff;
+            padding: 25px;
             border-radius: 8px;
-            margin-top: 20px;
-            border-left: 4px solid var(--accent);
+            margin-top: 30px;
+            border-left: 4px solid #4fc3f7;
         }
-        
-        .worker-status {
+
+        .best-result-title {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .best-result-field {
+            margin-bottom: 10px;
+        }
+
+        .best-result-label {
+            font-weight: 600;
+            color: #495057;
+            display: inline-block;
+            width: 120px;
+        }
+
+        .worker-status-container {
             display: flex;
             flex-wrap: wrap;
             gap: 10px;
-            margin-top: 15px;
+            margin-top: 20px;
         }
-        
-        .worker {
-            background: #e9ecef;
-            padding: 5px 10px;
+
+        .worker-badge {
+            background-color: #e9ecef;
+            padding: 6px 12px;
             border-radius: 4px;
-            font-size: 12px;
+            font-size: 14px;
         }
-        
-        .worker.active {
-            background: var(--accent);
+
+        .worker-badge-active {
+            background-color: #4fc3f7;
             color: white;
         }
-        
+
+        .worker-badge-finished {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .worker-badge-cancelled {
+            background-color: #dc3545;
+            color: white;
+        }
+
         .chart-container {
             min-height: 400px;
+            margin-top: 30px;
         }
-        
+
         @media (max-width: 768px) {
-            .results-container {
-                flex-direction: column;
+            .settings-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .btn {
+                margin-bottom: 10px;
+                width: 100%;
             }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Ultimate Vigenère Cracker</h1>
-        <p>Military-grade cipher breaking with optimized Web Workers and n-gram analysis</p>
+    <div class="main-container">
+        <h1 class="header-title">Professional Vigenère Cipher Cracker</h1>
+        <p class="header-description">Advanced cryptographic analysis tool with linguistic evaluation</p>
         
         <div class="settings-panel">
-            <h2>⚙️ Settings</h2>
+            <h2 class="settings-title">Cipher Parameters</h2>
             <div class="settings-grid">
-                <div class="setting-group">
-                    <label for="ciphertext">Ciphertext:</label>
-                    <textarea id="ciphertext" rows="5" placeholder="Enter ciphertext to analyze"></textarea>
+                <div class="form-group">
+                    <label for="ciphertext-input" class="form-label">Ciphertext:</label>
+                    <textarea id="ciphertext-input" class="form-control" rows="5">LXFOPVEFRNHRKLLQETZVZQZQKZFEKWSKCCFEPVPQJZVMEFPGLKZ</textarea>
                 </div>
                 
-                <div class="setting-group">
-                    <label for="alphabet">Alphabet:</label>
-                    <input type="text" id="alphabet" value="ABCDEFGHIJKLMNOPQRSTUVWXYZ">
+                <div class="form-group">
+                    <label for="alphabet-input" class="form-label">Alphabet:</label>
+                    <input type="text" id="alphabet-input" class="form-control" value="ABCDEFGHIJKLMNOPQRSTUVWXYZ">
                 </div>
                 
-                <div class="setting-group">
-                    <label for="known-text">Known plaintext (optional):</label>
-                    <input type="text" id="known-text" placeholder="Known fragment to help cracking">
+                <div class="form-group">
+                    <label for="known-plaintext-input" class="form-label">Known plaintext (optional):</label>
+                    <input type="text" id="known-plaintext-input" class="form-control" placeholder="Fragment of known plaintext">
                 </div>
                 
-                <div class="setting-group">
-                    <label for="min-key-length">Min Key Length:</label>
-                    <input type="number" id="min-key-length" min="1" value="2">
+                <div class="form-group">
+                    <label for="min-keylength-input" class="form-label">Minimum Key Length:</label>
+                    <input type="number" id="min-keylength-input" class="form-control" min="1" value="4">
                 </div>
                 
-                <div class="setting-group">
-                    <label for="max-key-length">Max Key Length:</label>
-                    <input type="number" id="max-key-length" min="2" value="10">
+                <div class="form-group">
+                    <label for="max-keylength-input" class="form-label">Maximum Key Length:</label>
+                    <input type="number" id="max-keylength-input" class="form-control" min="2" value="5">
                 </div>
                 
-                <div class="setting-group">
-                    <label for="worker-count">Worker Count:</label>
-                    <input type="number" id="worker-count" min="1" max="16" value="4">
+                <div class="form-group">
+                    <label for="worker-count-input" class="form-label">Worker Threads:</label>
+                    <input type="number" id="worker-count-input" class="form-control" min="1" max="16" value="4">
                 </div>
                 
-                <div class="setting-group">
-                    <label for="batch-size">Batch Size (keys/chunk):</label>
-                    <input type="number" id="batch-size" min="1000" max="1000000" value="50000">
+                <div class="form-group">
+                    <label for="batch-size-input" class="form-label">Keys per Batch:</label>
+                    <input type="number" id="batch-size-input" class="form-control" min="1000" max="1000000" value="10000">
                 </div>
                 
-                <div class="setting-group">
-                    <label for="key-mutation">Key Mutation (%):</label>
-                    <input type="number" id="key-mutation" min="0" max="100" value="5">
+                <div class="form-group">
+                    <label for="mutation-rate-input" class="form-label">Key Mutation Rate (%):</label>
+                    <input type="number" id="mutation-rate-input" class="form-control" min="0" max="100" value="10">
                 </div>
                 
-                <div class="setting-group">
-                    <label for="early-exit">Early Exit Score:</label>
-                    <input type="number" id="early-exit" min="0" max="100" value="90">
+                <div class="form-group">
+                    <label for="early-exit-input" class="form-label">Early Exit Score Threshold:</label>
+                    <input type="number" id="early-exit-input" class="form-control" min="0" max="100" value="95">
                 </div>
             </div>
             
             <div>
-                <button id="analyze-btn" class="success">Start Attack</button>
-                <button id="cancel-btn" class="danger" disabled>Cancel</button>
-                <button id="reset-btn">Reset</button>
+                <button id="start-button" class="btn btn-success">Start Analysis</button>
+                <button id="cancel-button" class="btn btn-danger" disabled>Cancel Operation</button>
+                <button id="reset-button" class="btn btn-primary">Reset All</button>
             </div>
         </div>
         
         <div class="progress-container">
             <div class="progress-bar">
-                <div id="progress" class="progress-fill">0%</div>
+                <div id="progress-indicator" class="progress-fill">0%</div>
             </div>
         </div>
         
         <div class="stats-container">
-            <div class="stat-box">
-                <div>Keys Tested</div>
-                <div id="keys-tested" class="stat-value">0</div>
+            <div class="stat-card">
+                <div class="stat-title">Keys Tested</div>
+                <div id="keys-tested-counter" class="stat-value">0</div>
             </div>
-            <div class="stat-box">
-                <div>Keys Per Second</div>
-                <div id="keys-per-second" class="stat-value">0</div>
+            <div class="stat-card">
+                <div class="stat-title">Keys Per Second</div>
+                <div id="keys-per-second-counter" class="stat-value">0</div>
             </div>
-            <div class="stat-box">
-                <div>Time Elapsed</div>
-                <div id="time-elapsed" class="stat-value">0s</div>
+            <div class="stat-card">
+                <div class="stat-title">Time Elapsed</div>
+                <div id="time-elapsed-counter" class="stat-value">0s</div>
             </div>
-            <div class="stat-box">
-                <div>Keys Remaining</div>
-                <div id="keys-remaining" class="stat-value">0</div>
+            <div class="stat-card">
+                <div class="stat-title">Keys Remaining</div>
+                <div id="keys-remaining-counter" class="stat-value">0</div>
             </div>
         </div>
         
-        <div id="worker-status" class="worker-status"></div>
+        <div id="worker-status-container" class="worker-status-container"></div>
         
-        <div id="best-result" class="best-result" style="display: none;">
-            <h3>Best Match Found</h3>
-            <div><strong>Key:</strong> <span id="best-key"></span></div>
-            <div><strong>Score:</strong> <span id="best-score"></span></div>
-            <div><strong>Key Length:</strong> <span id="best-length"></span></div>
-            <div><strong>Decrypted Sample:</strong></div>
-            <pre id="best-decrypted"></pre>
+        <div id="best-result-display" class="best-result-card" style="display: none;">
+            <h3 class="best-result-title">Best Candidate Found</h3>
+            <div class="best-result-field">
+                <span class="best-result-label">Key:</span>
+                <span id="best-key-display"></span>
+            </div>
+            <div class="best-result-field">
+                <span class="best-result-label">Score:</span>
+                <span id="best-score-display"></span>
+            </div>
+            <div class="best-result-field">
+                <span class="best-result-label">Key Length:</span>
+                <span id="best-length-display"></span>
+            </div>
+            <div class="best-result-field">
+                <span class="best-result-label">Decrypted Sample:</span>
+                <pre id="best-decrypted-display"></pre>
+            </div>
         </div>
         
-        <div class="results-container">
-            <div class="results-table">
-                <h2>Top 20 Key Candidates</h2>
-                <table id="results-table">
-                    <thead>
-                        <tr>
-                            <th>Rank</th>
-                            <th>Key</th>
-                            <th>Score</th>
-                            <th>Length</th>
-                            <th>Decrypted Sample</th>
-                        </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
-            </div>
-            
-            <div class="chart-container">
-                <h2>Performance Metrics</h2>
-                <canvas id="performanceChart"></canvas>
-            </div>
+        <div class="results-section">
+            <h2 class="results-title">Top 20 Key Candidates</h2>
+            <table class="results-table" id="results-table">
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Key</th>
+                        <th>Score</th>
+                        <th>Length</th>
+                        <th>Decrypted Sample</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+        
+        <div class="chart-container">
+            <h2 class="results-title">Performance Metrics</h2>
+            <canvas id="performance-chart"></canvas>
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-        // Optimized n-gram frequency tables (log10 probabilities)
-        const OPTIMIZED_NGRAMS = {
-            quadgrams: {
-                'TION': 6.513, 'NTHE': 6.468, 'THER': 6.359, 'THAT': 6.216,
-                'INGT': 6.183, 'INTH': 6.117, 'THIS': 6.062, 'FTHE': 6.048,
-                'THES': 6.036, 'ATIO': 6.020, 'TING': 6.005, 'ETHE': 5.991,
-                'SAND': 5.953, 'STHE': 5.942, 'HERE': 5.921, 'THEC': 5.908
-            },
-            trigrams: {
-                'THE': 6.508, 'AND': 5.863, 'ING': 5.853, 'ION': 5.623,
-                'ENT': 5.623, 'HER': 5.556, 'FOR': 5.531, 'THA': 5.518,
-                'NTH': 5.518, 'INT': 5.505, 'TIO': 5.491, 'ERE': 5.491,
-                'TER': 5.477, 'EST': 5.447, 'ERS': 5.447, 'HAT': 5.415,
-                'ATI': 5.415, 'ATE': 5.398, 'ALL': 5.398, 'VER': 5.380
-            },
-            bigrams: {
-                'TH': 6.181, 'HE': 6.107, 'IN': 5.973, 'ER': 5.973,
-                'AN': 5.914, 'RE': 5.833, 'ND': 5.799, 'AT': 5.771,
-                'ON': 5.756, 'NT': 5.748, 'HA': 5.748, 'ES': 5.748,
-                'ST': 5.740, 'EN': 5.740, 'ED': 5.716, 'TO': 5.716,
-                'IT': 5.699, 'OU': 5.699, 'EA': 5.690, 'HI': 5.690
-            }
-        };
+        // Complete implementation without abbreviations
+        class TextMeaningfulnessEvaluator {
+            constructor() {
+                this.commonEnglishWords = {
+                    'THE': 0.071, 'BE': 0.042, 'TO': 0.039, 'OF': 0.036,
+                    'AND': 0.034, 'A': 0.032, 'IN': 0.028, 'THAT': 0.020,
+                    'HAVE': 0.017, 'I': 0.016, 'IT': 0.015, 'FOR': 0.014,
+                    'NOT': 0.013, 'ON': 0.012, 'WITH': 0.011, 'HE': 0.011,
+                    'AS': 0.010, 'YOU': 0.010, 'DO': 0.009, 'AT': 0.009,
+                    'THIS': 0.008, 'BUT': 0.007, 'HIS': 0.007, 'BY': 0.007,
+                    'FROM': 0.007, 'THEY': 0.006, 'WE': 0.006, 'SAY': 0.006,
+                    'OR': 0.006, 'AN': 0.006, 'WILL': 0.006, 'WOULD': 0.005,
+                    'WHAT': 0.005, 'SO': 0.005, 'CAN': 0.005, 'IF': 0.005
+                };
 
-        // Combined weights for all n-grams
-        function precomputeWeights() {
-            const weights = {};
-            for (const [type, table] of Object.entries(OPTIMIZED_NGRAMS)) {
-                const multiplier = type === 'quadgrams' ? 1.0 : 
-                                 type === 'trigrams' ? 0.7 : 0.3;
-                for (const [ngram, value] of Object.entries(table)) {
-                    weights[ngram] = (weights[ngram] || 0) + value * multiplier;
-                }
+                this.wordBoundaryRegex = /[A-Z']+/g;
+                this.minimumWordsForEvaluation = 3;
+                this.optimalAverageWordLength = 4.7;
             }
-            return weights;
+
+            evaluateTextMeaningfulness(text) {
+                const uppercaseText = text.toUpperCase();
+                const extractedWords = uppercaseText.match(this.wordBoundaryRegex) || [];
+                
+                if (extractedWords.length < this.minimumWordsForEvaluation) {
+                    return 0;
+                }
+
+                const dictionaryScore = this.calculateDictionaryScore(extractedWords);
+                const wordLengthScore = this.calculateWordLengthScore(extractedWords);
+                const uniquenessScore = this.calculateUniquenessScore(extractedWords);
+                const sequenceScore = this.calculateLetterSequenceScore(uppercaseText);
+
+                const combinedScore = (dictionaryScore * 0.5) +
+                                    (wordLengthScore * 0.2) +
+                                    (uniquenessScore * 0.2) +
+                                    (sequenceScore * 0.1);
+
+                return Math.max(0, Math.min(1, combinedScore));
+            }
+
+            calculateDictionaryScore(words) {
+                let recognizedWordCount = 0;
+                let totalFrequency = 0;
+
+                words.forEach(word => {
+                    if (this.commonEnglishWords[word]) {
+                        recognizedWordCount++;
+                        totalFrequency += this.commonEnglishWords[word];
+                    }
+                });
+
+                const recognitionRatio = recognizedWordCount / words.length;
+                const frequencyScore = totalFrequency / Math.max(1, recognizedWordCount);
+
+                return (recognitionRatio * 0.7) + (frequencyScore * 0.3);
+            }
+
+            calculateWordLengthScore(words) {
+                const totalLetters = words.reduce((sum, word) => sum + word.length, 0);
+                const averageLength = totalLetters / words.length;
+                const lengthDifference = Math.abs(averageLength - this.optimalAverageWordLength);
+                
+                return Math.max(0, 1 - (lengthDifference / this.optimalAverageWordLength));
+            }
+
+            calculateUniquenessScore(words) {
+                const uniqueWords = new Set(words);
+                return uniqueWords.size / words.length;
+            }
+
+            calculateLetterSequenceScore(text) {
+                const invalidSequences = ['AAA', 'BBB', 'CCC', 'ABC', 'XYZ', 'QXP'];
+                let invalidSequenceCount = 0;
+
+                for (let i = 0; i < text.length - 2; i++) {
+                    const sequence = text.substr(i, 3);
+                    if (invalidSequences.includes(sequence)) {
+                        invalidSequenceCount++;
+                    }
+                }
+
+                const maxPossibleInvalid = Math.max(1, text.length - 2);
+                return 1 - (invalidSequenceCount / maxPossibleInvalid);
+            }
         }
 
-        class UltimateVigenereCracker {
+        class VigenereCipherCracker {
             constructor() {
-                this.workers = [];
-                this.results = [];
-                this.isRunning = false;
-                this.startTime = 0;
-                this.keysTested = 0;
-                this.totalKeys = 0;
-                this.keysPerSecond = 0;
-                this.keysTestedLastSecond = 0;
-                this.lastSecondTime = 0;
-                this.performanceData = [];
-                this.chart = null;
-                this.ngramWeights = precomputeWeights();
-                this.checkedKeys = new Set();
-                this.keyGenerator = null;
-                this.currentKeyIndex = 0;
-                
-                this.initCharts();
-                this.bindEvents();
+                this.workerPool = [];
+                this.analysisResults = [];
+                this.analysisInProgress = false;
+                this.analysisStartTimestamp = 0;
+                this.totalKeysTested = 0;
+                this.totalKeysToTest = 0;
+                this.keysPerSecondRate = 0;
+                this.keysTestedThisSecond = 0;
+                this.lastSecondUpdate = 0;
+                this.performanceMetrics = [];
+                this.performanceChart = null;
+                this.testedKeysRegistry = new Set();
+                this.keyGenerationState = null;
+                this.textEvaluator = new TextMeaningfulnessEvaluator();
+
+                this.initializeApplicationComponents();
             }
-            
-            initCharts() {
-                const ctx = document.getElementById('performanceChart').getContext('2d');
-                this.chart = new Chart(ctx, {
+
+            initializeApplicationComponents() {
+                this.initializePerformanceChart();
+                this.initializeEventHandlers();
+            }
+
+            initializePerformanceChart() {
+                const chartCanvas = document.getElementById('performance-chart').getContext('2d');
+                this.performanceChart = new Chart(chartCanvas, {
                     type: 'line',
                     data: {
                         labels: [],
                         datasets: [{
-                            label: 'Keys Per Second',
+                            label: 'Keys Processed Per Second',
                             data: [],
                             borderColor: 'rgba(75, 192, 192, 1)',
                             backgroundColor: 'rgba(75, 192, 192, 0.2)',
@@ -410,513 +558,481 @@
                     options: {
                         responsive: true,
                         scales: {
-                            y: {
+                            yAxis: {
                                 beginAtZero: true,
                                 title: {
                                     display: true,
                                     text: 'Keys/Second'
                                 }
                             },
-                            x: {
+                            xAxis: {
                                 title: {
                                     display: true,
-                                    text: 'Time (seconds)'
+                                    text: 'Elapsed Time (seconds)'
                                 }
                             }
                         }
                     }
                 });
             }
-            
-            bindEvents() {
-                document.getElementById('analyze-btn').addEventListener('click', () => this.startAttack());
-                document.getElementById('cancel-btn').addEventListener('click', () => this.cancelAttack());
-                document.getElementById('reset-btn').addEventListener('click', () => this.reset());
+
+            initializeEventHandlers() {
+                document.getElementById('start-button').addEventListener('click', () => this.beginAnalysis());
+                document.getElementById('cancel-button').addEventListener('click', () => this.cancelAnalysis());
+                document.getElementById('reset-button').addEventListener('click', () => this.resetApplicationState());
             }
-            
-            reset() {
-                this.cancelAttack();
-                document.getElementById('ciphertext').value = '';
-                document.getElementById('best-result').style.display = 'none';
+
+            resetApplicationState() {
+                this.cancelAnalysis();
+                document.getElementById('ciphertext-input').value = '';
+                document.getElementById('best-result-display').style.display = 'none';
                 document.querySelector('#results-table tbody').innerHTML = '';
-                document.getElementById('progress').style.width = '0%';
-                document.getElementById('progress').textContent = '0%';
-                document.getElementById('worker-status').innerHTML = '';
-                this.chart.data.labels = [];
-                this.chart.data.datasets[0].data = [];
-                this.chart.update();
-                this.keyGenerator = null;
-                this.currentKeyIndex = 0;
+                document.getElementById('progress-indicator').style.width = '0%';
+                document.getElementById('progress-indicator').textContent = '0%';
+                document.getElementById('worker-status-container').innerHTML = '';
+                this.performanceChart.data.labels = [];
+                this.performanceChart.data.datasets[0].data = [];
+                this.performanceChart.update();
+                this.keyGenerationState = null;
             }
-            
-            startAttack() {
-                const ciphertext = document.getElementById('ciphertext').value.toUpperCase();
-                const alphabet = document.getElementById('alphabet').value.toUpperCase() || 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-                const minLen = parseInt(document.getElementById('min-key-length').value) || 2;
-                const maxLen = parseInt(document.getElementById('max-key-length').value) || 10;
-                const knownText = document.getElementById('known-text').value.toUpperCase();
-                const workerCount = parseInt(document.getElementById('worker-count').value) || 4;
-                const batchSize = parseInt(document.getElementById('batch-size').value) || 50000;
-                const mutationRate = parseInt(document.getElementById('key-mutation').value) || 5;
-                const earlyExitScore = parseInt(document.getElementById('early-exit').value) || 90;
+
+            beginAnalysis() {
+                const ciphertextValue = document.getElementById('ciphertext-input').value.toUpperCase();
+                const alphabetValue = document.getElementById('alphabet-input').value.toUpperCase() || 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                const minimumKeyLength = parseInt(document.getElementById('min-keylength-input').value) || 2;
+                const maximumKeyLength = parseInt(document.getElementById('max-keylength-input').value) || 10;
+                const knownPlaintextValue = document.getElementById('known-plaintext-input').value.toUpperCase();
+                const workerThreadCount = parseInt(document.getElementById('worker-count-input').value) || 4;
+                const keysPerBatch = parseInt(document.getElementById('batch-size-input').value) || 10000;
+                const keyMutationProbability = parseInt(document.getElementById('mutation-rate-input').value) || 10;
+                const earlyExitThreshold = parseInt(document.getElementById('early-exit-input').value) || 95;
                 
-                // Filter to only include alphabet characters
-                const filteredText = ciphertext.split('').filter(c => alphabet.includes(c)).join('');
+                const filteredCiphertext = ciphertextValue.split('').filter(character => alphabetValue.includes(character)).join('');
                 
-                if (!filteredText) {
-                    alert('Please enter valid ciphertext using the specified alphabet');
+                if (!filteredCiphertext) {
+                    alert('Please provide valid ciphertext using the specified alphabet');
                     return;
                 }
                 
-                // Reset state
-                this.resetUI();
-                this.isRunning = true;
-                this.startTime = performance.now();
-                this.lastSecondTime = this.startTime;
-                this.keysTested = 0;
-                this.performanceData = [];
-                this.checkedKeys = new Set();
-                this.currentKeyIndex = 0;
+                this.prepareForNewAnalysis();
+                this.analysisInProgress = true;
+                this.analysisStartTimestamp = performance.now();
+                this.lastSecondUpdate = this.analysisStartTimestamp;
+                this.totalKeysTested = 0;
+                this.performanceMetrics = [];
+                this.testedKeysRegistry = new Set();
                 
-                // Calculate total number of keys to test
-                this.totalKeys = this.calculateTotalKeys(alphabet.length, minLen, maxLen);
-                document.getElementById('keys-remaining').textContent = this.totalKeys.toLocaleString();
+                this.totalKeysToTest = this.calculateTotalKeyCombinations(alphabetValue.length, minimumKeyLength, maximumKeyLength);
+                document.getElementById('keys-remaining-counter').textContent = this.totalKeysToTest.toLocaleString();
                 
-                // Initialize key generator
-                this.keyGenerator = this.createKeyGenerator(alphabet, minLen, maxLen);
+                this.keyGenerationState = this.initializeKeyGenerator(alphabetValue, minimumKeyLength, maximumKeyLength);
                 
-                // Disable buttons
-                document.getElementById('analyze-btn').disabled = true;
-                document.getElementById('cancel-btn').disabled = false;
+                document.getElementById('start-button').disabled = true;
+                document.getElementById('cancel-button').disabled = false;
                 
-                // Start workers
-                this.startWorkers(filteredText, alphabet, minLen, maxLen, knownText, workerCount, batchSize, mutationRate, earlyExitScore);
+                this.launchWorkerThreads(filteredCiphertext, alphabetValue, minimumKeyLength, maximumKeyLength, 
+                                       knownPlaintextValue, workerThreadCount, keysPerBatch, 
+                                       keyMutationProbability, earlyExitThreshold);
                 
-                // Start stats update loop
-                this.updateStats();
+                this.updatePerformanceStatistics();
             }
-            
-            calculateTotalKeys(alphabetSize, minLen, maxLen) {
-                let total = 0;
-                for (let len = minLen; len <= maxLen; len++) {
-                    total += Math.pow(alphabetSize, len);
+
+            calculateTotalKeyCombinations(alphabetSize, minLength, maxLength) {
+                let totalCombinations = 0;
+                for (let currentLength = minLength; currentLength <= maxLength; currentLength++) {
+                    totalCombinations += Math.pow(alphabetSize, currentLength);
                 }
-                return total;
+                return totalCombinations;
             }
-            
-            createKeyGenerator(alphabet, minLen, maxLen) {
-                const alphaLen = alphabet.length;
-                const keys = [];
+
+            initializeKeyGenerator(alphabetCharacters, minLength, maxLength) {
+                const alphabetSize = alphabetCharacters.length;
+                const keyLengthDefinitions = [];
                 
-                for (let len = minLen; len <= maxLen; len++) {
-                    const keysForLen = Math.pow(alphaLen, len);
-                    keys.push({ len, count: keysForLen });
+                for (let currentLength = minLength; currentLength <= maxLength; currentLength++) {
+                    keyLengthDefinitions.push({ 
+                        length: currentLength, 
+                        count: Math.pow(alphabetSize, currentLength) 
+                    });
                 }
                 
                 return {
-                    alphabet,
-                    alphaLen,
-                    keyLengths: keys,
-                    totalKeys: keys.reduce((sum, k) => sum + k.count, 0),
-                    currentLenIndex: 0,
+                    alphabet: alphabetCharacters,
+                    alphabetSize: alphabetSize,
+                    keyLengths: keyLengthDefinitions,
+                    totalKeys: keyLengthDefinitions.reduce((sum, keyDef) => sum + keyDef.count, 0),
+                    currentLengthIndex: 0,
                     currentKeyIndex: 0
                 };
             }
-            
-            resetUI() {
-                this.results = [];
+
+            prepareForNewAnalysis() {
+                this.analysisResults = [];
                 document.querySelector('#results-table tbody').innerHTML = '';
-                document.getElementById('best-result').style.display = 'none';
-                document.getElementById('progress').style.width = '0%';
-                document.getElementById('progress').textContent = '0%';
-                document.getElementById('worker-status').innerHTML = '';
-                this.chart.data.labels = [];
-                this.chart.data.datasets[0].data = [];
-                this.chart.update();
+                document.getElementById('best-result-display').style.display = 'none';
+                document.getElementById('progress-indicator').style.width = '0%';
+                document.getElementById('progress-indicator').textContent = '0%';
+                document.getElementById('worker-status-container').innerHTML = '';
+                this.performanceChart.data.labels = [];
+                this.performanceChart.data.datasets[0].data = [];
+                this.performanceChart.update();
             }
-            
-            startWorkers(ciphertext, alphabet, minLen, maxLen, knownText, workerCount, batchSize, mutationRate, earlyExitScore) {
-                // Clear previous workers
-                this.workers.forEach(worker => worker.terminate());
-                this.workers = [];
+
+            launchWorkerThreads(ciphertext, alphabet, minLength, maxLength, knownText, workerCount, batchSize, mutationRate, exitThreshold) {
+                this.workerPool.forEach(worker => worker.terminate());
+                this.workerPool = [];
                 
-                // Create alphabet map for fast lookups
-                const alphabetMap = {};
-                for (let i = 0; i < alphabet.length; i++) {
-                    alphabetMap[alphabet[i]] = i;
+                const characterPositionMap = {};
+                for (let position = 0; position < alphabet.length; position++) {
+                    characterPositionMap[alphabet[position]] = position;
                 }
                 
-                // Prepare worker code
-                const workerCode = this.getWorkerCode();
+                const workerScript = this.generateWorkerScript();
                 
-                // Create worker pool
-                for (let i = 0; i < workerCount; i++) {
-                    const worker = new Worker(URL.createObjectURL(new Blob([workerCode], { type: 'text/javascript' })));
+                for (let workerIndex = 0; workerIndex < workerCount; workerIndex++) {
+                    const newWorker = new Worker(URL.createObjectURL(new Blob([workerScript], { type: 'text/javascript' })));
                     
-                    worker.id = i;
-                    worker.keysProcessed = 0;
-                    this.workers.push(worker);
+                    newWorker.identifier = workerIndex;
+                    newWorker.processedKeys = 0;
+                    this.workerPool.push(newWorker);
                     
-                    const workerEl = document.createElement('div');
-                    workerEl.className = 'worker';
-                    workerEl.id = `worker-${i}`;
-                    workerEl.textContent = `Worker ${i + 1}`;
-                    document.getElementById('worker-status').appendChild(workerEl);
+                    const workerBadge = document.createElement('div');
+                    workerBadge.className = 'worker-badge';
+                    workerBadge.id = `worker-${workerIndex}-badge`;
+                    workerBadge.textContent = `Worker ${workerIndex + 1}`;
+                    document.getElementById('worker-status-container').appendChild(workerBadge);
                     
-                    worker.onmessage = (e) => this.handleWorkerResponse(e, i);
+                    newWorker.onmessage = (event) => this.handleWorkerMessage(event, workerIndex);
                     
-                    // Initialize worker
-                    worker.postMessage({
-                        type: 'init',
+                    newWorker.postMessage({
+                        messageType: 'initialize',
                         ciphertext: ciphertext,
                         alphabet: alphabet,
-                        alphabetMap: alphabetMap,
+                        characterMap: characterPositionMap,
                         knownText: knownText,
                         mutationRate: mutationRate,
-                        earlyExitScore: earlyExitScore,
-                        ngramWeights: this.ngramWeights,
-                        workerId: i
+                        exitThreshold: exitThreshold,
+                        workerId: workerIndex
                     });
                     
-                    // Start processing
-                    this.assignWorkToWorker(worker, batchSize);
+                    this.assignKeyBatchToWorker(newWorker, batchSize);
                 }
             }
-            
-            assignWorkToWorker(worker, batchSize) {
-                if (!this.isRunning || !this.keyGenerator) return;
+
+            assignKeyBatchToWorker(worker, batchSize) {
+                if (!this.analysisInProgress || !this.keyGenerationState) return;
                 
-                const batch = [];
-                const alphabet = this.keyGenerator.alphabet;
-                const alphaLen = this.keyGenerator.alphaLen;
+                const keyBatch = [];
+                const alphabetCharacters = this.keyGenerationState.alphabet;
+                const alphabetSize = this.keyGenerationState.alphabetSize;
                 
-                while (batch.length < batchSize && this.currentKeyIndex < this.keyGenerator.totalKeys) {
-                    // Find current key length
-                    let lenInfo = this.keyGenerator.keyLengths[this.keyGenerator.currentLenIndex];
-                    while (this.keyGenerator.currentKeyIndex >= lenInfo.count) {
-                        this.keyGenerator.currentKeyIndex = 0;
-                        this.keyGenerator.currentLenIndex++;
-                        if (this.keyGenerator.currentLenIndex >= this.keyGenerator.keyLengths.length) {
+                while (keyBatch.length < batchSize && this.keyGenerationState.currentKeyIndex < this.keyGenerationState.totalKeys) {
+                    let currentLengthDefinition = this.keyGenerationState.keyLengths[this.keyGenerationState.currentLengthIndex];
+                    while (this.keyGenerationState.currentKeyIndex >= currentLengthDefinition.count) {
+                        this.keyGenerationState.currentKeyIndex = 0;
+                        this.keyGenerationState.currentLengthIndex++;
+                        if (this.keyGenerationState.currentLengthIndex >= this.keyGenerationState.keyLengths.length) {
                             break;
                         }
-                        lenInfo = this.keyGenerator.keyLengths[this.keyGenerator.currentLenIndex];
+                        currentLengthDefinition = this.keyGenerationState.keyLengths[this.keyGenerationState.currentLengthIndex];
                     }
                     
-                    if (this.keyGenerator.currentLenIndex >= this.keyGenerator.keyLengths.length) {
+                    if (this.keyGenerationState.currentLengthIndex >= this.keyGenerationState.keyLengths.length) {
                         break;
                     }
                     
-                    const len = lenInfo.len;
-                    let n = this.keyGenerator.currentKeyIndex;
-                    let key = '';
+                    const keyLength = currentLengthDefinition.length;
+                    let keyIndex = this.keyGenerationState.currentKeyIndex;
+                    let generatedKey = '';
                     
-                    for (let j = 0; j < len; j++) {
-                        key = alphabet[n % alphaLen] + key;
-                        n = Math.floor(n / alphaLen);
+                    for (let position = 0; position < keyLength; position++) {
+                        generatedKey = alphabetCharacters[keyIndex % alphabetSize] + generatedKey;
+                        keyIndex = Math.floor(keyIndex / alphabetSize);
                     }
                     
-                    batch.push(key);
-                    this.keyGenerator.currentKeyIndex++;
+                    keyBatch.push(generatedKey);
+                    this.keyGenerationState.currentKeyIndex++;
                 }
                 
-                if (batch.length > 0) {
+                if (keyBatch.length > 0) {
                     worker.postMessage({
-                        type: 'process',
-                        keys: batch
+                        messageType: 'process',
+                        keys: keyBatch
                     });
                 } else {
-                    // No more keys to process
-                    const workerEl = document.getElementById(`worker-${worker.id}`);
-                    if (workerEl) {
-                        workerEl.textContent += ' (finished)';
-                        workerEl.classList.remove('active');
+                    const workerBadge = document.getElementById(`worker-${worker.identifier}-badge`);
+                    if (workerBadge) {
+                        workerBadge.textContent += ' (completed)';
+                        workerBadge.className = 'worker-badge worker-badge-finished';
                     }
-                    this.checkCompletion();
+                    this.verifyCompletionStatus();
                 }
             }
-            
-            getWorkerCode() {
+
+            generateWorkerScript() {
                 return `
-                    let ciphertext = '';
-                    let alphabet = '';
-                    let alphabetMap = {};
-                    let knownText = '';
-                    let mutationRate = 5;
-                    let earlyExitScore = 90;
-                    let ngramWeights = {};
-                    let workerId = 0;
+                    let ciphertextData = '';
+                    let alphabetData = '';
+                    let alphabetPositionMap = {};
+                    let knownPlaintextData = '';
+                    let keyMutationProbability = 10;
+                    let earlyExitScoreThreshold = 95;
+                    let workerIdentifier = 0;
                     
-                    // Fast decryption function
-                    function decrypt(key) {
-                        const decrypted = new Array(ciphertext.length);
-                        const keyLen = key.length;
-                        const alphaLen = alphabet.length;
+                    const ngramFrequencyData = {
+                        'TION': 6.513, 'NTHE': 6.468, 'THER': 6.359, 'THAT': 6.216,
+                        'INGT': 6.183, 'INTH': 6.117, 'THIS': 6.062, 'FTHE': 6.048,
+                        'THE': 6.508, 'AND': 5.863, 'ING': 5.853, 'ION': 5.623,
+                        'ENT': 5.623, 'HER': 5.556, 'FOR': 5.531, 'THA': 5.518,
+                        'TH': 6.181, 'HE': 6.107, 'IN': 5.973, 'ER': 5.973,
+                        'AN': 5.914, 'RE': 5.833, 'ND': 5.799, 'AT': 5.771
+                    };
+                    
+                    function decryptWithVigenere(key) {
+                        const decryptedResult = new Array(ciphertextData.length);
+                        const keyLength = key.length;
+                        const alphabetLength = alphabetData.length;
                         
-                        for (let i = 0; i < ciphertext.length; i++) {
-                            const textIdx = alphabetMap[ciphertext[i]];
-                            const keyIdx = alphabetMap[key[i % keyLen]];
-                            decrypted[i] = alphabet[(textIdx - keyIdx + alphaLen) % alphaLen];
+                        for (let position = 0; position < ciphertextData.length; position++) {
+                            const cipherCharIndex = alphabetPositionMap[ciphertextData[position]];
+                            const keyCharIndex = alphabetPositionMap[key[position % keyLength]];
+                            decryptedResult[position] = alphabetData[(cipherCharIndex - keyCharIndex + alphabetLength) % alphabetLength];
                         }
                         
-                        return decrypted.join('');
+                        return decryptedResult.join('');
                     }
                     
-                    // Calculate score using n-gram weights
-                    function calculateScore(text) {
-                        let score = 0;
+                    function calculateTextQualityScore(text) {
+                        let totalScore = 0;
                         
-                        for (const [ngram, weight] of Object.entries(ngramWeights)) {
-                            let pos = -1;
-                            while ((pos = text.indexOf(ngram, pos + 1)) !== -1) {
-                                score += weight;
+                        for (const [ngram, weightValue] of Object.entries(ngramFrequencyData)) {
+                            let foundPosition = -1;
+                            while ((foundPosition = text.indexOf(ngram, foundPosition + 1)) !== -1) {
+                                totalScore += weightValue;
                             }
                         }
                         
-                        // Apply known text penalty
-                        if (knownText && !text.includes(knownText)) {
-                            score -= 100;
+                        if (knownPlaintextData && !text.includes(knownPlaintextData)) {
+                            totalScore -= 100;
                         }
                         
-                        return score;
+                        return totalScore;
                     }
                     
-                    // Apply mutation to a key
-                    function mutateKey(key) {
-                        if (Math.random() * 100 >= mutationRate || key.length < 1) {
-                            return key;
+                    function applyKeyMutation(originalKey) {
+                        if (Math.random() * 100 >= keyMutationProbability || originalKey.length < 1) {
+                            return originalKey;
                         }
                         
-                        const pos = Math.floor(Math.random() * key.length);
-                        const newChar = alphabet[Math.floor(Math.random() * alphabet.length)];
-                        return key.substring(0, pos) + newChar + key.substring(pos + 1);
+                        const mutationPosition = Math.floor(Math.random() * originalKey.length);
+                        const newCharacter = alphabetData[Math.floor(Math.random() * alphabetData.length)];
+                        return originalKey.substring(0, mutationPosition) + newCharacter + originalKey.substring(mutationPosition + 1);
                     }
                     
-                    onmessage = function(e) {
-                        if (e.data.type === 'init') {
-                            // Initialize worker
-                            ciphertext = e.data.ciphertext;
-                            alphabet = e.data.alphabet;
-                            alphabetMap = e.data.alphabetMap;
-                            knownText = e.data.knownText;
-                            mutationRate = e.data.mutationRate;
-                            earlyExitScore = e.data.earlyExitScore;
-                            ngramWeights = e.data.ngramWeights;
-                            workerId = e.data.workerId;
+                    self.onmessage = function(event) {
+                        const receivedData = event.data;
+                        
+                        if (receivedData.messageType === 'initialize') {
+                            ciphertextData = receivedData.ciphertext;
+                            alphabetData = receivedData.alphabet;
+                            alphabetPositionMap = receivedData.characterMap;
+                            knownPlaintextData = receivedData.knownText;
+                            keyMutationProbability = receivedData.mutationRate;
+                            earlyExitScoreThreshold = receivedData.exitThreshold;
+                            workerIdentifier = receivedData.workerId;
                             
-                            postMessage({ type: 'ready', workerId });
+                            self.postMessage({ messageType: 'ready', workerId: workerIdentifier });
                             return;
                         }
                         
-                        if (e.data.type === 'process') {
-                            // Process batch of keys
-                            const keys = e.data.keys;
-                            const results = [];
-                            let bestScore = -Infinity;
+                        if (receivedData.messageType === 'process') {
+                            const keysToProcess = receivedData.keys;
+                            const processingResults = [];
+                            let highestScore = -Infinity;
                             
-                            for (const key of keys) {
-                                const mutatedKey = mutateKey(key);
-                                const decrypted = decrypt(mutatedKey);
-                                const score = calculateScore(decrypted);
+                            for (const currentKey of keysToProcess) {
+                                const mutatedKey = applyKeyMutation(currentKey);
+                                const decryptedContent = decryptWithVigenere(mutatedKey);
+                                const qualityScore = calculateTextQualityScore(decryptedContent);
                                 
-                                results.push({
+                                processingResults.push({
                                     key: mutatedKey,
-                                    score,
-                                    decrypted: decrypted.substring(0, 100),
+                                    score: qualityScore,
+                                    decrypted: decryptedContent.substring(0, 100),
                                     length: mutatedKey.length
                                 });
                                 
-                                // Track best score for early exit
-                                if (score > bestScore) {
-                                    bestScore = score;
+                                if (qualityScore > highestScore) {
+                                    highestScore = qualityScore;
                                 }
                             }
                             
-                            // Early exit if we found a very good match
-                            const earlyExit = bestScore >= earlyExitScore;
+                            const shouldExitEarly = highestScore >= earlyExitScoreThreshold;
                             
-                            postMessage({ 
-                                type: 'results', 
-                                results, 
-                                processed: keys.length,
-                                earlyExit,
-                                workerId 
+                            self.postMessage({ 
+                                messageType: 'results', 
+                                results: processingResults, 
+                                processedCount: keysToProcess.length,
+                                earlyExit: shouldExitEarly,
+                                workerId: workerIdentifier 
                             });
                         }
                     };
                 `;
             }
-            
-            handleWorkerResponse(e, workerId) {
-                if (!this.isRunning) return;
+
+            handleWorkerMessage(event, workerId) {
+                if (!this.analysisInProgress) return;
                 
-                const workerEl = document.getElementById(`worker-${workerId}`);
-                const data = e.data;
+                const workerBadge = document.getElementById(`worker-${workerId}-badge`);
+                const messageData = event.data;
                 
-                if (data.type === 'ready') {
-                    // Worker is ready
-                    workerEl.classList.add('active');
+                if (messageData.messageType === 'ready') {
+                    workerBadge.classList.add('worker-badge-active');
                     return;
                 }
                 
-                if (data.type === 'results') {
-                    // Process results
-                    this.keysTested += data.processed;
-                    this.keysTestedLastSecond += data.processed;
-                    this.workers[workerId].keysProcessed += data.processed;
+                if (messageData.messageType === 'results') {
+                    this.totalKeysTested += messageData.processedCount;
+                    this.keysTestedThisSecond += messageData.processedCount;
+                    this.workerPool[workerId].processedKeys += messageData.processedCount;
                     
-                    // Add to results
-                    data.results.forEach(result => {
-                        if (!this.checkedKeys.has(result.key)) {
-                            this.results.push(result);
-                            this.checkedKeys.add(result.key);
+                    messageData.results.forEach(result => {
+                        if (!this.testedKeysRegistry.has(result.key)) {
+                            this.analysisResults.push(result);
+                            this.testedKeysRegistry.add(result.key);
                         }
                     });
                     
-                    // Update UI
-                    this.updateResultsTable();
-                    this.updateBestResult();
+                    this.updateResultsDisplay();
+                    this.updateBestResultDisplay();
                     
-                    // Check if we should early exit
-                    if (data.earlyExit) {
-                        this.cancelAttack();
-                        alert(`Early exit triggered with high score match!`);
+                    if (messageData.earlyExit) {
+                        this.cancelAnalysis();
+                        alert(`Early termination triggered with high-quality match found!`);
                         return;
                     }
                     
-                    // Assign more work if available
-                    if (this.isRunning) {
-                        this.assignWorkToWorker(this.workers[workerId], parseInt(document.getElementById('batch-size').value) || 50000);
+                    if (this.analysisInProgress) {
+                        this.assignKeyBatchToWorker(
+                            this.workerPool[workerId], 
+                            parseInt(document.getElementById('batch-size-input').value) || 10000
+                        );
                     }
                 }
             }
-            
-            updateResultsTable() {
-                // Sort results by score and get top 20
-                const sortedResults = [...this.results]
-                    .sort((a, b) => b.score - a.score)
+
+            updateResultsDisplay() {
+                const sortedResults = [...this.analysisResults]
+                    .sort((firstResult, secondResult) => secondResult.score - firstResult.score)
                     .slice(0, 20);
                 
-                // Update table
-                const tbody = document.querySelector('#results-table tbody');
-                tbody.innerHTML = '';
+                const resultsTableBody = document.querySelector('#results-table tbody');
+                resultsTableBody.innerHTML = '';
                 
-                sortedResults.forEach((result, i) => {
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                        <td>${i + 1}</td>
+                sortedResults.forEach((result, index) => {
+                    const tableRow = document.createElement('tr');
+                    tableRow.innerHTML = `
+                        <td>${index + 1}</td>
                         <td><strong>${result.key}</strong></td>
                         <td>${result.score.toFixed(2)}</td>
                         <td>${result.length}</td>
                         <td>${result.decrypted}</td>
                     `;
-                    tbody.appendChild(row);
+                    resultsTableBody.appendChild(tableRow);
                 });
             }
-            
-            updateBestResult() {
-                if (this.results.length === 0) return;
+
+            updateBestResultDisplay() {
+                if (this.analysisResults.length === 0) return;
                 
-                // Find best result
-                const bestResult = this.results.reduce((best, current) => 
-                    current.score > best.score ? current : best
+                const bestCandidate = this.analysisResults.reduce((currentBest, candidate) => 
+                    candidate.score > currentBest.score ? candidate : currentBest
                 );
                 
-                // Update UI
-                document.getElementById('best-result').style.display = 'block';
-                document.getElementById('best-key').textContent = bestResult.key;
-                document.getElementById('best-score').textContent = bestResult.score.toFixed(2);
-                document.getElementById('best-length').textContent = bestResult.length;
-                document.getElementById('best-decrypted').textContent = bestResult.decrypted;
+                document.getElementById('best-result-display').style.display = 'block';
+                document.getElementById('best-key-display').textContent = bestCandidate.key;
+                document.getElementById('best-score-display').textContent = bestCandidate.score.toFixed(2);
+                document.getElementById('best-length-display').textContent = bestCandidate.length;
+                document.getElementById('best-decrypted-display').textContent = bestCandidate.decrypted;
             }
-            
-            updateStats() {
-                if (!this.isRunning) return;
+
+            updatePerformanceStatistics() {
+                if (!this.analysisInProgress) return;
                 
-                // Calculate time elapsed
-                const now = performance.now();
-                const elapsed = (now - this.startTime) / 1000;
+                const currentTimestamp = performance.now();
+                const elapsedTimeInSeconds = (currentTimestamp - this.analysisStartTimestamp) / 1000;
                 
-                // Update keys per second every second
-                if (now - this.lastSecondTime >= 1000) {
-                    this.keysPerSecond = this.keysTestedLastSecond / ((now - this.lastSecondTime) / 1000);
-                    this.keysTestedLastSecond = 0;
-                    this.lastSecondTime = now;
+                if (currentTimestamp - this.lastSecondUpdate >= 1000) {
+                    this.keysPerSecondRate = this.keysTestedThisSecond / ((currentTimestamp - this.lastSecondUpdate) / 1000);
+                    this.keysTestedThisSecond = 0;
+                    this.lastSecondUpdate = currentTimestamp;
                     
-                    // Update performance chart
-                    this.performanceData.push({
-                        time: Math.floor(elapsed),
-                        kps: Math.floor(this.keysPerSecond)
+                    this.performanceMetrics.push({
+                        time: Math.floor(elapsedTimeInSeconds),
+                        processingRate: Math.floor(this.keysPerSecondRate)
                     });
                     
-                    // Keep only last 20 data points
-                    if (this.performanceData.length > 20) {
-                        this.performanceData.shift();
+                    if (this.performanceMetrics.length > 20) {
+                        this.performanceMetrics.shift();
                     }
                     
-                    // Update chart
-                    this.chart.data.labels = this.performanceData.map(d => d.time);
-                    this.chart.data.datasets[0].data = this.performanceData.map(d => d.kps);
-                    this.chart.update();
+                    this.performanceChart.data.labels = this.performanceMetrics.map(metric => metric.time);
+                    this.performanceChart.data.datasets[0].data = this.performanceMetrics.map(metric => metric.processingRate);
+                    this.performanceChart.update();
                 }
                 
-                // Update UI
-                document.getElementById('keys-tested').textContent = this.keysTested.toLocaleString();
-                document.getElementById('keys-per-second').textContent = Math.floor(this.keysPerSecond).toLocaleString();
-                document.getElementById('time-elapsed').textContent = `${Math.floor(elapsed)}s`;
+                document.getElementById('keys-tested-counter').textContent = this.totalKeysTested.toLocaleString();
+                document.getElementById('keys-per-second-counter').textContent = Math.floor(this.keysPerSecondRate).toLocaleString();
+                document.getElementById('time-elapsed-counter').textContent = `${Math.floor(elapsedTimeInSeconds)}s`;
                 
-                // Update progress
-                const progress = (this.keysTested / this.totalKeys) * 100;
-                const progressElement = document.getElementById('progress');
-                progressElement.style.width = `${Math.min(100, progress)}%`;
-                progressElement.textContent = `${Math.min(100, progress).toFixed(2)}%`;
+                const completionPercentage = (this.totalKeysTested / this.totalKeysToTest) * 100;
+                const progressElement = document.getElementById('progress-indicator');
+                progressElement.style.width = `${Math.min(100, completionPercentage)}%`;
+                progressElement.textContent = `${Math.min(100, completionPercentage).toFixed(2)}%`;
                 
-                // Update keys remaining
-                const remaining = Math.max(0, this.totalKeys - this.keysTested);
-                document.getElementById('keys-remaining').textContent = remaining.toLocaleString();
+                const remainingKeysCount = Math.max(0, this.totalKeysToTest - this.totalKeysTested);
+                document.getElementById('keys-remaining-counter').textContent = remainingKeysCount.toLocaleString();
                 
-                // Continue updating
-                requestAnimationFrame(() => this.updateStats());
+                requestAnimationFrame(() => this.updatePerformanceStatistics());
             }
-            
-            checkCompletion() {
-                // Check if all keys have been processed
-                if (this.keyGenerator && this.currentKeyIndex >= this.keyGenerator.totalKeys) {
-                    const allDone = this.workers.every(worker => {
-                        const workerEl = document.getElementById(`worker-${worker.id}`);
-                        return workerEl && workerEl.textContent.includes('finished');
+
+            verifyCompletionStatus() {
+                if (this.keyGenerationState && this.keyGenerationState.currentKeyIndex >= this.keyGenerationState.totalKeys) {
+                    const allWorkersFinished = this.workerPool.every(worker => {
+                        const workerElement = document.getElementById(`worker-${worker.identifier}-badge`);
+                        return workerElement && workerElement.textContent.includes('completed');
                     });
                     
-                    if (allDone) {
-                        this.isRunning = false;
-                        document.getElementById('analyze-btn').disabled = false;
-                        document.getElementById('cancel-btn').disabled = true;
+                    if (allWorkersFinished) {
+                        this.analysisInProgress = false;
+                        document.getElementById('start-button').disabled = false;
+                        document.getElementById('cancel-button').disabled = true;
                         
-                        // Show completion message
-                        const elapsed = (performance.now() - this.startTime) / 1000;
-                        alert(`Analysis complete! Tested ${this.keysTested.toLocaleString()} keys in ${elapsed.toFixed(2)} seconds.`);
+                        const elapsedSeconds = (performance.now() - this.analysisStartTimestamp) / 1000;
+                        alert(`Analysis completed successfully! Processed ${this.totalKeysTested.toLocaleString()} keys in ${elapsedSeconds.toFixed(2)} seconds.`);
                     }
                 }
             }
-            
-            cancelAttack() {
-                this.isRunning = false;
-                this.workers.forEach(worker => {
+
+            cancelAnalysis() {
+                this.analysisInProgress = false;
+                this.workerPool.forEach(worker => {
                     worker.terminate();
-                    const workerEl = document.getElementById(`worker-${worker.id}`);
-                    if (workerEl) {
-                        workerEl.textContent += ' (cancelled)';
-                        workerEl.classList.remove('active');
+                    const workerElement = document.getElementById(`worker-${worker.identifier}-badge`);
+                    if (workerElement) {
+                        workerElement.textContent += ' (cancelled)';
+                        workerElement.className = 'worker-badge worker-badge-cancelled';
                     }
                 });
                 
-                document.getElementById('analyze-btn').disabled = false;
-                document.getElementById('cancel-btn').disabled = true;
+                document.getElementById('start-button').disabled = false;
+                document.getElementById('cancel-button').disabled = true;
             }
         }
 
-        // Initialize the app when DOM is loaded
         document.addEventListener('DOMContentLoaded', () => {
-            new UltimateVigenereCracker();
+            const cipherCracker = new VigenereCipherCracker();
         });
     </script>
 </body>
