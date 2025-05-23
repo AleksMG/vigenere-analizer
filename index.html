@@ -203,39 +203,6 @@
             min-height: 400px;
         }
         
-        .tab-container {
-            margin-bottom: 20px;
-        }
-        
-        .tab-buttons {
-            display: flex;
-            border-bottom: 1px solid #ddd;
-        }
-        
-        .tab-button {
-            padding: 10px 20px;
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-size: 16px;
-            color: var(--secondary);
-            border-bottom: 3px solid transparent;
-        }
-        
-        .tab-button.active {
-            border-bottom: 3px solid var(--primary);
-            font-weight: bold;
-        }
-        
-        .tab-content {
-            display: none;
-            padding: 20px 0;
-        }
-        
-        .tab-content.active {
-            display: block;
-        }
-        
         @media (max-width: 768px) {
             .results-container {
                 flex-direction: column;
@@ -248,220 +215,118 @@
         <h1>Ultimate Vigenère Cracker</h1>
         <p>Military-grade cipher breaking with optimized Web Workers and n-gram analysis</p>
         
-        <div class="tab-container">
-            <div class="tab-buttons">
-                <button class="tab-button active" data-tab="cracker">Cipher Cracker</button>
-                <button class="tab-button" data-tab="encryptor">Encrypt/Decrypt</button>
-                <button class="tab-button" data-tab="analyzer">Text Analyzer</button>
-            </div>
-            
-            <div id="cracker" class="tab-content active">
-                <div class="settings-panel">
-                    <h2>⚙️ Settings</h2>
-                    <div class="settings-grid">
-                        <div class="setting-group">
-                            <label for="ciphertext">Ciphertext:</label>
-                            <textarea id="ciphertext" rows="5" placeholder="Enter ciphertext to analyze"></textarea>
-                        </div>
-                        
-                        <div class="setting-group">
-                            <label for="alphabet">Alphabet:</label>
-                            <input type="text" id="alphabet" value="ABCDEFGHIJKLMNOPQRSTUVWXYZ">
-                        </div>
-                        
-                        <div class="setting-group">
-                            <label for="known-text">Known plaintext (optional):</label>
-                            <input type="text" id="known-text" placeholder="Known fragment to help cracking">
-                        </div>
-                        
-                        <div class="setting-group">
-                            <label for="min-key-length">Min Key Length:</label>
-                            <input type="number" id="min-key-length" min="1" value="2">
-                        </div>
-                        
-                        <div class="setting-group">
-                            <label for="max-key-length">Max Key Length:</label>
-                            <input type="number" id="max-key-length" min="2" value="10">
-                        </div>
-                        
-                        <div class="setting-group">
-                            <label for="worker-count">Worker Count:</label>
-                            <input type="number" id="worker-count" min="1" max="16" value="4">
-                        </div>
-                        
-                        <div class="setting-group">
-                            <label for="batch-size">Batch Size (keys/chunk):</label>
-                            <input type="number" id="batch-size" min="1000" max="1000000" value="50000">
-                        </div>
-                        
-                        <div class="setting-group">
-                            <label for="key-mutation">Key Mutation (%):</label>
-                            <input type="number" id="key-mutation" min="0" max="100" value="5">
-                        </div>
-                        
-                        <div class="setting-group">
-                            <label for="early-exit">Early Exit Score:</label>
-                            <input type="number" id="early-exit" min="0" max="100" value="90">
-                        </div>
-                    </div>
-                    
-                    <div>
-                        <button id="analyze-btn" class="success">Start Attack</button>
-                        <button id="cancel-btn" class="danger" disabled>Cancel</button>
-                        <button id="reset-btn">Reset</button>
-                    </div>
+        <div class="settings-panel">
+            <h2>⚙️ Settings</h2>
+            <div class="settings-grid">
+                <div class="setting-group">
+                    <label for="ciphertext">Ciphertext:</label>
+                    <textarea id="ciphertext" rows="5" placeholder="Enter ciphertext to analyze"></textarea>
                 </div>
                 
-                <div class="progress-container">
-                    <div class="progress-bar">
-                        <div id="progress" class="progress-fill">0%</div>
-                    </div>
+                <div class="setting-group">
+                    <label for="alphabet">Alphabet:</label>
+                    <input type="text" id="alphabet" value="ABCDEFGHIJKLMNOPQRSTUVWXYZ">
                 </div>
                 
-                <div class="stats-container">
-                    <div class="stat-box">
-                        <div>Keys Tested</div>
-                        <div id="keys-tested" class="stat-value">0</div>
-                    </div>
-                    <div class="stat-box">
-                        <div>Keys Per Second</div>
-                        <div id="keys-per-second" class="stat-value">0</div>
-                    </div>
-                    <div class="stat-box">
-                        <div>Time Elapsed</div>
-                        <div id="time-elapsed" class="stat-value">0s</div>
-                    </div>
-                    <div class="stat-box">
-                        <div>Keys Remaining</div>
-                        <div id="keys-remaining" class="stat-value">0</div>
-                    </div>
+                <div class="setting-group">
+                    <label for="known-text">Known plaintext (optional):</label>
+                    <input type="text" id="known-text" placeholder="Known fragment to help cracking">
                 </div>
                 
-                <div id="worker-status" class="worker-status"></div>
-                
-                <div id="best-result" class="best-result" style="display: none;">
-                    <h3>Best Match Found</h3>
-                    <div><strong>Key:</strong> <span id="best-key"></span></div>
-                    <div><strong>Score:</strong> <span id="best-score"></span></div>
-                    <div><strong>Key Length:</strong> <span id="best-length"></span></div>
-                    <div><strong>Decrypted Sample:</strong></div>
-                    <pre id="best-decrypted"></pre>
+                <div class="setting-group">
+                    <label for="min-key-length">Min Key Length:</label>
+                    <input type="number" id="min-key-length" min="1" value="2">
                 </div>
                 
-                <div class="results-container">
-                    <div class="results-table">
-                        <h2>Top 20 Key Candidates</h2>
-                        <table id="results-table">
-                            <thead>
-                                <tr>
-                                    <th>Rank</th>
-                                    <th>Key</th>
-                                    <th>Score</th>
-                                    <th>Length</th>
-                                    <th>Decrypted Sample</th>
-                                </tr>
-                            </thead>
-                            <tbody></tbody>
-                        </table>
-                    </div>
-                    
-                    <div class="chart-container">
-                        <h2>Performance Metrics</h2>
-                        <canvas id="performanceChart"></canvas>
-                    </div>
+                <div class="setting-group">
+                    <label for="max-key-length">Max Key Length:</label>
+                    <input type="number" id="max-key-length" min="2" value="10">
+                </div>
+                
+                <div class="setting-group">
+                    <label for="worker-count">Worker Count:</label>
+                    <input type="number" id="worker-count" min="1" max="16" value="4">
+                </div>
+                
+                <div class="setting-group">
+                    <label for="batch-size">Batch Size (keys/chunk):</label>
+                    <input type="number" id="batch-size" min="1000" max="1000000" value="50000">
+                </div>
+                
+                <div class="setting-group">
+                    <label for="key-mutation">Key Mutation (%):</label>
+                    <input type="number" id="key-mutation" min="0" max="100" value="5">
+                </div>
+                
+                <div class="setting-group">
+                    <label for="early-exit">Early Exit Score:</label>
+                    <input type="number" id="early-exit" min="0" max="100" value="90">
                 </div>
             </div>
             
-            <div id="encryptor" class="tab-content">
-                <div class="settings-panel">
-                    <h2>🔒 Encrypt/Decrypt</h2>
-                    <div class="settings-grid">
-                        <div class="setting-group">
-                            <label for="encrypt-text">Text:</label>
-                            <textarea id="encrypt-text" rows="5" placeholder="Enter text to encrypt or decrypt"></textarea>
-                        </div>
-                        
-                        <div class="setting-group">
-                            <label for="encrypt-alphabet">Alphabet:</label>
-                            <input type="text" id="encrypt-alphabet" value="ABCDEFGHIJKLMNOPQRSTUVWXYZ">
-                        </div>
-                        
-                        <div class="setting-group">
-                            <label for="encrypt-key">Key:</label>
-                            <input type="text" id="encrypt-key" placeholder="Enter encryption key">
-                        </div>
-                        
-                        <div class="setting-group">
-                            <label for="encrypt-mode">Mode:</label>
-                            <select id="encrypt-mode">
-                                <option value="encrypt">Encrypt</option>
-                                <option value="decrypt">Decrypt</option>
-                            </select>
-                        </div>
-                    </div>
-                    
-                    <div>
-                        <button id="execute-encrypt-btn" class="success">Execute</button>
-                        <button id="copy-result-btn">Copy Result</button>
-                    </div>
-                    
-                    <div class="result-group" style="margin-top: 20px;">
-                        <label for="encrypt-result">Result:</label>
-                        <textarea id="encrypt-result" rows="5" readonly></textarea>
-                    </div>
-                </div>
+            <div>
+                <button id="analyze-btn" class="success">Start Attack</button>
+                <button id="cancel-btn" class="danger" disabled>Cancel</button>
+                <button id="reset-btn">Reset</button>
+            </div>
+        </div>
+        
+        <div class="progress-container">
+            <div class="progress-bar">
+                <div id="progress" class="progress-fill">0%</div>
+            </div>
+        </div>
+        
+        <div class="stats-container">
+            <div class="stat-box">
+                <div>Keys Tested</div>
+                <div id="keys-tested" class="stat-value">0</div>
+            </div>
+            <div class="stat-box">
+                <div>Keys Per Second</div>
+                <div id="keys-per-second" class="stat-value">0</div>
+            </div>
+            <div class="stat-box">
+                <div>Time Elapsed</div>
+                <div id="time-elapsed" class="stat-value">0s</div>
+            </div>
+            <div class="stat-box">
+                <div>Keys Remaining</div>
+                <div id="keys-remaining" class="stat-value">0</div>
+            </div>
+        </div>
+        
+        <div id="worker-status" class="worker-status"></div>
+        
+        <div id="best-result" class="best-result" style="display: none;">
+            <h3>Best Match Found</h3>
+            <div><strong>Key:</strong> <span id="best-key"></span></div>
+            <div><strong>Score:</strong> <span id="best-score"></span></div>
+            <div><strong>Key Length:</strong> <span id="best-length"></span></div>
+            <div><strong>Decrypted Sample:</strong></div>
+            <pre id="best-decrypted"></pre>
+        </div>
+        
+        <div class="results-container">
+            <div class="results-table">
+                <h2>Top 20 Key Candidates</h2>
+                <table id="results-table">
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Key</th>
+                            <th>Score</th>
+                            <th>Length</th>
+                            <th>Decrypted Sample</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
             </div>
             
-            <div id="analyzer" class="tab-content">
-                <div class="settings-panel">
-                    <h2>📊 Text Analyzer</h2>
-                    <div class="settings-grid">
-                        <div class="setting-group">
-                            <label for="analyze-text">Text:</label>
-                            <textarea id="analyze-text" rows="5" placeholder="Enter text to analyze"></textarea>
-                        </div>
-                        
-                        <div class="setting-group">
-                            <label for="analyze-alphabet">Alphabet:</label>
-                            <input type="text" id="analyze-alphabet" value="ABCDEFGHIJKLMNOPQRSTUVWXYZ">
-                        </div>
-                        
-                        <div class="setting-group">
-                            <label for="analyze-ngram">N-gram Size:</label>
-                            <select id="analyze-ngram">
-                                <option value="2">Bigrams (2 letters)</option>
-                                <option value="3">Trigrams (3 letters)</option>
-                                <option value="4">Quadgrams (4 letters)</option>
-                            </select>
-                        </div>
-                    </div>
-                    
-                    <div>
-                        <button id="analyze-text-btn" class="success">Analyze</button>
-                    </div>
-                    
-                    <div class="results-container" style="margin-top: 20px;">
-                        <div class="results-table">
-                            <h2>N-gram Frequency</h2>
-                            <table id="ngram-table">
-                                <thead>
-                                    <tr>
-                                        <th>N-gram</th>
-                                        <th>Count</th>
-                                        <th>Frequency</th>
-                                        <th>Log Score</th>
-                                    </tr>
-                                </thead>
-                                <tbody></tbody>
-                            </table>
-                        </div>
-                        
-                        <div class="chart-container">
-                            <h2>Frequency Distribution</h2>
-                            <canvas id="frequencyChart"></canvas>
-                        </div>
-                    </div>
-                </div>
+            <div class="chart-container">
+                <h2>Performance Metrics</h2>
+                <canvas id="performanceChart"></canvas>
             </div>
         </div>
     </div>
@@ -582,29 +447,11 @@
                 this.lastSecondTime = 0;
                 this.performanceData = [];
                 this.chart = null;
-                this.frequencyChart = null;
                 this.ngramWeights = precomputeWeights();
                 this.checkedKeys = new Set();
                 
                 this.initCharts();
                 this.bindEvents();
-                this.setupTabs();
-            }
-            
-            setupTabs() {
-                const tabs = document.querySelectorAll('.tab-button');
-                tabs.forEach(tab => {
-                    tab.addEventListener('click', () => {
-                        // Remove active class from all tabs and contents
-                        document.querySelectorAll('.tab-button').forEach(t => t.classList.remove('active'));
-                        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-                        
-                        // Add active class to clicked tab and corresponding content
-                        tab.classList.add('active');
-                        const tabId = tab.getAttribute('data-tab');
-                        document.getElementById(tabId).classList.add('active'));
-                    });
-                });
             }
             
             initCharts() {
@@ -641,50 +488,12 @@
                         }
                     }
                 });
-                
-                const freqCtx = document.getElementById('frequencyChart').getContext('2d');
-                this.frequencyChart = new Chart(freqCtx, {
-                    type: 'bar',
-                    data: {
-                        labels: [],
-                        datasets: [{
-                            label: 'N-gram Frequency',
-                            data: [],
-                            backgroundColor: 'rgba(54, 162, 235, 0.7)',
-                            borderColor: 'rgba(54, 162, 235, 1)',
-                            borderWidth: 1
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        scales: {
-                            y: {
-                                beginAtZero: true,
-                                title: {
-                                    display: true,
-                                    text: 'Frequency (%)'
-                                }
-                            },
-                            x: {
-                                title: {
-                                    display: true,
-                                    text: 'N-grams'
-                                }
-                            }
-                        }
-                    }
-                });
             }
             
             bindEvents() {
                 document.getElementById('analyze-btn').addEventListener('click', () => this.startAttack());
                 document.getElementById('cancel-btn').addEventListener('click', () => this.cancelAttack());
                 document.getElementById('reset-btn').addEventListener('click', () => this.reset());
-                
-                document.getElementById('execute-encrypt-btn').addEventListener('click', () => this.executeEncryptDecrypt());
-                document.getElementById('copy-result-btn').addEventListener('click', () => this.copyResult());
-                
-                document.getElementById('analyze-text-btn').addEventListener('click', () => this.analyzeText());
             }
             
             reset() {
@@ -704,7 +513,7 @@
                 const ciphertext = document.getElementById('ciphertext').value.toUpperCase();
                 const alphabet = document.getElementById('alphabet').value.toUpperCase() || 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
                 const minLen = parseInt(document.getElementById('min-key-length').value) || 2;
-                const maxLen = parseInt(document.getElementById('max-key-length').value) || 5;
+                const maxLen = parseInt(document.getElementById('max-key-length').value) || 10;
                 const knownText = document.getElementById('known-text').value.toUpperCase();
                 const workerCount = parseInt(document.getElementById('worker-count').value) || 4;
                 const batchSize = parseInt(document.getElementById('batch-size').value) || 50000;
@@ -1140,115 +949,6 @@
                 
                 document.getElementById('analyze-btn').disabled = false;
                 document.getElementById('cancel-btn').disabled = true;
-            }
-            
-            executeEncryptDecrypt() {
-                const text = document.getElementById('encrypt-text').value.toUpperCase();
-                const alphabet = document.getElementById('encrypt-alphabet').value.toUpperCase() || 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-                const key = document.getElementById('encrypt-key').value.toUpperCase();
-                const mode = document.getElementById('encrypt-mode').value;
-                
-                if (!text || !key) {
-                    alert('Please enter both text and key');
-                    return;
-                }
-                
-                // Filter text and key to only include alphabet characters
-                const filteredText = text.split('').filter(c => alphabet.includes(c)).join('');
-                const filteredKey = key.split('').filter(c => alphabet.includes(c)).join('');
-                
-                if (!filteredText || !filteredKey) {
-                    alert('Text and key must only contain characters from the specified alphabet');
-                    return;
-                }
-                
-                // Create alphabet map for fast lookups
-                const alphabetMap = {};
-                for (let i = 0; i < alphabet.length; i++) {
-                    alphabetMap[alphabet[i]] = i;
-                }
-                
-                // Perform encryption/decryption
-                const result = new Array(filteredText.length);
-                const alphaLen = alphabet.length;
-                
-                for (let i = 0; i < filteredText.length; i++) {
-                    const textIdx = alphabetMap[filteredText[i]];
-                    const keyIdx = alphabetMap[filteredKey[i % filteredKey.length]];
-                    
-                    if (mode === 'encrypt') {
-                        result[i] = alphabet[(textIdx + keyIdx) % alphaLen];
-                    } else {
-                        result[i] = alphabet[(textIdx - keyIdx + alphaLen) % alphaLen];
-                    }
-                }
-                
-                // Display result
-                document.getElementById('encrypt-result').value = result.join('');
-            }
-            
-            copyResult() {
-                const result = document.getElementById('encrypt-result');
-                result.select();
-                document.execCommand('copy');
-                alert('Result copied to clipboard!');
-            }
-            
-            analyzeText() {
-                const text = document.getElementById('analyze-text').value.toUpperCase();
-                const alphabet = document.getElementById('analyze-alphabet').value.toUpperCase() || 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-                const ngramSize = parseInt(document.getElementById('analyze-ngram').value) || 2;
-                
-                if (!text) {
-                    alert('Please enter text to analyze');
-                    return;
-                }
-                
-                // Filter text to only include alphabet characters
-                const filteredText = text.split('').filter(c => alphabet.includes(c)).join('');
-                
-                if (!filteredText) {
-                    alert('Text must only contain characters from the specified alphabet');
-                    return;
-                }
-                
-                // Count n-grams
-                const ngrams = {};
-                const totalNgrams = Math.max(0, filteredText.length - ngramSize + 1);
-                
-                for (let i = 0; i <= filteredText.length - ngramSize; i++) {
-                    const ngram = filteredText.substr(i, ngramSize);
-                    ngrams[ngram] = (ngrams[ngram] || 0) + 1;
-                }
-                
-                // Convert to array and sort by frequency
-                const ngramArray = Object.entries(ngrams).map(([ngram, count]) => ({
-                    ngram,
-                    count,
-                    frequency: (count / totalNgrams) * 100,
-                    logScore: Math.log10(count / totalNgrams)
-                })).sort((a, b) => b.count - a.count);
-                
-                // Update table
-                const tbody = document.querySelector('#ngram-table tbody');
-                tbody.innerHTML = '';
-                
-                ngramArray.slice(0, 50).forEach((item, i) => {
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                        <td>${item.ngram}</td>
-                        <td>${item.count}</td>
-                        <td>${item.frequency.toFixed(4)}%</td>
-                        <td>${item.logScore.toFixed(4)}</td>
-                    `;
-                    tbody.appendChild(row);
-                });
-                
-                // Update chart
-                const topNgrams = ngramArray.slice(0, 20);
-                this.frequencyChart.data.labels = topNgrams.map(item => item.ngram);
-                this.frequencyChart.data.datasets[0].data = topNgrams.map(item => item.frequency);
-                this.frequencyChart.update();
             }
         }
 
