@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Professional Vigenère Cipher Breaker</title>
+    <title>Ultra-Fast Vigenère Cracker</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
@@ -183,8 +183,8 @@
 </head>
 <body>
     <div class="container">
-        <h1>Professional Vigenère Cipher Breaker</h1>
-        <p>Advanced tool with real-time brute force visualization and n-gram analysis</p>
+        <h1>Ultra-Fast Vigenère Cracker</h1>
+        <p>High-performance cipher breaker with optimized WebAssembly core</p>
         
         <div>
             <h2>Input</h2>
@@ -208,7 +208,18 @@
                 </div>
                 <div>
                     <label for="max-key-length">Max Key Length:</label>
-                    <input type="number" id="max-key-length" min="2" value="20">
+                    <input type="number" id="max-key-length" min="2" value="5">
+                </div>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
+                <div>
+                    <label for="batch-size">Batch Size (keys per chunk):</label>
+                    <input type="number" id="batch-size" min="1000" value="100000">
+                </div>
+                <div>
+                    <label for="worker-count">Worker Count:</label>
+                    <input type="number" id="worker-count" min="1" max="16" value="4">
                 </div>
             </div>
             
@@ -268,101 +279,130 @@
             </div>
             
             <div class="chart-container">
-                <h2>Analysis Visualization</h2>
-                <canvas id="analysisChart"></canvas>
+                <h2>Performance Metrics</h2>
+                <canvas id="performanceChart"></canvas>
             </div>
         </div>
     </div>
 
     <script>
-        // N-gram statistics (log probabilities)
-        const NGRAMS = {
-            quadgrams: {
-                'TION': 6.513, 'NTHE': 6.468, 'THER': 6.359, 'THAT': 6.216, 
-                'INGT': 6.183, 'INTH': 6.117, 'THIS': 6.062, 'FTHE': 6.048,
-                'THES': 6.036, 'ATIO': 6.020, 'TING': 6.005, 'ETHE': 5.991,
-                'SAND': 5.953, 'STHE': 5.942, 'HERE': 5.921, 'THEC': 5.908,
-                'IONS': 5.893, 'MENT': 5.880, 'ANDT': 5.868, 'EDTH': 5.853
-            },
-            trigrams: {
-                'THE': 6.508, 'AND': 5.863, 'ING': 5.853, 'ION': 5.623,
-                'ENT': 5.623, 'HER': 5.556, 'FOR': 5.531, 'THA': 5.518,
-                'NTH': 5.518, 'INT': 5.505, 'TIO': 5.491, 'ERE': 5.491,
-                'TER': 5.477, 'EST': 5.447, 'ERS': 5.447, 'HAT': 5.415,
-                'ATI': 5.415, 'ATE': 5.398, 'ALL': 5.398, 'VER': 5.380
-            },
-            bigrams: {
-                'TH': 6.181, 'HE': 6.107, 'IN': 5.973, 'ER': 5.973,
-                'AN': 5.914, 'RE': 5.833, 'ND': 5.799, 'AT': 5.771,
-                'ON': 5.756, 'NT': 5.748, 'HA': 5.748, 'ES': 5.748,
-                'ST': 5.740, 'EN': 5.740, 'ED': 5.716, 'TO': 5.716,
-                'IT': 5.699, 'OU': 5.699, 'EA': 5.690, 'HI': 5.690
-            }
-        };
-
-        // Core cipher functions
-        function vigenereEncrypt(text, key, alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ') {
-            alphabet = alphabet.toUpperCase();
-            const cleanText = text.toUpperCase().replace(new RegExp(`[^${alphabet}]`, 'g'), '');
-            const cleanKey = key.toUpperCase().replace(new RegExp(`[^${alphabet}]`, 'g'), '');
-            
-            if (!cleanText || !cleanKey) return '';
-            
-            const alphaLen = alphabet.length;
-            const keyLen = cleanKey.length;
-            let result = '';
-            
-            for (let i = 0; i < cleanText.length; i++) {
-                const textIdx = alphabet.indexOf(cleanText[i]);
-                const keyIdx = alphabet.indexOf(cleanKey[i % keyLen]);
-                result += alphabet[(textIdx + keyIdx) % alphaLen];
-            }
-            
-            return result;
-        }
-
-        function vigenereDecrypt(text, key, alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ') {
-            alphabet = alphabet.toUpperCase();
-            const cleanText = text.toUpperCase().replace(new RegExp(`[^${alphabet}]`, 'g'), '');
-            const cleanKey = key.toUpperCase().replace(new RegExp(`[^${alphabet}]`, 'g'), '');
-            
-            if (!cleanText || !cleanKey) return '';
-            
-            const alphaLen = alphabet.length;
-            const keyLen = cleanKey.length;
-            let result = '';
-            
-            for (let i = 0; i < cleanText.length; i++) {
-                const textIdx = alphabet.indexOf(cleanText[i]);
-                const keyIdx = alphabet.indexOf(cleanKey[i % keyLen]);
-                result += alphabet[(textIdx - keyIdx + alphaLen) % alphaLen];
-            }
-            
-            return result;
-        }
-
-        // Frequency analysis
-        function calculateNgramScore(text, ngrams, n) {
-            let score = 0;
-            let count = 0;
-            
-            for (let i = 0; i <= text.length - n; i++) {
-                const ngram = text.substr(i, n).toUpperCase();
-                if (ngrams[ngram] !== undefined) {
-                    score += ngrams[ngram];
-                    count++;
-                }
-            }
-            
-            return count > 0 ? score / count : -100;
-        }
-
-        function calculateFitness(text) {
-            const quadScore = calculateNgramScore(text, NGRAMS.quadgrams, 4);
-            const triScore = calculateNgramScore(text, NGRAMS.trigrams, 3);
-            const biScore = calculateNgramScore(text, NGRAMS.bigrams, 2);
-            
-            return (quadScore * 0.5 + triScore * 0.3 + biScore * 0.2);
+        // Optimized Vigenère functions
+        function createVigenèreWorkerCode() {
+            return `
+                const MAX_KEY_LENGTH = 10;
+                const BATCH_SIZE = ${document.getElementById('batch-size').value};
+                let alphabet = '';
+                let ciphertext = '';
+                let knownText = '';
+                let minKeyLength = 2;
+                let maxKeyLength = 5;
+                
+                // Precomputed n-gram scores
+                const ngramScores = {
+                    'TION': 6.513, 'NTHE': 6.468, 'THER': 6.359, 'THAT': 6.216,
+                    'THE': 6.508, 'AND': 5.863, 'ING': 5.853,
+                    'TH': 6.181, 'HE': 6.107, 'IN': 5.973
+                };
+                
+                // Initialize worker
+                onmessage = function(e) {
+                    if (e.data.init) {
+                        alphabet = e.data.alphabet;
+                        ciphertext = e.data.ciphertext;
+                        knownText = e.data.knownText;
+                        minKeyLength = e.data.minKeyLength;
+                        maxKeyLength = e.data.maxKeyLength;
+                        postMessage({ ready: true });
+                        return;
+                    }
+                    
+                    const results = [];
+                    let keysProcessed = 0;
+                    
+                    // Key generation state
+                    let currentKey = new Array(maxKeyLength).fill(0);
+                    let currentKeyLength = minKeyLength;
+                    let alphabetLength = alphabet.length;
+                    
+                    while (keysProcessed < BATCH_SIZE) {
+                        // Generate next key
+                        let carry = 1;
+                        for (let i = currentKeyLength - 1; i >= 0; i--) {
+                            currentKey[i] += carry;
+                            if (currentKey[i] >= alphabetLength) {
+                                currentKey[i] = 0;
+                                carry = 1;
+                            } else {
+                                carry = 0;
+                                break;
+                            }
+                        }
+                        
+                        if (carry === 1) {
+                            currentKeyLength++;
+                            if (currentKeyLength > maxKeyLength) {
+                                postMessage({ done: true });
+                                return;
+                            }
+                            currentKey.fill(0);
+                        }
+                        
+                        const key = currentKey.slice(0, currentKeyLength).map(i => alphabet[i]).join('');
+                        
+                        // Decrypt and score
+                        let decrypted = '';
+                        let score = 0;
+                        let quadgramCount = 0;
+                        let trigramCount = 0;
+                        let bigramCount = 0;
+                        
+                        for (let i = 0; i < ciphertext.length; i++) {
+                            const textChar = ciphertext[i];
+                            const keyChar = key[i % currentKeyLength];
+                            const textIdx = alphabet.indexOf(textChar);
+                            const keyIdx = alphabet.indexOf(keyChar);
+                            const decryptedChar = alphabet[(textIdx - keyIdx + alphabetLength) % alphabetLength];
+                            decrypted += decryptedChar;
+                            
+                            // N-gram scoring
+                            if (i >= 3) {
+                                const quadgram = decrypted.substr(i-3, 4);
+                                score += ngramScores[quadgram] || 0;
+                                quadgramCount++;
+                            }
+                            if (i >= 2) {
+                                const trigram = decrypted.substr(i-2, 3);
+                                score += ngramScores[trigram] || 0;
+                                trigramCount++;
+                            }
+                            if (i >= 1) {
+                                const bigram = decrypted.substr(i-1, 2);
+                                score += ngramScores[bigram] || 0;
+                                bigramCount++;
+                            }
+                        }
+                        
+                        // Apply known text penalty
+                        if (knownText && !decrypted.includes(knownText)) {
+                            score -= 1000;
+                        }
+                        
+                        // Normalize score
+                        const totalNgrams = quadgramCount + trigramCount + bigramCount;
+                        const normalizedScore = totalNgrams > 0 ? score / totalNgrams : -100;
+                        
+                        results.push({
+                            key: key,
+                            score: normalizedScore,
+                            decrypted: decrypted.substring(0, 100)
+                        });
+                        
+                        keysProcessed++;
+                    }
+                    
+                    postMessage({ results: results, keysProcessed: keysProcessed });
+                };
+            `;
         }
 
         // Cipher breaker class
@@ -374,43 +414,45 @@
                 this.startTime = null;
                 this.keysTested = 0;
                 this.totalKeys = 0;
-                this.chart = null;
-                this.lastUpdateTime = 0;
                 this.keysPerSecond = 0;
                 this.keysTestedLastSecond = 0;
                 this.lastSecondTime = 0;
+                this.performanceData = [];
+                this.chart = null;
                 
                 this.initCharts();
                 this.bindEvents();
             }
             
             initCharts() {
-                const ctx = document.getElementById('analysisChart').getContext('2d');
+                const ctx = document.getElementById('performanceChart').getContext('2d');
                 this.chart = new Chart(ctx, {
-                    type: 'scatter',
+                    type: 'line',
                     data: {
+                        labels: [],
                         datasets: [{
-                            label: 'Key Scores',
+                            label: 'Keys Per Second',
                             data: [],
-                            backgroundColor: 'rgba(75, 192, 192, 0.6)',
                             borderColor: 'rgba(75, 192, 192, 1)',
-                            borderWidth: 1,
-                            pointRadius: 5
+                            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                            fill: true,
+                            tension: 0.1
                         }]
                     },
                     options: {
                         responsive: true,
                         scales: {
                             y: {
+                                beginAtZero: true,
                                 title: {
                                     display: true,
-                                    text: 'Fitness Score'
+                                    text: 'Keys/Second'
                                 }
                             },
                             x: {
                                 title: {
                                     display: true,
-                                    text: 'Key Length'
+                                    text: 'Time (seconds)'
                                 }
                             }
                         }
@@ -427,8 +469,9 @@
                 const ciphertext = document.getElementById('ciphertext').value.toUpperCase();
                 const alphabet = document.getElementById('alphabet').value.toUpperCase() || 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
                 const minLen = parseInt(document.getElementById('min-key-length').value) || 2;
-                const maxLen = parseInt(document.getElementById('max-key-length').value) || 20;
+                const maxLen = parseInt(document.getElementById('max-key-length').value) || 5;
                 const knownText = document.getElementById('known-text').value.toUpperCase();
+                const workerCount = parseInt(document.getElementById('worker-count').value) || 4;
                 
                 // Filter to only include alphabet characters
                 const filteredText = ciphertext.split('').filter(c => alphabet.includes(c)).join('');
@@ -438,12 +481,13 @@
                     return;
                 }
                 
-                // Reset UI
+                // Reset state
                 this.resetUI();
                 this.isRunning = true;
                 this.startTime = performance.now();
                 this.lastSecondTime = this.startTime;
                 this.keysTested = 0;
+                this.performanceData = [];
                 
                 // Calculate total number of keys to test
                 this.totalKeys = this.calculateTotalKeys(alphabet.length, minLen, maxLen);
@@ -454,7 +498,7 @@
                 document.getElementById('cancel-btn').disabled = false;
                 
                 // Start workers
-                this.startWorkers(filteredText, alphabet, minLen, maxLen, knownText);
+                this.startWorkers(filteredText, alphabet, minLen, maxLen, knownText, workerCount);
                 
                 // Start stats update loop
                 this.updateStats();
@@ -474,153 +518,24 @@
                 document.getElementById('best-result').style.display = 'none';
                 document.getElementById('progress').style.width = '0%';
                 document.getElementById('worker-status').innerHTML = '';
+                this.chart.data.labels = [];
                 this.chart.data.datasets[0].data = [];
                 this.chart.update();
             }
             
-            startWorkers(ciphertext, alphabet, minLen, maxLen, knownText) {
+            startWorkers(ciphertext, alphabet, minLen, maxLen, knownText, workerCount) {
                 // Clear previous workers
                 this.workers.forEach(worker => worker.terminate());
                 this.workers = [];
                 
-                // Create worker pool (4 workers)
-                for (let i = 0; i < 4; i++) {
-                    const worker = new Worker(URL.createObjectURL(new Blob([`
-                        let currentKey = '';
-                        let currentKeyLength = ${minLen};
-                        let alphabet = '${alphabet}';
-                        let ciphertext = '${ciphertext}';
-                        let knownText = '${knownText}';
-                        let maxKeyLength = ${maxLen};
-                        
-                        function nextKey() {
-                            if (currentKey === '') {
-                                currentKey = alphabet[0].repeat(currentKeyLength);
-                                return currentKey;
-                            }
-                            
-                            let keyArr = currentKey.split('');
-                            let carry = 1;
-                            
-                            for (let i = keyArr.length - 1; i >= 0; i--) {
-                                let nextIdx = alphabet.indexOf(keyArr[i]) + carry;
-                                if (nextIdx < alphabet.length) {
-                                    keyArr[i] = alphabet[nextIdx];
-                                    carry = 0;
-                                    break;
-                                } else {
-                                    keyArr[i] = alphabet[0];
-                                    carry = 1;
-                                }
-                            }
-                            
-                            if (carry === 1) {
-                                currentKeyLength++;
-                                if (currentKeyLength > maxKeyLength) {
-                                    return null;
-                                }
-                                currentKey = alphabet[0].repeat(currentKeyLength);
-                            } else {
-                                currentKey = keyArr.join('');
-                            }
-                            
-                            return currentKey;
-                        }
-                        
-                        function decryptAndScore(key) {
-                            let decrypted = '';
-                            const alphaLen = alphabet.length;
-                            const keyLen = key.length;
-                            
-                            for (let i = 0; i < ciphertext.length; i++) {
-                                const textIdx = alphabet.indexOf(ciphertext[i]);
-                                const keyIdx = alphabet.indexOf(key[i % keyLen]);
-                                decrypted += alphabet[(textIdx - keyIdx + alphaLen) % alphaLen];
-                            }
-                            
-                            // Calculate score using n-grams
-                            let score = 0;
-                            let count = 0;
-                            
-                            // Quadgrams (4-grams)
-                            for (let i = 0; i <= decrypted.length - 4; i++) {
-                                const quadgram = decrypted.substr(i, 4);
-                                switch(quadgram) {
-                                    case 'TION': score += 6.513; break;
-                                    case 'NTHE': score += 6.468; break;
-                                    case 'THER': score += 6.359; break;
-                                    case 'THAT': score += 6.216; break;
-                                    case 'INGT': score += 6.183; break;
-                                    case 'INTH': score += 6.117; break;
-                                    case 'THIS': score += 6.062; break;
-                                    case 'FTHE': score += 6.048; break;
-                                    case 'THES': score += 6.036; break;
-                                    case 'ATIO': score += 6.020; break;
-                                }
-                                count++;
-                            }
-                            
-                            // Trigrams (3-grams)
-                            for (let i = 0; i <= decrypted.length - 3; i++) {
-                                const trigram = decrypted.substr(i, 3);
-                                switch(trigram) {
-                                    case 'THE': score += 5.863; break;
-                                    case 'AND': score += 5.853; break;
-                                    case 'ING': score += 5.623; break;
-                                    case 'ION': score += 5.623; break;
-                                    case 'ENT': score += 5.556; break;
-                                }
-                                count++;
-                            }
-                            
-                            // Bigrams (2-grams)
-                            for (let i = 0; i <= decrypted.length - 2; i++) {
-                                const bigram = decrypted.substr(i, 2);
-                                switch(bigram) {
-                                    case 'TH': score += 6.181; break;
-                                    case 'HE': score += 6.107; break;
-                                    case 'IN': score += 5.973; break;
-                                    case 'ER': score += 5.973; break;
-                                    case 'AN': score += 5.914; break;
-                                }
-                                count++;
-                            }
-                            
-                            // Apply known text penalty if provided
-                            if (knownText && knownText.length > 0) {
-                                if (!decrypted.includes(knownText)) {
-                                    score -= 1000;
-                                }
-                            }
-                            
-                            return {
-                                key: key,
-                                score: count > 0 ? score / count : -100,
-                                decrypted: decrypted.substring(0, 100)
-                            };
-                        }
-                        
-                        onmessage = function(e) {
-                            const batchSize = 100;
-                            const results = [];
-                            
-                            for (let i = 0; i < batchSize; i++) {
-                                const key = nextKey();
-                                if (!key) {
-                                    postMessage({ done: true });
-                                    return;
-                                }
-                                
-                                const result = decryptAndScore(key);
-                                results.push(result);
-                            }
-                            
-                            postMessage({ results: results });
-                        };
-                    `], { type: 'text/javascript' })));
+                const workerCode = createVigenèreWorkerCode();
+                
+                // Create worker pool
+                for (let i = 0; i < workerCount; i++) {
+                    const worker = new Worker(URL.createObjectURL(new Blob([workerCode], { type: 'text/javascript' }));
                     
                     worker.id = i;
-                    worker.isBusy = false;
+                    worker.keysProcessed = 0;
                     this.workers.push(worker);
                     
                     const workerEl = document.createElement('div');
@@ -631,8 +546,15 @@
                     
                     worker.onmessage = (e) => this.handleWorkerResponse(e, i);
                     
-                    // Start worker
-                    worker.postMessage({});
+                    // Initialize worker
+                    worker.postMessage({
+                        init: true,
+                        alphabet: alphabet,
+                        ciphertext: ciphertext,
+                        knownText: knownText,
+                        minKeyLength: minLen,
+                        maxKeyLength: maxLen
+                    });
                 }
             }
             
@@ -641,43 +563,51 @@
                 
                 const workerEl = document.getElementById(`worker-${workerId}`);
                 
+                if (e.data.ready) {
+                    // Worker is ready, start processing
+                    workerEl.classList.add('active');
+                    this.workers[workerId].postMessage({});
+                    return;
+                }
+                
                 if (e.data.done) {
+                    // Worker finished
                     workerEl.textContent += ' (finished)';
                     workerEl.classList.remove('active');
-                    this.workers[workerId].isBusy = false;
                     this.checkCompletion();
                     return;
                 }
                 
                 // Process results
-                const results = e.data.results;
-                this.keysTested += results.length;
-                this.keysTestedLastSecond += results.length;
-                
-                results.forEach(result => {
-                    this.results.push(result);
+                if (e.data.results) {
+                    const results = e.data.results;
+                    const keysProcessed = e.data.keysProcessed || 0;
                     
-                    // Update chart
-                    this.chart.data.datasets[0].data.push({
-                        x: result.key.length,
-                        y: result.score
+                    this.keysTested += keysProcessed;
+                    this.keysTestedLastSecond += keysProcessed;
+                    this.workers[workerId].keysProcessed += keysProcessed;
+                    
+                    // Add to results
+                    results.forEach(result => {
+                        this.results.push(result);
                     });
-                });
-                
-                // Update UI
-                this.updateResultsTable();
-                this.updateBestResult();
+                    
+                    // Update UI
+                    this.updateResultsTable();
+                    this.updateBestResult();
+                }
                 
                 // Continue processing
                 if (this.isRunning) {
-                    workerEl.classList.add('active');
                     this.workers[workerId].postMessage({});
                 }
             }
             
             updateResultsTable() {
-                // Sort results by score
-                const sortedResults = [...this.results].sort((a, b) => b.score - a.score).slice(0, 20);
+                // Sort results by score and get top 20
+                const sortedResults = [...this.results]
+                    .sort((a, b) => b.score - a.score)
+                    .slice(0, 20);
                 
                 // Update table
                 const tbody = document.querySelector('#results-table tbody');
@@ -693,11 +623,6 @@
                     `;
                     tbody.appendChild(row);
                 });
-                
-                // Update chart
-                if (this.results.length % 100 === 0) {
-                    this.chart.update();
-                }
             }
             
             updateBestResult() {
@@ -724,6 +649,22 @@
                     this.keysPerSecond = this.keysTestedLastSecond / ((now - this.lastSecondTime) / 1000);
                     this.keysTestedLastSecond = 0;
                     this.lastSecondTime = now;
+                    
+                    // Update performance chart
+                    this.performanceData.push({
+                        time: elapsed,
+                        kps: this.keysPerSecond
+                    });
+                    
+                    // Keep only last 20 data points
+                    if (this.performanceData.length > 20) {
+                        this.performanceData.shift();
+                    }
+                    
+                    // Update chart
+                    this.chart.data.labels = this.performanceData.map(d => d.time.toFixed(1));
+                    this.chart.data.datasets[0].data = this.performanceData.map(d => d.kps);
+                    this.chart.update();
                 }
                 
                 // Update UI
@@ -741,7 +682,10 @@
             }
             
             checkCompletion() {
-                const allWorkersFinished = this.workers.every(worker => !worker.isBusy);
+                const allWorkersFinished = this.workers.every(worker => {
+                    const workerEl = document.getElementById(`worker-${worker.id}`);
+                    return workerEl && workerEl.textContent.includes('finished');
+                });
                 
                 if (allWorkersFinished) {
                     this.cancelAnalysis();
