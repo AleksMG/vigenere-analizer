@@ -132,7 +132,8 @@ class VigenereAnalyzer {
     }
 
     analyzeCiphertext() {
-        const ciphertext = this.elements.ciphertext.value.trim();
+    alert("Функция анализа запущена!"); // Добавьте эту строку
+    const ciphertext = this.elements.ciphertext.value.trim();
         const alphabet = this.elements.alphabet.value.toLowerCase();
         const knownPlaintext = this.elements.knownPlaintext.value.trim();
         const minLen = parseInt(this.elements.minKeyLength.value);
