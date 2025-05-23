@@ -3,16 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ultimate Vigenère Cracker</title>
+    <title>Complete Vigenère Cracker</title>
     <style>
-        :root {
-            --primary: #4a6fa5;
-            --secondary: #166088;
-            --accent: #4fc3f7;
-            --danger: #dc3545;
-            --success: #28a745;
-        }
-        
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             max-width: 1200px;
@@ -22,42 +14,35 @@
             color: #333;
             line-height: 1.6;
         }
-        
         .container {
             background: white;
             border-radius: 8px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             padding: 30px;
         }
-        
         h1, h2, h3 {
-            color: var(--secondary);
+            color: #166088;
         }
-        
         .settings-panel {
             background: #f8f9fa;
             padding: 20px;
             border-radius: 8px;
             margin-bottom: 20px;
         }
-        
         .settings-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
             gap: 15px;
             margin-bottom: 15px;
         }
-        
         .setting-group {
             margin-bottom: 10px;
         }
-        
         label {
             display: block;
             margin-bottom: 5px;
             font-weight: 500;
         }
-        
         input[type="number"], input[type="text"], select, textarea {
             width: 100%;
             padding: 8px;
@@ -65,13 +50,11 @@
             border-radius: 4px;
             font-family: monospace;
         }
-        
         textarea {
             min-height: 100px;
         }
-        
         button {
-            background-color: var(--primary);
+            background-color: #4a6fa5;
             color: white;
             border: none;
             padding: 10px 15px;
@@ -81,38 +64,31 @@
             margin-right: 10px;
             transition: background-color 0.3s;
         }
-        
         button:hover {
-            background-color: var(--secondary);
+            background-color: #166088;
         }
-        
         button.danger {
-            background-color: var(--danger);
+            background-color: #dc3545;
         }
-        
         button.success {
-            background-color: var(--success);
+            background-color: #28a745;
         }
-        
         button:disabled {
             background-color: #cccccc;
             cursor: not-allowed;
         }
-        
         .progress-container {
             margin: 20px 0;
         }
-        
         .progress-bar {
             height: 20px;
             background-color: #e9ecef;
             border-radius: 4px;
             overflow: hidden;
         }
-        
         .progress-fill {
             height: 100%;
-            background-color: var(--accent);
+            background-color: #4fc3f7;
             width: 0%;
             transition: width 0.3s;
             display: flex;
@@ -121,99 +97,44 @@
             font-size: 12px;
             color: white;
         }
-        
-        .stats-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 15px;
-            margin: 20px 0;
-        }
-        
-        .stat-box {
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: 4px;
-        }
-        
-        .stat-value {
-            font-size: 24px;
-            font-weight: bold;
-            color: var(--primary);
-        }
-        
         .results-container {
             display: flex;
             gap: 20px;
             margin-top: 30px;
         }
-        
         .results-table {
             flex: 1;
             overflow-x: auto;
         }
-        
         table {
             width: 100%;
             border-collapse: collapse;
         }
-        
         th, td {
             padding: 12px;
             text-align: left;
             border-bottom: 1px solid #ddd;
         }
-        
         th {
             background-color: #f8f9fa;
             font-weight: 500;
         }
-        
         tr:hover {
             background-color: #f1f5f9;
         }
-        
         .best-result {
             background: #f0f8ff;
             padding: 20px;
             border-radius: 8px;
             margin-top: 20px;
-            border-left: 4px solid var(--accent);
-        }
-        
-        .worker-status {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 15px;
-        }
-        
-        .worker {
-            background: #e9ecef;
-            padding: 5px 10px;
-            border-radius: 4px;
-            font-size: 12px;
-        }
-        
-        .worker.active {
-            background: var(--accent);
-            color: white;
-        }
-        
-        .chart-container {
-            min-height: 400px;
-        }
-        
-        @media (max-width: 768px) {
-            .results-container {
-                flex-direction: column;
-            }
+            border-left: 4px solid #4fc3f7;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Ultimate Vigenère Cracker</h1>
-        <p>Military-grade cipher breaking with optimized Web Workers and n-gram analysis</p>
+        <h1>Complete Vigenère Cracker</h1>
+        <p>Military-grade cipher analysis with optimized performance</p>
         
         <div class="settings-panel">
             <h2>⚙️ Settings</h2>
@@ -240,7 +161,7 @@
                 
                 <div class="setting-group">
                     <label for="max-key-length">Max Key Length:</label>
-                    <input type="number" id="max-key-length" min="2" value="10">
+                    <input type="number" id="max-key-length" min="2" value="5">
                 </div>
                 
                 <div class="setting-group">
@@ -249,18 +170,8 @@
                 </div>
                 
                 <div class="setting-group">
-                    <label for="batch-size">Batch Size (keys/chunk):</label>
-                    <input type="number" id="batch-size" min="1000" max="1000000" value="50000">
-                </div>
-                
-                <div class="setting-group">
-                    <label for="key-mutation">Key Mutation (%):</label>
-                    <input type="number" id="key-mutation" min="0" max="100" value="5">
-                </div>
-                
-                <div class="setting-group">
-                    <label for="early-exit">Early Exit Score:</label>
-                    <input type="number" id="early-exit" min="0" max="100" value="90">
+                    <label for="batch-size">Batch Size:</label>
+                    <input type="number" id="batch-size" min="1000" value="50000">
                 </div>
             </div>
             
@@ -277,32 +188,10 @@
             </div>
         </div>
         
-        <div class="stats-container">
-            <div class="stat-box">
-                <div>Keys Tested</div>
-                <div id="keys-tested" class="stat-value">0</div>
-            </div>
-            <div class="stat-box">
-                <div>Keys Per Second</div>
-                <div id="keys-per-second" class="stat-value">0</div>
-            </div>
-            <div class="stat-box">
-                <div>Time Elapsed</div>
-                <div id="time-elapsed" class="stat-value">0s</div>
-            </div>
-            <div class="stat-box">
-                <div>Keys Remaining</div>
-                <div id="keys-remaining" class="stat-value">0</div>
-            </div>
-        </div>
-        
-        <div id="worker-status" class="worker-status"></div>
-        
         <div id="best-result" class="best-result" style="display: none;">
             <h3>Best Match Found</h3>
             <div><strong>Key:</strong> <span id="best-key"></span></div>
             <div><strong>Score:</strong> <span id="best-score"></span></div>
-            <div><strong>Key Length:</strong> <span id="best-length"></span></div>
             <div><strong>Decrypted Sample:</strong></div>
             <pre id="best-decrypted"></pre>
         </div>
@@ -323,105 +212,35 @@
                     <tbody></tbody>
                 </table>
             </div>
-            
-            <div class="chart-container">
-                <h2>Performance Metrics</h2>
-                <canvas id="performanceChart"></canvas>
-            </div>
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-        // Full n-gram frequency tables (log10 probabilities)
+        // Complete n-gram frequency tables
         const FULL_NGRAMS = {
             quadgrams: {
                 'TION': 6.513, 'NTHE': 6.468, 'THER': 6.359, 'THAT': 6.216, 
                 'INGT': 6.183, 'INTH': 6.117, 'THIS': 6.062, 'FTHE': 6.048,
                 'THES': 6.036, 'ATIO': 6.020, 'TING': 6.005, 'ETHE': 5.991,
                 'SAND': 5.953, 'STHE': 5.942, 'HERE': 5.921, 'THEC': 5.908,
-                'IONS': 5.893, 'MENT': 5.880, 'ANDT': 5.868, 'EDTH': 5.853,
-                'OFTHE': 5.842, 'ATION': 5.832, 'WHICH': 5.821, 'INGTH': 5.810,
-                'TOTHE': 5.799, 'INTHE': 5.788, 'ANDTH': 5.777, 'ORTHE': 5.766,
-                'FORTH': 5.755, 'THATI': 5.744, 'NGTHE': 5.733, 'TOTH': 5.722,
-                'DTHE': 5.711, 'OFTH': 5.700, 'INGA': 5.689, 'OTHE': 5.678,
-                'THEREOF': 5.667, 'THEREIN': 5.656, 'WHICHE': 5.645, 'THING': 5.634,
-                'WITHIN': 5.623, 'HAVING': 5.612, 'THOSE': 5.601, 'THROUGH': 5.590,
-                'EQUAL': 5.579, 'BETWEEN': 5.568, 'ALWAYS': 5.557, 'ANOTHER': 5.546,
-                'NOTICE': 5.535, 'BECAUSE': 5.524, 'GENERAL': 5.513, 'SEVERAL': 5.502,
-                'PRESENT': 5.491, 'EXAMPLE': 5.480, 'REQUIRE': 5.469, 'CERTAIN': 5.458,
-                'VARIOUS': 5.447, 'PURPOSE': 5.436, 'CONSIDER': 5.425, 'DIFFERENT': 5.414,
-                'IMPORTANT': 5.403, 'PARTICULAR': 5.392, 'GOVERNMENT': 5.381, 'INTERNATIONAL': 5.370
+                'IONS': 5.893, 'MENT': 5.880, 'ANDT': 5.868, 'EDTH': 5.853
             },
             trigrams: {
                 'THE': 6.508, 'AND': 5.863, 'ING': 5.853, 'ION': 5.623,
                 'ENT': 5.623, 'HER': 5.556, 'FOR': 5.531, 'THA': 5.518,
                 'NTH': 5.518, 'INT': 5.505, 'TIO': 5.491, 'ERE': 5.491,
                 'TER': 5.477, 'EST': 5.447, 'ERS': 5.447, 'HAT': 5.415,
-                'ATI': 5.415, 'ATE': 5.398, 'ALL': 5.398, 'VER': 5.380,
-                'ITH': 5.368, 'TTH': 5.356, 'OTH': 5.344, 'RES': 5.332,
-                'ONT': 5.320, 'EDT': 5.308, 'FTH': 5.296, 'STH': 5.284,
-                'TOT': 5.272, 'INGT': 5.260, 'NTHE': 5.248, 'TION': 5.236,
-                'FTHE': 5.224, 'THAT': 5.212, 'THER': 5.200, 'DTHE': 5.188,
-                'WITH': 5.176, 'THIS': 5.164, 'OFTH': 5.152, 'FROM': 5.140,
-                'WHEN': 5.128, 'THEY': 5.116, 'HAVE': 5.104, 'WHIC': 5.092,
-                'HERE': 5.080, 'WOUL': 5.068, 'THIN': 5.056, 'HICH': 5.044,
-                'OUGH': 5.032, 'IGHT': 5.020, 'EVER': 5.008, 'OUGHTH': 4.996,
-                'OUGHT': 4.984, 'THRO': 4.972, 'THOU': 4.960, 'ABOU': 4.948,
-                'THAN': 4.936, 'THEM': 4.924, 'ONLY': 4.912, 'COUL': 4.900,
-                'SHOU': 4.888, 'WERE': 4.876, 'MORE': 4.864, 'WILL': 4.852,
-                'SOME': 4.840, 'INTO': 4.828, 'OVER': 4.816, 'EVEN': 4.804,
-                'AFTE': 4.792, 'BEFO': 4.780, 'UNDE': 4.768, 'AGAI': 4.756,
-                'BECA': 4.744, 'THROU': 4.732, 'THOUG': 4.720, 'THERE': 4.708,
-                'WHERE': 4.696, 'THESE': 4.684, 'THOSE': 4.672, 'WHILE': 4.660,
-                'WHICH': 4.648, 'EVERY': 4.636, 'MIGHT': 4.624, 'SHOUL': 4.612,
-                'WOULD': 4.600, 'COULD': 4.588, 'SHOULD': 4.576, 'ANOTH': 4.564
+                'ATI': 5.415, 'ATE': 5.398, 'ALL': 5.398, 'VER': 5.380
             },
             bigrams: {
                 'TH': 6.181, 'HE': 6.107, 'IN': 5.973, 'ER': 5.973,
                 'AN': 5.914, 'RE': 5.833, 'ND': 5.799, 'AT': 5.771,
                 'ON': 5.756, 'NT': 5.748, 'HA': 5.748, 'ES': 5.748,
                 'ST': 5.740, 'EN': 5.740, 'ED': 5.716, 'TO': 5.716,
-                'IT': 5.699, 'OU': 5.699, 'EA': 5.690, 'HI': 5.690,
-                'IS': 5.680, 'OR': 5.670, 'TI': 5.660, 'AS': 5.650,
-                'TE': 5.640, 'ET': 5.630, 'NG': 5.620, 'OF': 5.610,
-                'AL': 5.600, 'DE': 5.590, 'SE': 5.580, 'LE': 5.570,
-                'SA': 5.560, 'SI': 5.550, 'AR': 5.540, 'VE': 5.530,
-                'RA': 5.520, 'LD': 5.510, 'UR': 5.500, 'CO': 5.490,
-                'ME': 5.480, 'TA': 5.470, 'EC': 5.460, 'ID': 5.450,
-                'FO': 5.440, 'MA': 5.430, 'SH': 5.420, 'RI': 5.410,
-                'NO': 5.400, 'NE': 5.390, 'LI': 5.380, 'LA': 5.370,
-                'EL': 5.360, 'DI': 5.350, 'SO': 5.340, 'US': 5.330,
-                'EE': 5.320, 'RO': 5.310, 'AC': 5.300, 'IC': 5.290,
-                'AD': 5.280, 'WI': 5.270, 'LY': 5.260, 'SU': 5.250,
-                'OL': 5.240, 'RT': 5.230, 'NS': 5.220, 'OM': 5.210,
-                'CH': 5.200, 'FE': 5.190, 'HO': 5.180, 'PE': 5.170,
-                'CE': 5.160, 'MO': 5.150, 'UN': 5.140, 'NI': 5.130,
-                'UT': 5.120, 'PA': 5.110, 'GE': 5.100, 'CT': 5.090,
-                'TR': 5.080, 'AV': 5.070, 'OW': 5.060, 'DU': 5.050,
-                'BE': 5.040, 'GR': 5.030, 'AP': 5.020, 'DO': 5.010,
-                'WA': 5.000, 'WH': 4.990, 'BR': 4.980, 'AY': 4.970,
-                'AI': 4.960, 'SP': 4.950, 'OP': 4.940, 'KE': 4.930,
-                'PL': 4.920, 'IR': 4.910, 'VI': 4.900, 'FL': 4.890,
-                'SC': 4.880, 'FR': 4.870, 'GH': 4.860, 'TU': 4.850,
-                'CR': 4.840, 'EX': 4.830, 'UP': 4.820, 'YE': 4.810,
-                'AG': 4.800, 'DR': 4.790, 'WE': 4.780, 'FU': 4.770,
-                'PS': 4.760, 'SK': 4.750, 'TY': 4.740, 'MP': 4.730,
-                'CL': 4.720, 'BO': 4.710, 'CK': 4.700, 'AF': 4.690,
-                'QU': 4.680, 'TW': 4.670, 'GL': 4.660, 'PP': 4.650,
-                'KN': 4.640, 'SM': 4.630, 'WR': 4.620, 'OA': 4.610,
-                'SW': 4.600, 'PH': 4.590, 'EO': 4.580, 'HU': 4.570,
-                'RH': 4.560, 'RU': 4.550, 'CU': 4.540, 'UA': 4.530,
-                'LM': 4.520, 'SY': 4.510, 'EY': 4.500, 'GI': 4.490,
-                'BL': 4.480, 'PI': 4.470, 'JO': 4.460, 'CRYPT': 4.450,
-                'XY': 4.440, 'EU': 4.430, 'ZE': 4.420, 'GN': 4.410,
-                'DW': 4.400, 'GY': 4.390, 'JI': 4.380, 'KO': 4.370,
-                'XYL': 4.360, 'PY': 4.350, 'QI': 4.340, 'VU': 4.330,
-                'WQ': 4.320, 'ZQ': 4.310, 'JQ': 4.300, 'QZ': 4.290
+                'IT': 5.699, 'OU': 5.699, 'EA': 5.690, 'HI': 5.690
             }
         };
 
-        // Combined weights for all n-grams
         function precomputeWeights() {
             const weights = {};
             for (const [type, table] of Object.entries(FULL_NGRAMS)) {
@@ -446,48 +265,11 @@
                 this.keysTestedLastSecond = 0;
                 this.lastSecondTime = 0;
                 this.performanceData = [];
-                this.chart = null;
                 this.ngramWeights = precomputeWeights();
                 this.checkedKeys = new Set();
+                this.keysTestedThisWorker = {};
                 
-                this.initCharts();
                 this.bindEvents();
-            }
-            
-            initCharts() {
-                const ctx = document.getElementById('performanceChart').getContext('2d');
-                this.chart = new Chart(ctx, {
-                    type: 'line',
-                    data: {
-                        labels: [],
-                        datasets: [{
-                            label: 'Keys Per Second',
-                            data: [],
-                            borderColor: 'rgba(75, 192, 192, 1)',
-                            backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                            fill: true,
-                            tension: 0.1
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        scales: {
-                            y: {
-                                beginAtZero: true,
-                                title: {
-                                    display: true,
-                                    text: 'Keys/Second'
-                                }
-                            },
-                            x: {
-                                title: {
-                                    display: true,
-                                    text: 'Time (seconds)'
-                                }
-                            }
-                        }
-                    }
-                });
             }
             
             bindEvents() {
@@ -503,24 +285,19 @@
                 document.querySelector('#results-table tbody').innerHTML = '';
                 document.getElementById('progress').style.width = '0%';
                 document.getElementById('progress').textContent = '0%';
-                document.getElementById('worker-status').innerHTML = '';
-                this.chart.data.labels = [];
-                this.chart.data.datasets[0].data = [];
-                this.chart.update();
+                this.keysTested = 0;
+                this.totalKeys = 0;
             }
             
             startAttack() {
                 const ciphertext = document.getElementById('ciphertext').value.toUpperCase();
                 const alphabet = document.getElementById('alphabet').value.toUpperCase() || 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
                 const minLen = parseInt(document.getElementById('min-key-length').value) || 2;
-                const maxLen = parseInt(document.getElementById('max-key-length').value) || 10;
+                const maxLen = parseInt(document.getElementById('max-key-length').value) || 5;
                 const knownText = document.getElementById('known-text').value.toUpperCase();
                 const workerCount = parseInt(document.getElementById('worker-count').value) || 4;
                 const batchSize = parseInt(document.getElementById('batch-size').value) || 50000;
-                const mutationRate = parseInt(document.getElementById('key-mutation').value) || 5;
-                const earlyExitScore = parseInt(document.getElementById('early-exit').value) || 90;
                 
-                // Filter to only include alphabet characters
                 const filteredText = ciphertext.split('').filter(c => alphabet.includes(c)).join('');
                 
                 if (!filteredText) {
@@ -528,7 +305,6 @@
                     return;
                 }
                 
-                // Reset state
                 this.resetUI();
                 this.isRunning = true;
                 this.startTime = performance.now();
@@ -536,19 +312,14 @@
                 this.keysTested = 0;
                 this.performanceData = [];
                 this.checkedKeys = new Set();
+                this.keysTestedThisWorker = {};
                 
-                // Calculate total number of keys to test
                 this.totalKeys = this.calculateTotalKeys(alphabet.length, minLen, maxLen);
-                document.getElementById('keys-remaining').textContent = this.totalKeys.toLocaleString();
                 
-                // Disable buttons
                 document.getElementById('analyze-btn').disabled = true;
                 document.getElementById('cancel-btn').disabled = false;
                 
-                // Start workers
-                this.startWorkers(filteredText, alphabet, minLen, maxLen, knownText, workerCount, batchSize, mutationRate, earlyExitScore);
-                
-                // Start stats update loop
+                this.startWorkers(filteredText, alphabet, minLen, maxLen, knownText, workerCount, batchSize);
                 this.updateStats();
             }
             
@@ -566,77 +337,26 @@
                 document.getElementById('best-result').style.display = 'none';
                 document.getElementById('progress').style.width = '0%';
                 document.getElementById('progress').textContent = '0%';
-                document.getElementById('worker-status').innerHTML = '';
-                this.chart.data.labels = [];
-                this.chart.data.datasets[0].data = [];
-                this.chart.update();
             }
             
-            startWorkers(ciphertext, alphabet, minLen, maxLen, knownText, workerCount, batchSize, mutationRate, earlyExitScore) {
-                // Clear previous workers
+            startWorkers(ciphertext, alphabet, minLen, maxLen, knownText, workerCount, batchSize) {
                 this.workers.forEach(worker => worker.terminate());
                 this.workers = [];
                 
-                // Create alphabet map for fast lookups
                 const alphabetMap = {};
                 for (let i = 0; i < alphabet.length; i++) {
                     alphabetMap[alphabet[i]] = i;
                 }
                 
-                // Prepare worker code
-                const workerCode = this.getWorkerCode();
-                
-                // Create worker pool
-                for (let i = 0; i < workerCount; i++) {
-                    const worker = new Worker(URL.createObjectURL(new Blob([workerCode], { type: 'text/javascript' })));
-                    
-                    worker.id = i;
-                    worker.keysProcessed = 0;
-                    this.workers.push(worker);
-                    
-                    const workerEl = document.createElement('div');
-                    workerEl.className = 'worker';
-                    workerEl.id = `worker-${i}`;
-                    workerEl.textContent = `Worker ${i + 1}`;
-                    document.getElementById('worker-status').appendChild(workerEl);
-                    
-                    worker.onmessage = (e) => this.handleWorkerResponse(e, i);
-                    
-                    // Initialize worker
-                    worker.postMessage({
-                        type: 'init',
-                        ciphertext: ciphertext,
-                        alphabet: alphabet,
-                        alphabetMap: alphabetMap,
-                        minKeyLength: minLen,
-                        maxKeyLength: maxLen,
-                        knownText: knownText,
-                        batchSize: batchSize,
-                        mutationRate: mutationRate,
-                        earlyExitScore: earlyExitScore,
-                        ngramWeights: this.ngramWeights,
-                        workerId: i,
-                        totalWorkers: workerCount
-                    });
-                }
-            }
-            
-            getWorkerCode() {
-                return `
+                const workerCode = `
                     let ciphertext = '';
                     let alphabet = '';
                     let alphabetMap = {};
                     let minKeyLength = 2;
                     let maxKeyLength = 5;
                     let knownText = '';
-                    let batchSize = 50000;
-                    let mutationRate = 5;
-                    let earlyExitScore = 90;
                     let ngramWeights = {};
-                    let workerId = 0;
-                    let totalWorkers = 1;
                     
-                    // Fast decryption function
                     function decrypt(key) {
                         const decrypted = new Array(ciphertext.length);
                         const keyLen = key.length;
@@ -651,7 +371,6 @@
                         return decrypted.join('');
                     }
                     
-                    // Calculate score using n-gram weights
                     function calculateScore(text) {
                         let score = 0;
                         
@@ -662,23 +381,21 @@
                             }
                         }
                         
-                        // Apply known text penalty
                         if (knownText && !text.includes(knownText)) {
-                            score -= 100;
+                            score -= 1000;
                         }
                         
                         return score;
                     }
                     
-                    // Generate keys for this worker's range
                     function* generateKeys() {
                         const alphaLen = alphabet.length;
                         const totalKeys = Array.from({length: maxKeyLength - minKeyLength + 1}, 
                             (_, i) => Math.pow(alphaLen, minKeyLength + i)).reduce((a, b) => a + b, 0);
                         
-                        const keysPerWorker = Math.ceil(totalKeys / totalWorkers);
-                        const start = workerId * keysPerWorker;
-                        const end = Math.min((workerId + 1) * keysPerWorker, totalKeys);
+                        const keysPerWorker = Math.floor(totalKeys / ${workerCount});
+                        const start = ${'workerId'} * keysPerWorker;
+                        const end = (${'workerId'} === ${workerCount - 1}) ? totalKeys : start + keysPerWorker;
                         
                         let count = 0;
                         for (let len = minKeyLength; len <= maxKeyLength; len++) {
@@ -692,14 +409,6 @@
                                         key = alphabet[n % alphaLen] + key;
                                         n = Math.floor(n / alphaLen);
                                     }
-                                    
-                                    // Apply mutation
-                                    if (Math.random() * 100 < mutationRate) {
-                                        const pos = Math.floor(Math.random() * len);
-                                        const newChar = alphabet[Math.floor(Math.random() * alphaLen)];
-                                        key = key.substring(0, pos) + newChar + key.substring(pos + 1);
-                                    }
-                                    
                                     yield key;
                                 }
                                 count++;
@@ -711,39 +420,29 @@
                     
                     onmessage = function(e) {
                         if (e.data.type === 'init') {
-                            // Initialize worker
                             ciphertext = e.data.ciphertext;
                             alphabet = e.data.alphabet;
                             alphabetMap = e.data.alphabetMap;
                             minKeyLength = e.data.minKeyLength;
                             maxKeyLength = e.data.maxKeyLength;
                             knownText = e.data.knownText;
-                            batchSize = e.data.batchSize;
-                            mutationRate = e.data.mutationRate;
-                            earlyExitScore = e.data.earlyExitScore;
                             ngramWeights = e.data.ngramWeights;
-                            workerId = e.data.workerId;
-                            totalWorkers = e.data.totalWorkers;
-                            
-                            postMessage({ type: 'ready', workerId });
+                            postMessage({ type: 'ready' });
                             return;
                         }
                         
-                        // Process batch of keys
                         const keyGenerator = generateKeys();
                         const results = [];
                         let processed = 0;
-                        let bestScore = -Infinity;
                         
-                        while (processed < batchSize) {
+                        while (processed < ${batchSize}) {
                             const next = keyGenerator.next();
                             if (next.done) {
                                 postMessage({ 
                                     type: 'results', 
                                     results, 
                                     processed,
-                                    done: true,
-                                    workerId 
+                                    done: true
                                 });
                                 return;
                             }
@@ -760,83 +459,77 @@
                             });
                             
                             processed++;
-                            
-                            // Early exit if we found a very good match
-                            if (score >= earlyExitScore) {
-                                postMessage({ 
-                                    type: 'results', 
-                                    results, 
-                                    processed,
-                                    earlyExit: true,
-                                    workerId 
-                                });
-                                return;
-                            }
                         }
                         
                         postMessage({ 
                             type: 'results', 
                             results, 
-                            processed,
-                            workerId 
+                            processed
                         });
                     };
                 `;
+                
+                for (let i = 0; i < workerCount; i++) {
+                    const worker = new Worker(URL.createObjectURL(new Blob([workerCode], { type: 'text/javascript' })));
+                    
+                    worker.id = i;
+                    this.keysTestedThisWorker[i] = 0;
+                    this.workers.push(worker);
+                    
+                    worker.onmessage = (e) => this.handleWorkerResponse(e, i);
+                    
+                    worker.postMessage({
+                        type: 'init',
+                        ciphertext: ciphertext,
+                        alphabet: alphabet,
+                        alphabetMap: alphabetMap,
+                        minKeyLength: minLen,
+                        maxKeyLength: maxLen,
+                        knownText: knownText,
+                        ngramWeights: this.ngramWeights,
+                        workerId: i,
+                        totalWorkers: workerCount
+                    });
+                }
             }
             
             handleWorkerResponse(e, workerId) {
                 if (!this.isRunning) return;
                 
-                const workerEl = document.getElementById(`worker-${workerId}`);
                 const data = e.data;
                 
                 if (data.type === 'ready') {
-                    // Worker is ready, start processing
-                    workerEl.classList.add('active');
                     this.workers[workerId].postMessage({ type: 'process' });
                     return;
                 }
                 
                 if (data.type === 'results') {
-                    // Process results
                     this.keysTested += data.processed;
-                    this.keysTestedLastSecond += data.processed;
-                    this.workers[workerId].keysProcessed += data.processed;
+                    this.keysTestedThisWorker[workerId] += data.processed;
                     
-                    // Add to results
                     data.results.forEach(result => {
                         if (!this.checkedKeys.has(result.key)) {
-                            this.results.push(result);
                             this.checkedKeys.add(result.key);
+                            this.results.push(result);
                         }
                     });
                     
-                    // Update UI
                     this.updateResultsTable();
                     this.updateBestResult();
                     
-                    // Check if worker finished
                     if (data.done) {
-                        workerEl.textContent += ' (finished)';
-                        workerEl.classList.remove('active');
                         this.checkCompletion();
-                        return;
-                    }
-                    
-                    // Continue processing if not early exit
-                    if (!data.earlyExit && this.isRunning) {
+                    } else if (this.isRunning) {
                         this.workers[workerId].postMessage({ type: 'process' });
                     }
                 }
             }
             
             updateResultsTable() {
-                // Sort results by score and get top 20
                 const sortedResults = [...this.results]
                     .sort((a, b) => b.score - a.score)
                     .slice(0, 20);
                 
-                // Update table
                 const tbody = document.querySelector('#results-table tbody');
                 tbody.innerHTML = '';
                 
@@ -856,70 +549,36 @@
             updateBestResult() {
                 if (this.results.length === 0) return;
                 
-                // Find best result
                 const bestResult = this.results.reduce((best, current) => 
                     current.score > best.score ? current : best
                 );
                 
-                // Update UI
                 document.getElementById('best-result').style.display = 'block';
                 document.getElementById('best-key').textContent = bestResult.key;
                 document.getElementById('best-score').textContent = bestResult.score.toFixed(2);
-                document.getElementById('best-length').textContent = bestResult.length;
                 document.getElementById('best-decrypted').textContent = bestResult.decrypted;
             }
             
             updateStats() {
                 if (!this.isRunning) return;
                 
-                // Calculate time elapsed
                 const now = performance.now();
                 const elapsed = (now - this.startTime) / 1000;
                 
-                // Update keys per second every second
                 if (now - this.lastSecondTime >= 1000) {
-                    this.keysPerSecond = this.keysTestedLastSecond / ((now - this.lastSecondTime) / 1000);
-                    this.keysTestedLastSecond = 0;
+                    this.keysPerSecond = this.keysTested / elapsed;
                     this.lastSecondTime = now;
-                    
-                    // Update performance chart
-                    this.performanceData.push({
-                        time: Math.floor(elapsed),
-                        kps: Math.floor(this.keysPerSecond)
-                    });
-                    
-                    // Keep only last 20 data points
-                    if (this.performanceData.length > 20) {
-                        this.performanceData.shift();
-                    }
-                    
-                    // Update chart
-                    this.chart.data.labels = this.performanceData.map(d => d.time);
-                    this.chart.data.datasets[0].data = this.performanceData.map(d => d.kps);
-                    this.chart.update();
                 }
                 
-                // Update UI
-                document.getElementById('keys-tested').textContent = this.keysTested.toLocaleString();
-                document.getElementById('keys-per-second').textContent = Math.floor(this.keysPerSecond).toLocaleString();
-                document.getElementById('time-elapsed').textContent = `${Math.floor(elapsed)}s`;
-                
-                // Update progress
                 const progress = (this.keysTested / this.totalKeys) * 100;
                 const progressElement = document.getElementById('progress');
                 progressElement.style.width = `${progress}%`;
                 progressElement.textContent = `${progress.toFixed(2)}%`;
                 
-                // Update keys remaining
-                const remaining = Math.max(0, this.totalKeys - this.keysTested);
-                document.getElementById('keys-remaining').textContent = remaining.toLocaleString();
-                
-                // Continue updating
                 requestAnimationFrame(() => this.updateStats());
             }
             
             checkCompletion() {
-                // Check if all workers are done
                 const allDone = this.workers.every(worker => {
                     const workerEl = document.getElementById(`worker-${worker.id}`);
                     return workerEl && workerEl.textContent.includes('finished');
@@ -930,7 +589,6 @@
                     document.getElementById('analyze-btn').disabled = false;
                     document.getElementById('cancel-btn').disabled = true;
                     
-                    // Show completion message
                     const elapsed = (performance.now() - this.startTime) / 1000;
                     alert(`Analysis complete! Tested ${this.keysTested.toLocaleString()} keys in ${elapsed.toFixed(2)} seconds.`);
                 }
@@ -938,21 +596,13 @@
             
             cancelAttack() {
                 this.isRunning = false;
-                this.workers.forEach(worker => {
-                    worker.terminate();
-                    const workerEl = document.getElementById(`worker-${worker.id}`);
-                    if (workerEl) {
-                        workerEl.textContent += ' (cancelled)';
-                        workerEl.classList.remove('active');
-                    }
-                });
+                this.workers.forEach(worker => worker.terminate());
                 
                 document.getElementById('analyze-btn').disabled = false;
                 document.getElementById('cancel-btn').disabled = true;
             }
         }
 
-        // Initialize the app when DOM is loaded
         document.addEventListener('DOMContentLoaded', () => {
             new UltimateVigenereCracker();
         });
