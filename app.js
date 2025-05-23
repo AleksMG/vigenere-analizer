@@ -1,3 +1,4 @@
+console.log("Скрипт загружен"); 
 class VigenereAnalyzer {
     constructor() {
         this.worker = null;
