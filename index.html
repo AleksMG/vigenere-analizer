@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Professional Vigenère Cipher Cracker</title>
+    <title>Advanced Vigenère Cipher Cracker</title>
     <style>
         :root {
             --primary: #2c3e50;
@@ -11,8 +11,10 @@
             --accent: #3498db;
             --success: #2ecc71;
             --danger: #e74c3c;
+            --warning: #f39c12;
             --light: #ecf0f1;
             --dark: #2c3e50;
+            --border: #e2e8f0;
         }
         
         body {
@@ -34,7 +36,7 @@
         }
 
         .header {
-            border-bottom: 1px solid #eee;
+            border-bottom: 1px solid var(--border);
             padding-bottom: 20px;
             margin-bottom: 30px;
         }
@@ -55,7 +57,7 @@
             padding: 25px;
             border-radius: 8px;
             margin-bottom: 25px;
-            border: 1px solid #e2e8f0;
+            border: 1px solid var(--border);
         }
 
         .settings-title {
@@ -89,7 +91,7 @@
             width: 100%;
             padding: 10px 12px;
             font-size: 15px;
-            border: 1px solid #e2e8f0;
+            border: 1px solid var(--border);
             border-radius: 6px;
             transition: all 0.2s;
             background-color: white;
@@ -151,6 +153,17 @@
         .btn-success:hover {
             background-color: #27ae60;
             border-color: #27ae60;
+        }
+
+        .btn-warning {
+            color: white;
+            background-color: var(--warning);
+            border-color: var(--warning);
+        }
+
+        .btn-warning:hover {
+            background-color: #d35400;
+            border-color: #d35400;
         }
 
         .btn:disabled {
@@ -219,7 +232,7 @@
             margin-bottom: 20px;
             font-size: 1.4em;
             padding-bottom: 10px;
-            border-bottom: 1px solid #eee;
+            border-bottom: 1px solid var(--border);
         }
 
         .results-table {
@@ -238,7 +251,7 @@
             text-align: left;
             color: #4a5568;
             font-weight: 600;
-            border-bottom: 2px solid #e2e8f0;
+            border-bottom: 2px solid var(--border);
         }
 
         .results-table td {
@@ -315,6 +328,72 @@
             color: white;
         }
 
+        .worker-badge-warning {
+            background-color: var(--warning);
+            color: white;
+        }
+
+        .alert {
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            border-left: 4px solid;
+        }
+
+        .alert-info {
+            background-color: #ebf5ff;
+            border-color: var(--accent);
+            color: #2c5282;
+        }
+
+        .alert-success {
+            background-color: #f0fff4;
+            border-color: var(--success);
+            color: #276749;
+        }
+
+        .alert-danger {
+            background-color: #fff5f5;
+            border-color: var(--danger);
+            color: #9b2c2c;
+        }
+
+        .alert-warning {
+            background-color: #fffaf0;
+            border-color: var(--warning);
+            color: #975a16;
+        }
+
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            cursor: help;
+        }
+
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 200px;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 5px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -100px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 14px;
+            font-weight: normal;
+        }
+
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+
         @media (max-width: 768px) {
             .settings-grid {
                 grid-template-columns: 1fr;
@@ -334,9 +413,11 @@
 <body>
     <div class="main-container">
         <div class="header">
-            <h1 class="header-title">Professional Vigenère Cipher Cracker</h1>
-            <p class="header-description">Optimized cryptanalysis tool with parallel processing and advanced scoring</p>
+            <h1 class="header-title">Advanced Vigenère Cipher Cracker</h1>
+            <p class="header-description">Parallel cryptanalysis tool with optimized scoring and true web workers</p>
         </div>
+        
+        <div id="alert-container"></div>
         
         <div class="settings-panel">
             <h2 class="settings-title">Cipher Parameters</h2>
@@ -358,12 +439,12 @@
                 
                 <div class="form-group">
                     <label for="min-keylength-input" class="form-label">Minimum Key Length:</label>
-                    <input type="number" id="min-keylength-input" class="form-control" min="1" value="4">
+                    <input type="number" id="min-keylength-input" class="form-control" min="1" max="20" value="4">
                 </div>
                 
                 <div class="form-group">
                     <label for="max-keylength-input" class="form-label">Maximum Key Length:</label>
-                    <input type="number" id="max-keylength-input" class="form-control" min="2" value="5">
+                    <input type="number" id="max-keylength-input" class="form-control" min="2" max="20" value="5">
                 </div>
                 
                 <div class="form-group">
@@ -379,13 +460,16 @@
                 <div class="form-group">
                     <label for="early-exit-input" class="form-label">Early Exit Score Threshold:</label>
                     <input type="number" id="early-exit-input" class="form-control" min="0" max="100" value="95">
+                    <small>Set to 0 to disable early exit</small>
                 </div>
             </div>
             
             <div>
                 <button id="start-button" class="btn btn-success">Start Analysis</button>
+                <button id="pause-button" class="btn btn-warning" disabled>Pause</button>
                 <button id="cancel-button" class="btn btn-danger" disabled>Cancel Operation</button>
                 <button id="reset-button" class="btn btn-primary">Reset All</button>
+                <button id="export-button" class="btn btn-primary" disabled>Export Results</button>
             </div>
         </div>
         
@@ -454,8 +538,18 @@
     </div>
 
     <script>
+        /**
+         * TextEvaluator - Scores decrypted text for likelihood of being English
+         */
         class TextEvaluator {
             constructor() {
+                this.initializeNgrams();
+                this.wordPattern = /[A-Z']+/g;
+                this.minWordsForEvaluation = 3;
+                this.invalidSequences = ['AAA', 'BBB', 'CCC', 'ABC', 'XYZ', 'QXP', 'JJJ', 'QQQ', 'ZZZ'];
+            }
+
+            initializeNgrams() {
                 // Enhanced n-gram frequencies with optimized weights
                 this.ngrams = {
                     // 4-grams
@@ -472,9 +566,12 @@
                     'A': 0.032, 'IN': 0.028, 'THAT': 0.020, 'HAVE': 0.017, 'I': 0.016
                 };
 
-                this.wordPattern = /[A-Z']+/g;
-                this.minWordsForEvaluation = 3;
-                this.invalidSequences = ['AAA', 'BBB', 'CCC', 'ABC', 'XYZ', 'QXP', 'JJJ', 'QQQ', 'ZZZ'];
+                // Precompute uppercase versions of all ngrams
+                const upperNgrams = {};
+                for (const key in this.ngrams) {
+                    upperNgrams[key.toUpperCase()] = this.ngrams[key];
+                }
+                this.ngrams = upperNgrams;
             }
 
             evaluate(text) {
@@ -504,7 +601,7 @@
                 let totalScore = 0;
                 let ngramCount = 0;
                 
-                // Check all possible n-gram lengths
+                // Check all possible n-gram lengths (2-4)
                 for (let n = 2; n <= 4; n++) {
                     for (let i = 0; i <= text.length - n; i++) {
                         const gram = text.substr(i, n);
@@ -544,11 +641,86 @@
             }
         }
 
+        /**
+         * KeyGenerator - Efficiently generates keys for testing
+         */
+        class KeyGenerator {
+            constructor(alphabet, minLen, maxLen) {
+                this.alphabet = alphabet;
+                this.alphabetSize = alphabet.length;
+                this.minLen = minLen;
+                this.maxLen = maxLen;
+                
+                // Pre-calculate all key lengths and counts
+                this.keyLengths = [];
+                for (let len = minLen; len <= maxLen; len++) {
+                    this.keyLengths.push({ 
+                        length: len, 
+                        count: Math.pow(this.alphabetSize, len) 
+                    });
+                }
+                
+                this.totalKeys = this.keyLengths.reduce((sum, k) => sum + k.count, 0);
+                this.currentLengthIndex = 0;
+                this.currentKeyIndex = 0;
+            }
+
+            getNextKeyBatch(batchSize) {
+                if (this.currentLengthIndex >= this.keyLengths.length) {
+                    return [];
+                }
+                
+                const batch = [];
+                const currentLen = this.keyLengths[this.currentLengthIndex].length;
+                const alphabet = this.alphabet;
+                const alphabetSize = this.alphabetSize;
+                
+                while (batch.length < batchSize && this.currentKeyIndex < this.totalKeys) {
+                    // If we've exhausted current length, move to next
+                    if (this.currentKeyIndex >= this.keyLengths[this.currentLengthIndex].count) {
+                        this.currentKeyIndex = 0;
+                        this.currentLengthIndex++;
+                        
+                        if (this.currentLengthIndex >= this.keyLengths.length) {
+                            break;
+                        }
+                    }
+                    
+                    const len = this.keyLengths[this.currentLengthIndex].length;
+                    let keyIndex = this.currentKeyIndex;
+                    const keyChars = new Array(len);
+                    
+                    // Generate key characters from index
+                    for (let i = len - 1; i >= 0; i--) {
+                        keyChars[i] = alphabet[keyIndex % alphabetSize];
+                        keyIndex = Math.floor(keyIndex / alphabetSize);
+                    }
+                    
+                    batch.push(keyChars.join(''));
+                    this.currentKeyIndex++;
+                }
+                
+                return batch;
+            }
+
+            getProgress() {
+                return {
+                    tested: this.currentKeyIndex,
+                    total: this.totalKeys,
+                    percent: (this.currentKeyIndex / this.totalKeys) * 100
+                };
+            }
+        }
+
+        /**
+         * VigenereCracker - Main application controller
+         */
         class VigenereCracker {
             constructor() {
                 this.workers = [];
                 this.results = [];
                 this.isRunning = false;
+                this.isPaused = false;
                 this.startTime = 0;
                 this.keysTested = 0;
                 this.totalKeys = 0;
@@ -560,16 +732,20 @@
                 this.evaluator = new TextEvaluator();
                 this.workerPromises = [];
                 this.workerStatus = [];
+                this.bestScore = 0;
 
                 this.initUI();
                 this.setupEventHandlers();
+                this.startStatsUpdate();
             }
 
             initUI() {
                 this.elements = {
                     startBtn: document.getElementById('start-button'),
+                    pauseBtn: document.getElementById('pause-button'),
                     cancelBtn: document.getElementById('cancel-button'),
                     resetBtn: document.getElementById('reset-button'),
+                    exportBtn: document.getElementById('export-button'),
                     ciphertext: document.getElementById('ciphertext-input'),
                     alphabet: document.getElementById('alphabet-input'),
                     knownText: document.getElementById('known-plaintext-input'),
@@ -589,14 +765,46 @@
                     bestScore: document.getElementById('best-score-display'),
                     bestLength: document.getElementById('best-length-display'),
                     bestDecrypted: document.getElementById('best-decrypted-display'),
-                    resultsTable: document.querySelector('#results-table tbody')
+                    resultsTable: document.querySelector('#results-table tbody'),
+                    alertContainer: document.getElementById('alert-container')
                 };
             }
 
             setupEventHandlers() {
                 this.elements.startBtn.addEventListener('click', () => this.start());
+                this.elements.pauseBtn.addEventListener('click', () => this.togglePause());
                 this.elements.cancelBtn.addEventListener('click', () => this.cancel());
                 this.elements.resetBtn.addEventListener('click', () => this.reset());
+                this.elements.exportBtn.addEventListener('click', () => this.exportResults());
+                
+                // Validate min/max key lengths
+                this.elements.minKeyLen.addEventListener('change', () => {
+                    const min = parseInt(this.elements.minKeyLen.value) || 1;
+                    const max = parseInt(this.elements.maxKeyLen.value) || 10;
+                    if (min > max) {
+                        this.elements.maxKeyLen.value = min;
+                    }
+                });
+                
+                this.elements.maxKeyLen.addEventListener('change', () => {
+                    const min = parseInt(this.elements.minKeyLen.value) || 1;
+                    const max = parseInt(this.elements.maxKeyLen.value) || 10;
+                    if (max < min) {
+                        this.elements.minKeyLen.value = max;
+                    }
+                });
+            }
+
+            showAlert(message, type = 'info') {
+                const alert = document.createElement('div');
+                alert.className = `alert alert-${type}`;
+                alert.textContent = message;
+                this.elements.alertContainer.appendChild(alert);
+                
+                // Auto-dismiss after 5 seconds
+                setTimeout(() => {
+                    alert.remove();
+                }, 5000);
             }
 
             reset() {
@@ -607,94 +815,90 @@
                 this.elements.progress.style.width = '0%';
                 this.elements.progress.textContent = '0%';
                 this.elements.workerStatus.innerHTML = '';
+                this.elements.exportBtn.disabled = true;
                 this.keyGenerator = null;
+                this.bestScore = 0;
             }
 
             async start() {
-                const ciphertext = this.elements.ciphertext.value.toUpperCase();
-                const alphabet = this.elements.alphabet.value.toUpperCase() || 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-                const minLen = parseInt(this.elements.minKeyLen.value) || 2;
-                const maxLen = parseInt(this.elements.maxKeyLen.value) || 10;
-                const knownText = this.elements.knownText.value.toUpperCase();
-                const workerCount = parseInt(this.elements.workerCount.value) || 4;
-                const batchSize = parseInt(this.elements.batchSize.value) || 10000;
-                const exitThreshold = parseInt(this.elements.exitThreshold.value) || 95;
-                
-                const cleanCiphertext = ciphertext.split('').filter(c => alphabet.includes(c)).join('');
-                
-                if (!cleanCiphertext) {
-                    alert('Please provide valid ciphertext using the specified alphabet');
-                    return;
+                try {
+                    const ciphertext = this.elements.ciphertext.value.toUpperCase();
+                    const alphabet = this.elements.alphabet.value.toUpperCase() || 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                    const minLen = parseInt(this.elements.minKeyLen.value) || 2;
+                    const maxLen = parseInt(this.elements.maxKeyLen.value) || 10;
+                    const knownText = this.elements.knownText.value.toUpperCase();
+                    const workerCount = parseInt(this.elements.workerCount.value) || 4;
+                    const batchSize = parseInt(this.elements.batchSize.value) || 10000;
+                    const exitThreshold = parseInt(this.elements.exitThreshold.value) || 95;
+                    
+                    // Validate inputs
+                    if (minLen < 1 || maxLen < minLen) {
+                        this.showAlert('Invalid key length range', 'danger');
+                        return;
+                    }
+                    
+                    if (maxLen > 20) {
+                        this.showAlert('Maximum key length is 20 for performance reasons', 'warning');
+                        return;
+                    }
+                    
+                    // Clean ciphertext
+                    const cleanCiphertext = ciphertext.split('').filter(c => alphabet.includes(c)).join('');
+                    
+                    if (!cleanCiphertext) {
+                        this.showAlert('Please provide valid ciphertext using the specified alphabet', 'danger');
+                        return;
+                    }
+                    
+                    this.prepareAnalysis();
+                    this.isRunning = true;
+                    this.isPaused = false;
+                    this.startTime = performance.now();
+                    this.lastUpdateTime = this.startTime;
+                    this.keysTested = 0;
+                    this.testedKeys = new Set();
+                    this.bestScore = 0;
+                    
+                    // Initialize key generator
+                    this.keyGenerator = new KeyGenerator(alphabet, minLen, maxLen);
+                    this.totalKeys = this.keyGenerator.totalKeys;
+                    this.elements.keysRemaining.textContent = this.totalKeys.toLocaleString();
+                    
+                    // UI updates
+                    this.elements.startBtn.disabled = true;
+                    this.elements.pauseBtn.disabled = false;
+                    this.elements.cancelBtn.disabled = false;
+                    this.elements.exportBtn.disabled = true;
+                    
+                    // Initialize worker status badges
+                    this.elements.workerStatus.innerHTML = '';
+                    this.workerStatus = [];
+                    for (let i = 0; i < workerCount; i++) {
+                        const badge = document.createElement('div');
+                        badge.className = 'worker-badge worker-badge-active';
+                        badge.id = `worker-${i}-badge`;
+                        badge.textContent = `Worker ${i + 1}`;
+                        this.elements.workerStatus.appendChild(badge);
+                        this.workerStatus.push({ active: true });
+                    }
+                    
+                    // Launch workers in parallel using true Web Workers
+                    this.workerPromises = [];
+                    for (let i = 0; i < workerCount; i++) {
+                        this.workerPromises.push(
+                            this.runWebWorker(cleanCiphertext, alphabet, knownText, batchSize, exitThreshold, i)
+                        );
+                    }
+                    
+                    // Wait for all workers to complete
+                    await Promise.all(this.workerPromises);
+                    
+                    this.checkCompletion();
+                } catch (error) {
+                    console.error('Error in analysis:', error);
+                    this.showAlert(`Error: ${error.message}`, 'danger');
+                    this.cancel();
                 }
-                
-                this.prepareAnalysis();
-                this.isRunning = true;
-                this.startTime = performance.now();
-                this.lastUpdateTime = this.startTime;
-                this.keysTested = 0;
-                this.testedKeys = new Set();
-                
-                this.totalKeys = this.calcTotalKeys(alphabet.length, minLen, maxLen);
-                this.elements.keysRemaining.textContent = this.totalKeys.toLocaleString();
-                
-                this.keyGenerator = this.initKeyGenerator(alphabet, minLen, maxLen);
-                
-                this.elements.startBtn.disabled = true;
-                this.elements.cancelBtn.disabled = false;
-                
-                // Initialize worker status badges
-                this.elements.workerStatus.innerHTML = '';
-                this.workerStatus = [];
-                for (let i = 0; i < workerCount; i++) {
-                    const badge = document.createElement('div');
-                    badge.className = 'worker-badge worker-badge-active';
-                    badge.id = `worker-${i}-badge`;
-                    badge.textContent = `Worker ${i + 1}`;
-                    this.elements.workerStatus.appendChild(badge);
-                    this.workerStatus.push({ active: true });
-                }
-                
-                // Launch workers in parallel
-                this.workerPromises = [];
-                for (let i = 0; i < workerCount; i++) {
-                    this.workerPromises.push(
-                        this.runWorker(cleanCiphertext, alphabet, knownText, batchSize, exitThreshold, i)
-                    );
-                }
-                
-                // Wait for all workers to complete
-                await Promise.all(this.workerPromises);
-                
-                this.checkCompletion();
-            }
-
-            calcTotalKeys(alphabetSize, minLen, maxLen) {
-                let total = 0;
-                for (let len = minLen; len <= maxLen; len++) {
-                    total += Math.pow(alphabetSize, len);
-                }
-                return total;
-            }
-
-            initKeyGenerator(alphabet, minLen, maxLen) {
-                const alphabetSize = alphabet.length;
-                const keyLengths = [];
-                
-                for (let len = minLen; len <= maxLen; len++) {
-                    keyLengths.push({ 
-                        length: len, 
-                        count: Math.pow(alphabetSize, len) 
-                    });
-                }
-                
-                return {
-                    alphabet: alphabet,
-                    alphabetSize: alphabetSize,
-                    keyLengths: keyLengths,
-                    totalKeys: keyLengths.reduce((sum, k) => sum + k.count, 0),
-                    currentLengthIndex: 0,
-                    currentKeyIndex: 0
-                };
             }
 
             prepareAnalysis() {
@@ -705,133 +909,223 @@
                 this.elements.progress.textContent = '0%';
             }
 
-            async runWorker(ciphertext, alphabet, knownText, batchSize, exitThreshold, workerId) {
-                const charMap = {};
-                for (let i = 0; i < alphabet.length; i++) {
-                    charMap[alphabet[i]] = i;
-                }
-                
-                while (this.isRunning) {
-                    const batch = this.getNextKeyBatch(batchSize);
-                    if (batch.length === 0) break;
-                    
-                    const results = await this.processKeyBatch(ciphertext, alphabet, charMap, knownText, batch);
-                    
-                    // Process results
-                    const fragment = document.createDocumentFragment();
-                    let localBestScore = 0;
-                    
-                    for (const result of results) {
-                        if (!this.testedKeys.has(result.key)) {
-                            this.results.push(result);
-                            this.testedKeys.add(result.key);
+            async runWebWorker(ciphertext, alphabet, knownText, batchSize, exitThreshold, workerId) {
+                // Create a new Web Worker
+                const workerCode = `
+                    const evaluator = {
+                        ngrams: ${JSON.stringify(this.evaluator.ngrams)},
+                        invalidSequences: ${JSON.stringify(this.evaluator.invalidSequences)},
+                        wordPattern: /[A-Z']+/g,
+                        
+                        evaluate(text) {
+                            const upperText = text.toUpperCase();
+                            const words = upperText.match(this.wordPattern) || [];
                             
-                            if (result.score > localBestScore) {
-                                localBestScore = result.score;
+                            if (words.length < 3) return 0;
+                            
+                            const scores = {
+                                ngrams: this.calculateNgramScore(upperText),
+                                wordFrequency: this.calculateWordFrequencyScore(words),
+                                sequences: this.calculateSequenceScore(upperText)
+                            };
+                            
+                            return (scores.ngrams * 0.75 + scores.wordFrequency * 0.20 + scores.sequences * 0.05) * 100;
+                        },
+                        
+                        calculateNgramScore(text) {
+                            let totalScore = 0, ngramCount = 0;
+                            for (let n = 2; n <= 4; n++) {
+                                for (let i = 0; i <= text.length - n; i++) {
+                                    const gram = text.substr(i, n);
+                                    if (this.ngrams[gram]) {
+                                        totalScore += this.ngrams[gram];
+                                        ngramCount++;
+                                    }
+                                }
+                            }
+                            return ngramCount > 0 ? totalScore / (ngramCount * 5) : 0;
+                        },
+                        
+                        calculateWordFrequencyScore(words) {
+                            let score = 0, matchedWords = 0;
+                            for (const word of words) {
+                                if (this.ngrams[word]) {
+                                    score += this.ngrams[word];
+                                    matchedWords++;
+                                }
+                            }
+                            return matchedWords > 0 ? score / matchedWords : 0;
+                        },
+                        
+                        calculateSequenceScore(text) {
+                            let invalidCount = 0;
+                            for (let i = 0; i < text.length - 2; i++) {
+                                const seq = text.substr(i, 3);
+                                if (this.invalidSequences.includes(seq)) invalidCount++;
+                            }
+                            return 1 - (invalidCount / Math.max(1, text.length - 2));
+                        }
+                    };
+                    
+                    onmessage = function(e) {
+                        const { ciphertext, alphabet, knownText, keys } = e.data;
+                        const alphaLen = alphabet.length;
+                        const charMap = {};
+                        
+                        for (let i = 0; i < alphabet.length; i++) {
+                            charMap[alphabet[i]] = i;
+                        }
+                        
+                        const results = [];
+                        
+                        for (const key of keys) {
+                            // Decrypt
+                            const decrypted = new Array(ciphertext.length);
+                            const keyLen = key.length;
+                            
+                            for (let i = 0; i < ciphertext.length; i++) {
+                                const cipherPos = charMap[ciphertext[i]];
+                                const keyPos = charMap[key[i % keyLen]];
+                                decrypted[i] = alphabet[(cipherPos - keyPos + alphaLen) % alphaLen];
+                            }
+                            
+                            const decryptedText = decrypted.join('');
+                            const score = evaluator.evaluate(decryptedText);
+                            const finalScore = knownText && !decryptedText.includes(knownText) 
+                                ? score * 0.5 
+                                : score;
+                            
+                            results.push({
+                                key: key,
+                                score: finalScore,
+                                decrypted: decryptedText.substring(0, 100),
+                                length: key.length
+                            });
+                        }
+                        
+                        postMessage({ workerId: e.data.workerId, results });
+                    };
+                `;
+                
+                const blob = new Blob([workerCode], { type: 'application/javascript' });
+                const workerUrl = URL.createObjectURL(blob);
+                const worker = new Worker(workerUrl);
+                
+                return new Promise((resolve) => {
+                    worker.onmessage = (e) => {
+                        const { workerId, results } = e.data;
+                        
+                        // Process results
+                        let localBestScore = 0;
+                        
+                        for (const result of results) {
+                            if (!this.testedKeys.has(result.key)) {
+                                this.results.push(result);
+                                this.testedKeys.add(result.key);
+                                
+                                if (result.score > this.bestScore) {
+                                    this.bestScore = result.score;
+                                    localBestScore = result.score;
+                                }
+                            }
+                        }
+                        
+                        this.keysTested += results.length;
+                        this.keysThisSecond += results.length;
+                        
+                        // Update UI
+                        this.updateResults();
+                        this.updateBestResult();
+                        
+                        // Check for early exit
+                        if (localBestScore >= exitThreshold) {
+                            this.isRunning = false;
+                            this.elements.cancelBtn.disabled = true;
+                            this.showAlert(`Worker ${workerId + 1} found high-scoring key (${localBestScore.toFixed(2)})!`, 'success');
+                        }
+                        
+                        // Get next batch if still running
+                        if (this.isRunning && !this.isPaused) {
+                            const nextBatch = this.keyGenerator.getNextKeyBatch(batchSize);
+                            if (nextBatch.length > 0) {
+                                worker.postMessage({
+                                    ciphertext,
+                                    alphabet,
+                                    knownText,
+                                    keys: nextBatch,
+                                    workerId
+                                });
+                            } else {
+                                worker.terminate();
+                                URL.revokeObjectURL(workerUrl);
+                                resolve();
+                            }
+                        } else if (this.isPaused) {
+                            // Do nothing - worker will be resumed when unpaused
+                        } else {
+                            worker.terminate();
+                            URL.revokeObjectURL(workerUrl);
+                            resolve();
+                        }
+                    };
+                    
+                    // Start the worker with first batch
+                    const initialBatch = this.keyGenerator.getNextKeyBatch(batchSize);
+                    if (initialBatch.length > 0) {
+                        worker.postMessage({
+                            ciphertext,
+                            alphabet,
+                            knownText,
+                            keys: initialBatch,
+                            workerId
+                        });
+                    } else {
+                        worker.terminate();
+                        URL.revokeObjectURL(workerUrl);
+                        resolve();
+                    }
+                });
+            }
+
+            togglePause() {
+                this.isPaused = !this.isPaused;
+                
+                if (this.isPaused) {
+                    this.elements.pauseBtn.textContent = 'Resume';
+                    this.showAlert('Analysis paused', 'warning');
+                    
+                    // Update worker badges
+                    for (let i = 0; i < this.workerStatus.length; i++) {
+                        if (this.workerStatus[i].active) {
+                            const badge = document.getElementById(`worker-${i}-badge`);
+                            if (badge) {
+                                badge.className = 'worker-badge worker-badge-warning';
+                                badge.textContent = `Worker ${i + 1} (paused)`;
                             }
                         }
                     }
+                } else {
+                    this.elements.pauseBtn.textContent = 'Pause';
+                    this.showAlert('Analysis resumed', 'info');
                     
-                    this.keysTested += batch.length;
-                    this.keysThisSecond += batch.length;
-                    
-                    // Update UI
-                    this.updateResults();
-                    this.updateBestResult();
-                    
-                    // Check for early exit
-                    if (localBestScore >= exitThreshold) {
-                        this.isRunning = false;
-                        this.elements.cancelBtn.disabled = true;
-                        alert(`Worker ${workerId + 1} found high-scoring key (${localBestScore.toFixed(2)})!`);
-                        break;
-                    }
-                }
-                
-                // Mark worker as completed
-                const badge = document.getElementById(`worker-${workerId}-badge`);
-                if (badge) {
-                    badge.className = 'worker-badge worker-badge-finished';
-                    badge.textContent += ' (completed)';
-                }
-                this.workerStatus[workerId].active = false;
-            }
-
-            getNextKeyBatch(batchSize) {
-                if (!this.isRunning || !this.keyGenerator) return [];
-                
-                const batch = [];
-                const alphabet = this.keyGenerator.alphabet;
-                const alphabetSize = this.keyGenerator.alphabetSize;
-                
-                while (batch.length < batchSize && this.keyGenerator.currentKeyIndex < this.keyGenerator.totalKeys) {
-                    let currentLen = this.keyGenerator.keyLengths[this.keyGenerator.currentLengthIndex];
-                    while (this.keyGenerator.currentKeyIndex >= currentLen.count) {
-                        this.keyGenerator.currentKeyIndex = 0;
-                        this.keyGenerator.currentLengthIndex++;
-                        if (this.keyGenerator.currentLengthIndex >= this.keyGenerator.keyLengths.length) {
-                            break;
+                    // Restart workers if they were running
+                    if (this.isRunning) {
+                        for (let i = 0; i < this.workerStatus.length; i++) {
+                            if (this.workerStatus[i].active) {
+                                const badge = document.getElementById(`worker-${i}-badge`);
+                                if (badge) {
+                                    badge.className = 'worker-badge worker-badge-active';
+                                    badge.textContent = `Worker ${i + 1}`;
+                                }
+                            }
                         }
-                        currentLen = this.keyGenerator.keyLengths[this.keyGenerator.currentLengthIndex];
                     }
-                    
-                    if (this.keyGenerator.currentLengthIndex >= this.keyGenerator.keyLengths.length) {
-                        break;
-                    }
-                    
-                    const len = currentLen.length;
-                    let keyIndex = this.keyGenerator.currentKeyIndex;
-                    const keyChars = new Array(len);
-                    
-                    for (let i = len - 1; i >= 0; i--) {
-                        keyChars[i] = alphabet[keyIndex % alphabetSize];
-                        keyIndex = Math.floor(keyIndex / alphabetSize);
-                    }
-                    
-                    batch.push(keyChars.join(''));
-                    this.keyGenerator.currentKeyIndex++;
                 }
-                
-                return batch;
-            }
-
-            async processKeyBatch(ciphertext, alphabet, charMap, knownText, keys) {
-                const results = [];
-                const alphaLen = alphabet.length;
-                
-                for (const key of keys) {
-                    // Decrypt
-                    const decrypted = new Array(ciphertext.length);
-                    const keyLen = key.length;
-                    
-                    for (let i = 0; i < ciphertext.length; i++) {
-                        const cipherPos = charMap[ciphertext[i]];
-                        const keyPos = charMap[key[i % keyLen]];
-                        decrypted[i] = alphabet[(cipherPos - keyPos + alphaLen) % alphaLen];
-                    }
-                    
-                    const decryptedText = decrypted.join('');
-                    
-                    // Score
-                    const score = this.evaluator.evaluate(decryptedText);
-                    
-                    // Apply known text penalty if needed
-                    const finalScore = knownText && !decryptedText.includes(knownText) 
-                        ? score * 0.5 
-                        : score;
-                    
-                    results.push({
-                        key: key,
-                        score: finalScore,
-                        decrypted: decryptedText.substring(0, 100),
-                        length: key.length
-                    });
-                }
-                
-                return results;
             }
 
             updateResults() {
+                if (this.results.length === 0) return;
+                
                 const topResults = [...this.results]
                     .sort((a, b) => b.score - a.score)
                     .slice(0, 20);
@@ -870,7 +1164,7 @@
             }
 
             updateStats() {
-                if (!this.isRunning) return;
+                if (!this.isRunning || this.isPaused) return;
                 
                 const now = performance.now();
                 const elapsedSec = (now - this.startTime) / 1000;
@@ -892,8 +1186,14 @@
                 
                 const remaining = Math.max(0, this.totalKeys - this.keysTested);
                 this.elements.keysRemaining.textContent = remaining.toLocaleString();
-                
-                requestAnimationFrame(() => this.updateStats());
+            }
+
+            startStatsUpdate() {
+                const update = () => {
+                    this.updateStats();
+                    requestAnimationFrame(update);
+                };
+                update();
             }
 
             checkCompletion() {
@@ -903,15 +1203,18 @@
                 if (allDone) {
                     this.isRunning = false;
                     this.elements.startBtn.disabled = false;
+                    this.elements.pauseBtn.disabled = true;
                     this.elements.cancelBtn.disabled = true;
+                    this.elements.exportBtn.disabled = false;
                     
                     const elapsed = (performance.now() - this.startTime) / 1000;
-                    alert(`Analysis complete! Processed ${this.keysTested.toLocaleString()} keys in ${elapsed.toFixed(2)} seconds.`);
+                    this.showAlert(`Analysis complete! Processed ${this.keysTested.toLocaleString()} keys in ${elapsed.toFixed(2)} seconds.`, 'success');
                 }
             }
 
             cancel() {
                 this.isRunning = false;
+                this.isPaused = false;
                 this.workerPromises = [];
                 
                 // Update worker status badges
@@ -927,21 +1230,62 @@
                 }
                 
                 this.elements.startBtn.disabled = false;
+                this.elements.pauseBtn.disabled = true;
                 this.elements.cancelBtn.disabled = true;
+                this.elements.exportBtn.disabled = this.results.length === 0;
+            }
+
+            exportResults() {
+                if (this.results.length === 0) {
+                    this.showAlert('No results to export', 'warning');
+                    return;
+                }
+                
+                try {
+                    const topResults = [...this.results]
+                        .sort((a, b) => b.score - a.score)
+                        .slice(0, 100);
+                    
+                    const data = {
+                        ciphertext: this.elements.ciphertext.value,
+                        alphabet: this.elements.alphabet.value,
+                        parameters: {
+                            minKeyLength: this.elements.minKeyLen.value,
+                            maxKeyLength: this.elements.maxKeyLen.value,
+                            workerCount: this.elements.workerCount.value,
+                            batchSize: this.elements.batchSize.value,
+                            exitThreshold: this.elements.exitThreshold.value
+                        },
+                        stats: {
+                            keysTested: this.keysTested,
+                            totalKeys: this.totalKeys,
+                            bestScore: this.bestScore
+                        },
+                        results: topResults
+                    };
+                    
+                    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+                    const url = URL.createObjectURL(blob);
+                    
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `vigenere-results-${new Date().toISOString().slice(0, 10)}.json`;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                    
+                    this.showAlert('Results exported successfully', 'success');
+                } catch (error) {
+                    console.error('Export failed:', error);
+                    this.showAlert('Failed to export results', 'danger');
+                }
             }
         }
 
+        // Initialize the application when DOM is loaded
         document.addEventListener('DOMContentLoaded', () => {
-            const cracker = new VigenereCracker();
-            
-            // Start stats update loop
-            function updateStats() {
-                if (cracker.isRunning) {
-                    cracker.updateStats();
-                }
-                requestAnimationFrame(updateStats);
-            }
-            updateStats();
+            new VigenereCracker();
         });
     </script>
 </body>
