@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Advanced Vigenère Cipher Cracker</title>
+    <title>Professional Vigenère Cipher Cracker</title>
     <style>
         :root {
             --primary: #2c3e50;
@@ -66,10 +66,6 @@
             align-items: center;
         }
 
-        .settings-title svg {
-            margin-right: 10px;
-        }
-
         .settings-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -122,12 +118,6 @@
             transition: all 0.15s;
             cursor: pointer;
             margin-right: 10px;
-        }
-
-        .btn svg {
-            margin-right: 8px;
-            width: 16px;
-            height: 16px;
         }
 
         .btn-primary {
@@ -191,38 +181,6 @@
             color: white;
             font-size: 14px;
             font-weight: bold;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .progress-fill::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(
-                45deg,
-                rgba(255, 255, 255, 0.15) 25%,
-                transparent 25%,
-                transparent 50%,
-                rgba(255, 255, 255, 0.15) 50%,
-                rgba(255, 255, 255, 0.15) 75%,
-                transparent 75%,
-                transparent
-            );
-            background-size: 30px 30px;
-            animation: progress-stripes 1s linear infinite;
-        }
-
-        @keyframes progress-stripes {
-            0% {
-                background-position: 0 0;
-            }
-            100% {
-                background-position: 30px 0;
-            }
         }
 
         .stats-container {
@@ -238,25 +196,12 @@
             border-radius: 8px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
             border-left: 4px solid var(--accent);
-            transition: transform 0.2s;
-        }
-
-        .stat-card:hover {
-            transform: translateY(-3px);
         }
 
         .stat-title {
             font-size: 14px;
             color: #718096;
             margin-bottom: 5px;
-            display: flex;
-            align-items: center;
-        }
-
-        .stat-title svg {
-            margin-right: 8px;
-            width: 16px;
-            height: 16px;
         }
 
         .stat-value {
@@ -273,14 +218,8 @@
             color: var(--primary);
             margin-bottom: 20px;
             font-size: 1.4em;
-            display: flex;
-            align-items: center;
             padding-bottom: 10px;
             border-bottom: 1px solid #eee;
-        }
-
-        .section-title svg {
-            margin-right: 10px;
         }
 
         .results-table {
@@ -329,12 +268,6 @@
             color: var(--primary);
             margin-bottom: 15px;
             font-size: 1.2em;
-            display: flex;
-            align-items: center;
-        }
-
-        .best-result-title svg {
-            margin-right: 10px;
         }
 
         .best-result-field {
@@ -365,13 +298,6 @@
             font-size: 14px;
             display: inline-flex;
             align-items: center;
-            transition: all 0.2s;
-        }
-
-        .worker-badge svg {
-            margin-right: 6px;
-            width: 14px;
-            height: 14px;
         }
 
         .worker-badge-active {
@@ -387,60 +313,6 @@
         .worker-badge-cancelled {
             background-color: var(--danger);
             color: white;
-        }
-
-        .chart-container {
-            min-height: 400px;
-            margin-top: 30px;
-            background-color: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
-        }
-
-        .tooltip {
-            position: relative;
-            display: inline-block;
-            cursor: help;
-        }
-
-        .tooltip-icon {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 18px;
-            height: 18px;
-            background-color: #e2e8f0;
-            color: #4a5568;
-            border-radius: 50%;
-            font-size: 12px;
-            margin-left: 6px;
-            cursor: help;
-        }
-
-        .tooltip-text {
-            visibility: hidden;
-            width: 250px;
-            background-color: #2d3748;
-            color: white;
-            text-align: center;
-            border-radius: 6px;
-            padding: 10px;
-            position: absolute;
-            z-index: 1;
-            bottom: 125%;
-            left: 50%;
-            transform: translateX(-50%);
-            opacity: 0;
-            transition: opacity 0.3s;
-            font-size: 14px;
-            font-weight: normal;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
-        }
-
-        .tooltip:hover .tooltip-text {
-            visibility: visible;
-            opacity: 1;
         }
 
         @media (max-width: 768px) {
@@ -462,18 +334,12 @@
 <body>
     <div class="main-container">
         <div class="header">
-            <h1 class="header-title">Advanced Vigenère Cipher Cracker</h1>
-            <p class="header-description">Professional-grade cryptanalysis tool with optimized algorithms and parallel processing</p>
+            <h1 class="header-title">Professional Vigenère Cipher Cracker</h1>
+            <p class="header-description">Optimized cryptanalysis tool with parallel processing and advanced scoring</p>
         </div>
         
         <div class="settings-panel">
-            <h2 class="settings-title">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M12 15a3 3 0 100-6 3 3 0 000 6z" />
-                    <path fill-rule="evenodd" d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.487 4.471-5.705 7.697-10.677 7.697-4.97 0-9.186-3.223-10.675-7.69a1.762 1.762 0 010-1.113zM17.25 12a5.25 5.25 0 11-10.5 0 5.25 5.25 0 0110.5 0z" clip-rule="evenodd" />
-                </svg>
-                Cipher Parameters
-            </h2>
+            <h2 class="settings-title">Cipher Parameters</h2>
             <div class="settings-grid">
                 <div class="form-group">
                     <label for="ciphertext-input" class="form-label">Ciphertext:</label>
@@ -481,13 +347,7 @@
                 </div>
                 
                 <div class="form-group">
-                    <label for="alphabet-input" class="form-label">
-                        Alphabet:
-                        <span class="tooltip">
-                            <span class="tooltip-icon">i</span>
-                            <span class="tooltip-text">Define the character set used in the cipher (default: A-Z)</span>
-                        </span>
-                    </label>
+                    <label for="alphabet-input" class="form-label">Alphabet:</label>
                     <input type="text" id="alphabet-input" class="form-control" value="ABCDEFGHIJKLMNOPQRSTUVWXYZ">
                 </div>
                 
@@ -517,35 +377,15 @@
                 </div>
                 
                 <div class="form-group">
-                    <label for="mutation-rate-input" class="form-label">Key Mutation Rate (%):</label>
-                    <input type="number" id="mutation-rate-input" class="form-control" min="0" max="100" value="10">
-                </div>
-                
-                <div class="form-group">
                     <label for="early-exit-input" class="form-label">Early Exit Score Threshold:</label>
                     <input type="number" id="early-exit-input" class="form-control" min="0" max="100" value="95">
                 </div>
             </div>
             
             <div>
-                <button id="start-button" class="btn btn-success">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                        <path fill-rule="evenodd" d="M4.5 5.653c0-1.426 1.529-2.33 2.779-1.643l11.54 6.348c1.295.712 1.295 2.573 0 3.285L7.28 19.991c-1.25.687-2.779-.217-2.779-1.643V5.653z" clip-rule="evenodd" />
-                    </svg>
-                    Start Analysis
-                </button>
-                <button id="cancel-button" class="btn btn-danger" disabled>
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                        <path fill-rule="evenodd" d="M4.5 7.5a3 3 0 013-3h9a3 3 0 013 3v9a3 3 0 01-3 3h-9a3 3 0 01-3-3v-9z" clip-rule="evenodd" />
-                    </svg>
-                    Cancel Operation
-                </button>
-                <button id="reset-button" class="btn btn-primary">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                        <path fill-rule="evenodd" d="M4.755 10.059a7.5 7.5 0 0112.548-3.364l1.903 1.903h-3.183a.75.75 0 100 1.5h4.992a.75.75 0 00.75-.75V4.356a.75.75 0 00-1.5 0v3.18l-1.9-1.9A9 9 0 003.306 9.67a.75.75 0 101.45.388zm15.408 3.352a.75.75 0 00-.919.53 7.5 7.5 0 01-12.548 3.364l-1.902-1.903h3.183a.75.75 0 000-1.5H2.984a.75.75 0 00-.75.75v4.992a.75.75 0 001.5 0v-3.18l1.9 1.9a9 9 0 0015.059-4.035.75.75 0 00-.53-.918z" clip-rule="evenodd" />
-                    </svg>
-                    Reset All
-                </button>
+                <button id="start-button" class="btn btn-success">Start Analysis</button>
+                <button id="cancel-button" class="btn btn-danger" disabled>Cancel Operation</button>
+                <button id="reset-button" class="btn btn-primary">Reset All</button>
             </div>
         </div>
         
@@ -557,39 +397,19 @@
         
         <div class="stats-container">
             <div class="stat-card">
-                <div class="stat-title">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                        <path fill-rule="evenodd" d="M12 6a.75.75 0 01.75.75v9a.75.75 0 01-1.5 0v-9A.75.75 0 0112 6zM6.75 9a.75.75 0 01.75-.75h9a.75.75 0 010 1.5h-9A.75.75 0 016.75 9z" clip-rule="evenodd" />
-                    </svg>
-                    Keys Tested
-                </div>
+                <div class="stat-title">Keys Tested</div>
                 <div id="keys-tested-counter" class="stat-value">0</div>
             </div>
             <div class="stat-card">
-                <div class="stat-title">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                        <path fill-rule="evenodd" d="M10.5 3.798v5.02a3 3 0 01-.879 2.121l-2.377 2.377a9.845 9.845 0 015.091 1.013 8.315 8.315 0 005.713.636l.285-.071-3.954-3.955a3 3 0 01-.879-2.121v-5.02a23.614 23.614 0 00-3 0zm4.5.138a.75.75 0 00.093-1.495A24.837 24.837 0 0012 2.25a25.048 25.048 0 00-3.093.191A.75.75 0 009 3.936v4.882a1.5 1.5 0 01-.44 1.06l-6.293 6.294c-1.62 1.621-.903 4.475 1.471 4.88 2.686.46 5.447.698 8.262.698 2.816 0 5.576-.239 8.262-.697 2.373-.406 3.092-3.26 1.47-4.881L15.44 9.879A1.5 1.5 0 0115 8.818V3.936z" clip-rule="evenodd" />
-                    </svg>
-                    Keys Per Second
-                </div>
+                <div class="stat-title">Keys Per Second</div>
                 <div id="keys-per-second-counter" class="stat-value">0</div>
             </div>
             <div class="stat-card">
-                <div class="stat-title">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                        <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zM12.75 6a.75.75 0 00-1.5 0v6c0 .414.336.75.75.75h4.5a.75.75 0 000-1.5h-3.75V6z" clip-rule="evenodd" />
-                    </svg>
-                    Time Elapsed
-                </div>
+                <div class="stat-title">Time Elapsed</div>
                 <div id="time-elapsed-counter" class="stat-value">0s</div>
             </div>
             <div class="stat-card">
-                <div class="stat-title">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                        <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zm-.53 14.03a.75.75 0 001.06 0l3-3a.75.75 0 10-1.06-1.06l-1.72 1.72V8.25a.75.75 0 00-1.5 0v5.69l-1.72-1.72a.75.75 0 00-1.06 1.06l3 3z" clip-rule="evenodd" />
-                    </svg>
-                    Keys Remaining
-                </div>
+                <div class="stat-title">Keys Remaining</div>
                 <div id="keys-remaining-counter" class="stat-value">0</div>
             </div>
         </div>
@@ -597,12 +417,7 @@
         <div id="worker-status-container" class="worker-status-container"></div>
         
         <div id="best-result-display" class="best-result-card" style="display: none;">
-            <h3 class="best-result-title">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                    <path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd" />
-                </svg>
-                Best Candidate Found
-            </h3>
+            <h3 class="best-result-title">Best Candidate Found</h3>
             <div class="best-result-field">
                 <span class="best-result-label">Key:</span>
                 <span id="best-key-display"></span>
@@ -622,13 +437,7 @@
         </div>
         
         <div class="results-section">
-            <h2 class="section-title">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                    <path fill-rule="evenodd" d="M5.625 1.5c-1.036 0-1.875.84-1.875 1.875v17.25c0 1.035.84 1.875 1.875 1.875h12.75c1.035 0 1.875-.84 1.875-1.875V12.75A3.75 3.75 0 0016.5 9h-1.875a1.875 1.875 0 01-1.875-1.875V5.25A3.75 3.75 0 009 1.5H5.625zM7.5 15a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5A.75.75 0 017.5 15zm.75 2.25a.75.75 0 000 1.5H12a.75.75 0 000-1.5H8.25z" clip-rule="evenodd" />
-                    <path d="M12.971 1.816A5.23 5.23 0 0114.25 5.25v1.875c0 .207.168.375.375.375H16.5a5.23 5.23 0 013.434 1.279 9.768 9.768 0 00-6.963-6.963z" />
-                </svg>
-                Top 20 Key Candidates
-            </h2>
+            <h2 class="section-title">Top 20 Key Candidates</h2>
             <table class="results-table" id="results-table">
                 <thead>
                     <tr>
@@ -642,24 +451,13 @@
                 <tbody></tbody>
             </table>
         </div>
-        
-        <div class="chart-container">
-            <h2 class="section-title">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M18.375 2.25c-1.035 0-1.875.84-1.875 1.875v15.75c0 1.035.84 1.875 1.875 1.875h.75c1.035 0 1.875-.84 1.875-1.875V4.125c0-1.036-.84-1.875-1.875-1.875h-.75zM9.75 8.625c0-1.036.84-1.875 1.875-1.875h.75c1.036 0 1.875.84 1.875 1.875v11.25c0 1.035-.84 1.875-1.875 1.875h-.75a1.875 1.875 0 01-1.875-1.875V8.625zM3 13.125c0-1.036.84-1.875 1.875-1.875h.75c1.036 0 1.875.84 1.875 1.875v6.75c0 1.035-.84 1.875-1.875 1.875h-.75A1.875 1.875 0 013 19.875v-6.75z" />
-                </svg>
-                Performance Metrics
-            </h2>
-            <canvas id="performance-chart"></canvas>
-        </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-        class OptimizedTextEvaluator {
+        class TextEvaluator {
             constructor() {
-                // Enhanced n-gram frequency data with optimized weights
-                this.ngramFrequency = {
+                // Enhanced n-gram frequencies with optimized weights
+                this.ngrams = {
                     // 4-grams
                     'TION': 6.513, 'NTHE': 6.468, 'THER': 6.359, 'THAT': 6.216,
                     'INGT': 6.183, 'INTH': 6.117, 'THIS': 6.062, 'FTHE': 6.048,
@@ -669,33 +467,17 @@
                     // 2-grams
                     'TH': 6.181, 'HE': 6.107, 'IN': 5.973, 'ER': 5.973,
                     'AN': 5.914, 'RE': 5.833, 'ND': 5.799, 'AT': 5.771,
-                    // Additional common n-grams
-                    'ED': 5.733, 'ES': 5.711, 'EA': 5.699, 'TI': 5.689,
-                    'IT': 5.669, 'TE': 5.659, 'OU': 5.649, 'AR': 5.639
-                };
-
-                // Precompute n-gram lengths for faster access
-                this.ngramLengths = {
-                    2: Object.keys(this.ngramFrequency).filter(k => k.length === 2),
-                    3: Object.keys(this.ngramFrequency).filter(k => k.length === 3),
-                    4: Object.keys(this.ngramFrequency).filter(k => k.length === 4)
-                };
-
-                // Word frequency data
-                this.wordFrequency = {
+                    // Common words
                     'THE': 0.071, 'BE': 0.042, 'TO': 0.039, 'OF': 0.036, 'AND': 0.034,
-                    'A': 0.032, 'IN': 0.028, 'THAT': 0.020, 'HAVE': 0.017, 'I': 0.016,
-                    'IT': 0.015, 'FOR': 0.014, 'NOT': 0.013, 'ON': 0.012, 'WITH': 0.011,
-                    'HE': 0.011, 'AS': 0.010, 'YOU': 0.010, 'DO': 0.009, 'AT': 0.009
+                    'A': 0.032, 'IN': 0.028, 'THAT': 0.020, 'HAVE': 0.017, 'I': 0.016
                 };
 
                 this.wordPattern = /[A-Z']+/g;
                 this.minWordsForEvaluation = 3;
-                this.optimalWordLength = 4.7;
                 this.invalidSequences = ['AAA', 'BBB', 'CCC', 'ABC', 'XYZ', 'QXP', 'JJJ', 'QQQ', 'ZZZ'];
             }
 
-            evaluateText(text) {
+            evaluate(text) {
                 const upperText = text.toUpperCase();
                 const words = upperText.match(this.wordPattern) || [];
                 
@@ -705,86 +487,64 @@
 
                 const scores = {
                     ngrams: this.calculateNgramScore(upperText),
-                    wordLength: this.calculateWordLengthScore(words),
-                    uniqueness: this.calculateUniquenessScore(words),
+                    wordFrequency: this.calculateWordFrequencyScore(words),
                     sequences: this.calculateSequenceScore(upperText)
                 };
 
-                // Optimized weighted scoring formula
+                // Optimized weighted scoring
                 const combinedScore = 
-                    (scores.ngrams * 0.70) +
-                    (scores.wordLength * 0.15) +
-                    (scores.uniqueness * 0.10) +
+                    (scores.ngrams * 0.75) +
+                    (scores.wordFrequency * 0.20) +
                     (scores.sequences * 0.05);
 
-                return Math.max(0, Math.min(1, combinedScore)) * 100; // Convert to percentage
+                return Math.max(0, Math.min(1, combinedScore)) * 100;
             }
 
             calculateNgramScore(text) {
                 let totalScore = 0;
                 let ngramCount = 0;
-                const textLen = text.length;
-
-                // Optimized n-gram checking with sliding window
-                for (let i = 0; i <= textLen - 2; i++) {
-                    // Check 2-grams
-                    const bigram = text.substr(i, 2);
-                    if (this.ngramFrequency[bigram]) {
-                        totalScore += this.ngramFrequency[bigram];
-                        ngramCount++;
-                    }
-
-                    // Check 3-grams when possible
-                    if (i <= textLen - 3) {
-                        const trigram = text.substr(i, 3);
-                        if (this.ngramFrequency[trigram]) {
-                            totalScore += this.ngramFrequency[trigram];
-                            ngramCount++;
-                        }
-                    }
-
-                    // Check 4-grams when possible
-                    if (i <= textLen - 4) {
-                        const quadgram = text.substr(i, 4);
-                        if (this.ngramFrequency[quadgram]) {
-                            totalScore += this.ngramFrequency[quadgram];
+                
+                // Check all possible n-gram lengths
+                for (let n = 2; n <= 4; n++) {
+                    for (let i = 0; i <= text.length - n; i++) {
+                        const gram = text.substr(i, n);
+                        if (this.ngrams[gram]) {
+                            totalScore += this.ngrams[gram];
                             ngramCount++;
                         }
                     }
                 }
 
-                return ngramCount > 0 ? totalScore / (ngramCount * 5) : 0; // Normalize score
+                return ngramCount > 0 ? totalScore / (ngramCount * 5) : 0;
             }
 
-            calculateWordLengthScore(words) {
-                const totalLetters = words.reduce((sum, word) => sum + word.length, 0);
-                const avgLength = totalLetters / words.length;
-                const lengthDiff = Math.abs(avgLength - this.optimalWordLength);
+            calculateWordFrequencyScore(words) {
+                let score = 0;
+                let matchedWords = 0;
                 
-                return Math.max(0, 1 - (lengthDiff / this.optimalWordLength));
-            }
-
-            calculateUniquenessScore(words) {
-                const uniqueWords = new Set(words);
-                return uniqueWords.size / words.length;
+                for (const word of words) {
+                    if (this.ngrams[word]) {
+                        score += this.ngrams[word];
+                        matchedWords++;
+                    }
+                }
+                
+                return matchedWords > 0 ? score / matchedWords : 0;
             }
 
             calculateSequenceScore(text) {
                 let invalidCount = 0;
-
                 for (let i = 0; i < text.length - 2; i++) {
                     const seq = text.substr(i, 3);
                     if (this.invalidSequences.includes(seq)) {
                         invalidCount++;
                     }
                 }
-
-                const maxPossible = Math.max(1, text.length - 2);
-                return 1 - (invalidCount / maxPossible);
+                return 1 - (invalidCount / Math.max(1, text.length - 2));
             }
         }
 
-        class AdvancedVigenereCracker {
+        class VigenereCracker {
             constructor() {
                 this.workers = [];
                 this.results = [];
@@ -795,19 +555,13 @@
                 this.keysPerSecond = 0;
                 this.keysThisSecond = 0;
                 this.lastUpdateTime = 0;
-                this.metrics = [];
-                this.chart = null;
                 this.testedKeys = new Set();
                 this.keyGenerator = null;
-                this.evaluator = new OptimizedTextEvaluator();
-                this.performanceStats = {
-                    keyGenTime: 0,
-                    decryptTime: 0,
-                    scoreTime: 0
-                };
+                this.evaluator = new TextEvaluator();
+                this.workerPromises = [];
+                this.workerStatus = [];
 
                 this.initUI();
-                this.initChart();
                 this.setupEventHandlers();
             }
 
@@ -823,7 +577,6 @@
                     maxKeyLen: document.getElementById('max-keylength-input'),
                     workerCount: document.getElementById('worker-count-input'),
                     batchSize: document.getElementById('batch-size-input'),
-                    mutationRate: document.getElementById('mutation-rate-input'),
                     exitThreshold: document.getElementById('early-exit-input'),
                     progress: document.getElementById('progress-indicator'),
                     keysTested: document.getElementById('keys-tested-counter'),
@@ -836,58 +589,8 @@
                     bestScore: document.getElementById('best-score-display'),
                     bestLength: document.getElementById('best-length-display'),
                     bestDecrypted: document.getElementById('best-decrypted-display'),
-                    resultsTable: document.querySelector('#results-table tbody'),
-                    chart: document.getElementById('performance-chart').getContext('2d')
+                    resultsTable: document.querySelector('#results-table tbody')
                 };
-            }
-
-            initChart() {
-                this.chart = new Chart(this.elements.chart, {
-                    type: 'line',
-                    data: {
-                        labels: [],
-                        datasets: [
-                            {
-                                label: 'Keys Processed Per Second',
-                                data: [],
-                                borderColor: 'rgba(52, 152, 219, 1)',
-                                backgroundColor: 'rgba(52, 152, 219, 0.2)',
-                                fill: true,
-                                tension: 0.1
-                            },
-                            {
-                                label: 'Best Score',
-                                data: [],
-                                borderColor: 'rgba(46, 204, 113, 1)',
-                                backgroundColor: 'rgba(46, 204, 113, 0.2)',
-                                fill: false,
-                                tension: 0.1
-                            }
-                        ]
-                    },
-                    options: {
-                        responsive: true,
-                        scales: {
-                            y: {
-                                beginAtZero: true,
-                                title: { display: true, text: 'Keys/Second | Score' }
-                            },
-                            x: {
-                                title: { display: true, text: 'Elapsed Time (seconds)' }
-                            }
-                        },
-                        plugins: {
-                            tooltip: {
-                                mode: 'index',
-                                intersect: false
-                            }
-                        },
-                        hover: {
-                            mode: 'nearest',
-                            intersect: true
-                        }
-                    }
-                });
             }
 
             setupEventHandlers() {
@@ -904,22 +607,17 @@
                 this.elements.progress.style.width = '0%';
                 this.elements.progress.textContent = '0%';
                 this.elements.workerStatus.innerHTML = '';
-                this.chart.data.labels = [];
-                this.chart.data.datasets[0].data = [];
-                this.chart.data.datasets[1].data = [];
-                this.chart.update();
                 this.keyGenerator = null;
             }
 
-            start() {
+            async start() {
                 const ciphertext = this.elements.ciphertext.value.toUpperCase();
                 const alphabet = this.elements.alphabet.value.toUpperCase() || 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
                 const minLen = parseInt(this.elements.minKeyLen.value) || 2;
                 const maxLen = parseInt(this.elements.maxKeyLen.value) || 10;
                 const knownText = this.elements.knownText.value.toUpperCase();
-                const workers = parseInt(this.elements.workerCount.value) || 4;
+                const workerCount = parseInt(this.elements.workerCount.value) || 4;
                 const batchSize = parseInt(this.elements.batchSize.value) || 10000;
-                const mutationRate = parseInt(this.elements.mutationRate.value) || 10;
                 const exitThreshold = parseInt(this.elements.exitThreshold.value) || 95;
                 
                 const cleanCiphertext = ciphertext.split('').filter(c => alphabet.includes(c)).join('');
@@ -934,7 +632,6 @@
                 this.startTime = performance.now();
                 this.lastUpdateTime = this.startTime;
                 this.keysTested = 0;
-                this.metrics = [];
                 this.testedKeys = new Set();
                 
                 this.totalKeys = this.calcTotalKeys(alphabet.length, minLen, maxLen);
@@ -945,11 +642,30 @@
                 this.elements.startBtn.disabled = true;
                 this.elements.cancelBtn.disabled = false;
                 
-                this.launchWorkers(cleanCiphertext, alphabet, minLen, maxLen, 
-                                 knownText, workers, batchSize, 
-                                 mutationRate, exitThreshold);
+                // Initialize worker status badges
+                this.elements.workerStatus.innerHTML = '';
+                this.workerStatus = [];
+                for (let i = 0; i < workerCount; i++) {
+                    const badge = document.createElement('div');
+                    badge.className = 'worker-badge worker-badge-active';
+                    badge.id = `worker-${i}-badge`;
+                    badge.textContent = `Worker ${i + 1}`;
+                    this.elements.workerStatus.appendChild(badge);
+                    this.workerStatus.push({ active: true });
+                }
                 
-                this.updateStats();
+                // Launch workers in parallel
+                this.workerPromises = [];
+                for (let i = 0; i < workerCount; i++) {
+                    this.workerPromises.push(
+                        this.runWorker(cleanCiphertext, alphabet, knownText, batchSize, exitThreshold, i)
+                    );
+                }
+                
+                // Wait for all workers to complete
+                await Promise.all(this.workerPromises);
+                
+                this.checkCompletion();
             }
 
             calcTotalKeys(alphabetSize, minLen, maxLen) {
@@ -987,62 +703,62 @@
                 this.elements.bestResult.style.display = 'none';
                 this.elements.progress.style.width = '0%';
                 this.elements.progress.textContent = '0%';
-                this.elements.workerStatus.innerHTML = '';
-                this.chart.data.labels = [];
-                this.chart.data.datasets[0].data = [];
-                this.chart.data.datasets[1].data = [];
-                this.chart.update();
             }
 
-            launchWorkers(ciphertext, alphabet, minLen, maxLen, knownText, workerCount, batchSize, mutationRate, exitThreshold) {
-                this.workers.forEach(w => w.terminate());
-                this.workers = [];
-                
+            async runWorker(ciphertext, alphabet, knownText, batchSize, exitThreshold, workerId) {
                 const charMap = {};
                 for (let i = 0; i < alphabet.length; i++) {
                     charMap[alphabet[i]] = i;
                 }
                 
-                const workerCode = this.getWorkerCode();
-                
-                for (let i = 0; i < workerCount; i++) {
-                    const worker = new Worker(URL.createObjectURL(new Blob([workerCode], { type: 'text/javascript' })));
+                while (this.isRunning) {
+                    const batch = this.getNextKeyBatch(batchSize);
+                    if (batch.length === 0) break;
                     
-                    worker.id = i;
-                    worker.processed = 0;
-                    this.workers.push(worker);
+                    const results = await this.processKeyBatch(ciphertext, alphabet, charMap, knownText, batch);
                     
-                    const badge = document.createElement('div');
-                    badge.className = 'worker-badge';
-                    badge.id = `worker-${i}-badge`;
-                    badge.innerHTML = `
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                            <path fill-rule="evenodd" d="M7.5 5.25a3 3 0 013-3h3a3 3 0 013 3v.205c.933.085 1.857.197 2.774.334 1.454.218 2.476 1.483 2.476 2.917v3.033c0 1.211-.734 2.352-1.936 2.752A24.726 24.726 0 0112 15.75c-2.73 0-5.357-.442-7.814-1.259-1.202-.4-1.936-1.541-1.936-2.752V8.706c0-1.434 1.022-2.7 2.476-2.917A48.814 48.814 0 017.5 5.455V5.25zm7.5 0v.09a48.53 48.53 0 00-6 0v-.09a1.5 1.5 0 011.5-1.5h3a1.5 1.5 0 011.5 1.5zm-3 8.25a.75.75 0 100-1.5.75.75 0 000 1.5z" clip-rule="evenodd" />
-                            <path d="M3 18.4v-2.796a4.3 4.3 0 00.713.31A26.226 26.226 0 0012 17.25c2.892 0 5.68-.468 8.287-1.335.252-.084.49-.189.713-.311V18.4c0 1.452-1.047 2.728-2.523 2.923-2.12.282-4.282.427-6.477.427a49.19 49.19 0 01-6.477-.427C4.047 21.128 3 19.852 3 18.4z" />
-                        </svg>
-                        Worker ${i + 1}
-                    `;
-                    this.elements.workerStatus.appendChild(badge);
+                    // Process results
+                    const fragment = document.createDocumentFragment();
+                    let localBestScore = 0;
                     
-                    worker.onmessage = (e) => this.handleWorkerMessage(e, i);
+                    for (const result of results) {
+                        if (!this.testedKeys.has(result.key)) {
+                            this.results.push(result);
+                            this.testedKeys.add(result.key);
+                            
+                            if (result.score > localBestScore) {
+                                localBestScore = result.score;
+                            }
+                        }
+                    }
                     
-                    worker.postMessage({
-                        type: 'init',
-                        ciphertext: ciphertext,
-                        alphabet: alphabet,
-                        charMap: charMap,
-                        knownText: knownText,
-                        mutationRate: mutationRate,
-                        exitThreshold: exitThreshold,
-                        workerId: i
-                    });
+                    this.keysTested += batch.length;
+                    this.keysThisSecond += batch.length;
                     
-                    this.assignBatch(worker, batchSize);
+                    // Update UI
+                    this.updateResults();
+                    this.updateBestResult();
+                    
+                    // Check for early exit
+                    if (localBestScore >= exitThreshold) {
+                        this.isRunning = false;
+                        this.elements.cancelBtn.disabled = true;
+                        alert(`Worker ${workerId + 1} found high-scoring key (${localBestScore.toFixed(2)})!`);
+                        break;
+                    }
                 }
+                
+                // Mark worker as completed
+                const badge = document.getElementById(`worker-${workerId}-badge`);
+                if (badge) {
+                    badge.className = 'worker-badge worker-badge-finished';
+                    badge.textContent += ' (completed)';
+                }
+                this.workerStatus[workerId].active = false;
             }
 
-            assignBatch(worker, batchSize) {
-                if (!this.isRunning || !this.keyGenerator) return;
+            getNextKeyBatch(batchSize) {
+                if (!this.isRunning || !this.keyGenerator) return [];
                 
                 const batch = [];
                 const alphabet = this.keyGenerator.alphabet;
@@ -1076,201 +792,43 @@
                     this.keyGenerator.currentKeyIndex++;
                 }
                 
-                if (batch.length > 0) {
-                    worker.postMessage({
-                        type: 'process',
-                        keys: batch
-                    });
-                } else {
-                    const badge = document.getElementById(`worker-${worker.id}-badge`);
-                    if (badge) {
-                        badge.innerHTML += ' (completed)';
-                        badge.className = 'worker-badge worker-badge-finished';
-                    }
-                    this.checkCompletion();
-                }
+                return batch;
             }
 
-            getWorkerCode() {
-                return `
-                    const ngrams = {
-                        // 4-grams
-                        'TION': 6.513, 'NTHE': 6.468, 'THER': 6.359, 'THAT': 6.216,
-                        'INGT': 6.183, 'INTH': 6.117, 'THIS': 6.062, 'FTHE': 6.048,
-                        // 3-grams
-                        'THE': 6.508, 'AND': 5.863, 'ING': 5.853, 'ION': 5.623,
-                        'ENT': 5.623, 'HER': 5.556, 'FOR': 5.531, 'THA': 5.518,
-                        // 2-grams
-                        'TH': 6.181, 'HE': 6.107, 'IN': 5.973, 'ER': 5.973,
-                        'AN': 5.914, 'RE': 5.833, 'ND': 5.799, 'AT': 5.771
-                    };
+            async processKeyBatch(ciphertext, alphabet, charMap, knownText, keys) {
+                const results = [];
+                const alphaLen = alphabet.length;
+                
+                for (const key of keys) {
+                    // Decrypt
+                    const decrypted = new Array(ciphertext.length);
+                    const keyLen = key.length;
                     
-                    let ciphertext = '';
-                    let alphabet = '';
-                    let charMap = {};
-                    let knownText = '';
-                    let mutationRate = 10;
-                    let exitThreshold = 95;
-                    let workerId = 0;
-                    
-                    function decrypt(key) {
-                        const decrypted = new Array(ciphertext.length);
-                        const keyLen = key.length;
-                        const alphaLen = alphabet.length;
-                        
-                        for (let i = 0; i < ciphertext.length; i++) {
-                            const cipherPos = charMap[ciphertext[i]];
-                            const keyPos = charMap[key[i % keyLen]];
-                            decrypted[i] = alphabet[(cipherPos - keyPos + alphaLen) % alphaLen];
-                        }
-                        
-                        return decrypted.join('');
+                    for (let i = 0; i < ciphertext.length; i++) {
+                        const cipherPos = charMap[ciphertext[i]];
+                        const keyPos = charMap[key[i % keyLen]];
+                        decrypted[i] = alphabet[(cipherPos - keyPos + alphaLen) % alphaLen];
                     }
                     
-                    function scoreText(text) {
-                        let score = 0;
-                        let ngramCount = 0;
-                        const textLen = text.length;
-                        
-                        // Optimized n-gram checking with sliding window
-                        for (let i = 0; i <= textLen - 2; i++) {
-                            // Check 2-grams
-                            const bigram = text.substr(i, 2);
-                            if (ngrams[bigram]) {
-                                score += ngrams[bigram];
-                                ngramCount++;
-                            }
-                            
-                            // Check 3-grams when possible
-                            if (i <= textLen - 3) {
-                                const trigram = text.substr(i, 3);
-                                if (ngrams[trigram]) {
-                                    score += ngrams[trigram];
-                                    ngramCount++;
-                                }
-                            }
-                            
-                            // Check 4-grams when possible
-                            if (i <= textLen - 4) {
-                                const quadgram = text.substr(i, 4);
-                                if (ngrams[quadgram]) {
-                                    score += ngrams[quadgram];
-                                    ngramCount++;
-                                }
-                            }
-                        }
-                        
-                        if (knownText && !text.includes(knownText)) {
-                            score -= 1000;
-                        }
-                        
-                        return ngramCount > 0 ? score / (ngramCount * 5) : 0;
-                    }
+                    const decryptedText = decrypted.join('');
                     
-                    function mutateKey(key) {
-                        if (Math.random() * 100 >= mutationRate || key.length < 1) {
-                            return key;
-                        }
-                        
-                        const pos = Math.floor(Math.random() * key.length);
-                        const newChar = alphabet[Math.floor(Math.random() * alphabet.length)];
-                        return key.substring(0, pos) + newChar + key.substring(pos + 1);
-                    }
+                    // Score
+                    const score = this.evaluator.evaluate(decryptedText);
                     
-                    self.onmessage = function(e) {
-                        const data = e.data;
-                        
-                        if (data.type === 'init') {
-                            ciphertext = data.ciphertext;
-                            alphabet = data.alphabet;
-                            charMap = data.charMap;
-                            knownText = data.knownText;
-                            mutationRate = data.mutationRate;
-                            exitThreshold = data.exitThreshold;
-                            workerId = data.workerId;
-                            
-                            self.postMessage({ type: 'ready', workerId: workerId });
-                            return;
-                        }
-                        
-                        if (data.type === 'process') {
-                            const keys = data.keys;
-                            const results = [];
-                            let bestScore = -Infinity;
-                            
-                            for (const key of keys) {
-                                const mutatedKey = mutateKey(key);
-                                const decrypted = decrypt(mutatedKey);
-                                const score = scoreText(decrypted);
-                                
-                                results.push({
-                                    key: mutatedKey,
-                                    score: score,
-                                    decrypted: decrypted.substring(0, 100),
-                                    length: mutatedKey.length
-                                });
-                                
-                                if (score > bestScore) {
-                                    bestScore = score;
-                                }
-                            }
-                            
-                            const shouldExit = bestScore >= exitThreshold;
-                            
-                            self.postMessage({ 
-                                type: 'results', 
-                                results: results, 
-                                processed: keys.length,
-                                earlyExit: shouldExit,
-                                workerId: workerId 
-                            });
-                        }
-                    };
-                `;
-            }
-
-            handleWorkerMessage(event, workerId) {
-                if (!this.isRunning) return;
-                
-                const badge = document.getElementById(`worker-${workerId}-badge`);
-                const data = event.data;
-                
-                if (data.type === 'ready') {
-                    badge.classList.add('worker-badge-active');
-                    return;
-                }
-                
-                if (data.type === 'results') {
-                    this.keysTested += data.processed;
-                    this.keysThisSecond += data.processed;
-                    this.workers[workerId].processed += data.processed;
+                    // Apply known text penalty if needed
+                    const finalScore = knownText && !decryptedText.includes(knownText) 
+                        ? score * 0.5 
+                        : score;
                     
-                    // Use DocumentFragment for efficient DOM updates
-                    const fragment = document.createDocumentFragment();
-                    
-                    data.results.forEach(result => {
-                        if (!this.testedKeys.has(result.key)) {
-                            this.results.push(result);
-                            this.testedKeys.add(result.key);
-                        }
+                    results.push({
+                        key: key,
+                        score: finalScore,
+                        decrypted: decryptedText.substring(0, 100),
+                        length: key.length
                     });
-                    
-                    this.updateResults();
-                    this.updateBestResult();
-                    
-                    if (data.earlyExit) {
-                        this.cancel();
-                        alert(`Early exit triggered with high-scoring key found!`);
-                        return;
-                    }
-                    
-                    if (this.isRunning) {
-                        this.assignBatch(
-                            this.workers[workerId], 
-                            parseInt(this.elements.batchSize.value) || 10000
-                        );
-                    }
                 }
+                
+                return results;
             }
 
             updateResults() {
@@ -1309,13 +867,6 @@
                 this.elements.bestScore.textContent = best.score.toFixed(2);
                 this.elements.bestLength.textContent = best.length;
                 this.elements.bestDecrypted.textContent = best.decrypted;
-                
-                // Update chart with best score
-                const now = performance.now();
-                const elapsedSec = Math.floor((now - this.startTime) / 1000);
-                if (this.chart.data.datasets[1].data.length < 20) {
-                    this.chart.data.datasets[1].data.push(best.score);
-                }
             }
 
             updateStats() {
@@ -1328,19 +879,6 @@
                     this.keysPerSecond = this.keysThisSecond / ((now - this.lastUpdateTime) / 1000);
                     this.keysThisSecond = 0;
                     this.lastUpdateTime = now;
-                    
-                    this.metrics.push({
-                        time: Math.floor(elapsedSec),
-                        rate: Math.floor(this.keysPerSecond)
-                    });
-                    
-                    if (this.metrics.length > 20) {
-                        this.metrics.shift();
-                    }
-                    
-                    this.chart.data.labels = this.metrics.map(m => m.time);
-                    this.chart.data.datasets[0].data = this.metrics.map(m => m.rate);
-                    this.chart.update();
                 }
                 
                 this.elements.keysTested.textContent = this.keysTested.toLocaleString();
@@ -1359,33 +897,34 @@
             }
 
             checkCompletion() {
-                if (this.keyGenerator && this.keyGenerator.currentKeyIndex >= this.keyGenerator.totalKeys) {
-                    const allDone = this.workers.every(worker => {
-                        const badge = document.getElementById(`worker-${worker.id}-badge`);
-                        return badge && badge.textContent.includes('completed');
-                    });
+                if (!this.isRunning) return;
+                
+                const allDone = this.workerStatus.every(w => !w.active);
+                if (allDone) {
+                    this.isRunning = false;
+                    this.elements.startBtn.disabled = false;
+                    this.elements.cancelBtn.disabled = true;
                     
-                    if (allDone) {
-                        this.isRunning = false;
-                        this.elements.startBtn.disabled = false;
-                        this.elements.cancelBtn.disabled = true;
-                        
-                        const elapsed = (performance.now() - this.startTime) / 1000;
-                        alert(`Analysis complete! Processed ${this.keysTested.toLocaleString()} keys in ${elapsed.toFixed(2)} seconds.`);
-                    }
+                    const elapsed = (performance.now() - this.startTime) / 1000;
+                    alert(`Analysis complete! Processed ${this.keysTested.toLocaleString()} keys in ${elapsed.toFixed(2)} seconds.`);
                 }
             }
 
             cancel() {
                 this.isRunning = false;
-                this.workers.forEach(worker => {
-                    worker.terminate();
-                    const badge = document.getElementById(`worker-${worker.id}-badge`);
-                    if (badge) {
-                        badge.innerHTML += ' (cancelled)';
-                        badge.className = 'worker-badge worker-badge-cancelled';
+                this.workerPromises = [];
+                
+                // Update worker status badges
+                for (let i = 0; i < this.workerStatus.length; i++) {
+                    if (this.workerStatus[i].active) {
+                        const badge = document.getElementById(`worker-${i}-badge`);
+                        if (badge) {
+                            badge.className = 'worker-badge worker-badge-cancelled';
+                            badge.textContent += ' (cancelled)';
+                        }
+                        this.workerStatus[i].active = false;
                     }
-                });
+                }
                 
                 this.elements.startBtn.disabled = false;
                 this.elements.cancelBtn.disabled = true;
@@ -1393,7 +932,16 @@
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            const cracker = new AdvancedVigenereCracker();
+            const cracker = new VigenereCracker();
+            
+            // Start stats update loop
+            function updateStats() {
+                if (cracker.isRunning) {
+                    cracker.updateStats();
+                }
+                requestAnimationFrame(updateStats);
+            }
+            updateStats();
         });
     </script>
 </body>
