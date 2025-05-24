@@ -3,48 +3,71 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Professional Vigenère Cipher Cracker</title>
+    <title>Advanced Vigenère Cipher Cracker</title>
     <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #34495e;
+            --accent: #3498db;
+            --success: #2ecc71;
+            --danger: #e74c3c;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+        }
+        
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
-            background-color: #f8f9fa;
-            color: #212529;
+            background-color: #f5f7fa;
+            color: var(--dark);
             line-height: 1.6;
         }
 
         .main-container {
-            background-color: #ffffff;
-            border-radius: 8px;
-            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
             padding: 30px;
             margin-top: 20px;
         }
 
+        .header {
+            border-bottom: 1px solid #eee;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+
         .header-title {
-            color: #2c3e50;
+            color: var(--primary);
             margin-bottom: 10px;
+            font-size: 2.2em;
         }
 
         .header-description {
             color: #7f8c8d;
-            margin-bottom: 30px;
+            font-size: 1.1em;
         }
 
         .settings-panel {
-            background-color: #f8f9fa;
+            background-color: #f8fafc;
             padding: 25px;
             border-radius: 8px;
             margin-bottom: 25px;
-            border: 1px solid #e9ecef;
+            border: 1px solid #e2e8f0;
         }
 
         .settings-title {
-            color: #2c3e50;
+            color: var(--primary);
             margin-bottom: 20px;
             font-size: 1.4em;
+            display: flex;
+            align-items: center;
+        }
+
+        .settings-title svg {
+            margin-right: 10px;
         }
 
         .settings-grid {
@@ -62,72 +85,82 @@
             display: block;
             margin-bottom: 8px;
             font-weight: 600;
-            color: #495057;
+            color: #4a5568;
+            font-size: 0.95em;
         }
 
         .form-control {
             width: 100%;
-            padding: 10px;
-            font-size: 16px;
-            border: 1px solid #ced4da;
-            border-radius: 4px;
-            transition: border-color 0.15s;
+            padding: 10px 12px;
+            font-size: 15px;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            transition: all 0.2s;
+            background-color: white;
         }
 
         .form-control:focus {
-            border-color: #80bdff;
+            border-color: var(--accent);
             outline: 0;
-            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
         }
 
         .btn {
-            display: inline-block;
-            font-weight: 400;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 500;
             text-align: center;
             white-space: nowrap;
             vertical-align: middle;
             user-select: none;
             border: 1px solid transparent;
             padding: 10px 20px;
-            font-size: 1rem;
+            font-size: 0.95rem;
             line-height: 1.5;
-            border-radius: 4px;
+            border-radius: 6px;
             transition: all 0.15s;
             cursor: pointer;
             margin-right: 10px;
         }
 
+        .btn svg {
+            margin-right: 8px;
+            width: 16px;
+            height: 16px;
+        }
+
         .btn-primary {
-            color: #fff;
-            background-color: #007bff;
-            border-color: #007bff;
+            color: white;
+            background-color: var(--accent);
+            border-color: var(--accent);
         }
 
         .btn-primary:hover {
-            background-color: #0069d9;
-            border-color: #0062cc;
+            background-color: #2980b9;
+            border-color: #2980b9;
         }
 
         .btn-danger {
-            color: #fff;
-            background-color: #dc3545;
-            border-color: #dc3545;
+            color: white;
+            background-color: var(--danger);
+            border-color: var(--danger);
         }
 
         .btn-danger:hover {
-            background-color: #c82333;
-            border-color: #bd2130;
+            background-color: #c0392b;
+            border-color: #c0392b;
         }
 
         .btn-success {
-            color: #fff;
-            background-color: #28a745;
-            border-color: #28a745;
+            color: white;
+            background-color: var(--success);
+            border-color: var(--success);
         }
 
         .btn-success:hover {
-            background-color: #218838;
-            border-color: #1e7e34;
+            background-color: #27ae60;
+            border-color: #27ae60;
         }
 
         .btn:disabled {
@@ -141,14 +174,15 @@
 
         .progress-bar {
             height: 25px;
-            background-color: #e9ecef;
-            border-radius: 4px;
+            background-color: #edf2f7;
+            border-radius: 6px;
             overflow: hidden;
+            position: relative;
         }
 
         .progress-fill {
             height: 100%;
-            background-color: #17a2b8;
+            background: linear-gradient(90deg, var(--accent), #4facfe);
             width: 0%;
             transition: width 0.3s ease;
             display: flex;
@@ -157,6 +191,38 @@
             color: white;
             font-size: 14px;
             font-weight: bold;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(
+                45deg,
+                rgba(255, 255, 255, 0.15) 25%,
+                transparent 25%,
+                transparent 50%,
+                rgba(255, 255, 255, 0.15) 50%,
+                rgba(255, 255, 255, 0.15) 75%,
+                transparent 75%,
+                transparent
+            );
+            background-size: 30px 30px;
+            animation: progress-stripes 1s linear infinite;
+        }
+
+        @keyframes progress-stripes {
+            0% {
+                background-position: 0 0;
+            }
+            100% {
+                background-position: 30px 0;
+            }
         }
 
         .stats-container {
@@ -167,82 +233,122 @@
         }
 
         .stat-card {
-            background-color: #f8f9fa;
+            background-color: white;
             padding: 20px;
             border-radius: 8px;
-            border-left: 4px solid #6c757d;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            border-left: 4px solid var(--accent);
+            transition: transform 0.2s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-3px);
         }
 
         .stat-title {
             font-size: 14px;
-            color: #6c757d;
+            color: #718096;
             margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+        }
+
+        .stat-title svg {
+            margin-right: 8px;
+            width: 16px;
+            height: 16px;
         }
 
         .stat-value {
             font-size: 24px;
             font-weight: bold;
-            color: #343a40;
+            color: var(--primary);
         }
 
         .results-section {
             margin-top: 40px;
         }
 
-        .results-title {
-            color: #2c3e50;
+        .section-title {
+            color: var(--primary);
             margin-bottom: 20px;
             font-size: 1.4em;
+            display: flex;
+            align-items: center;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .section-title svg {
+            margin-right: 10px;
         }
 
         .results-table {
             width: 100%;
             border-collapse: collapse;
             margin-bottom: 30px;
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
         }
 
         .results-table th {
-            background-color: #f8f9fa;
-            padding: 12px;
+            background-color: #f8fafc;
+            padding: 14px 16px;
             text-align: left;
-            border-bottom: 2px solid #dee2e6;
-            color: #495057;
+            color: #4a5568;
             font-weight: 600;
+            border-bottom: 2px solid #e2e8f0;
         }
 
         .results-table td {
-            padding: 12px;
-            border-bottom: 1px solid #dee2e6;
+            padding: 12px 16px;
+            border-bottom: 1px solid #edf2f7;
             vertical-align: top;
         }
 
+        .results-table tr:last-child td {
+            border-bottom: none;
+        }
+
         .results-table tr:hover {
-            background-color: #f1f5f9;
+            background-color: #f8fafc;
         }
 
         .best-result-card {
-            background-color: #f0f8ff;
+            background-color: #f8fafc;
             padding: 25px;
             border-radius: 8px;
             margin-top: 30px;
-            border-left: 4px solid #4fc3f7;
+            border-left: 4px solid var(--success);
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
         }
 
         .best-result-title {
-            color: #2c3e50;
+            color: var(--primary);
             margin-bottom: 15px;
             font-size: 1.2em;
+            display: flex;
+            align-items: center;
+        }
+
+        .best-result-title svg {
+            margin-right: 10px;
         }
 
         .best-result-field {
-            margin-bottom: 10px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: flex-start;
         }
 
         .best-result-label {
             font-weight: 600;
-            color: #495057;
+            color: #4a5568;
             display: inline-block;
-            width: 120px;
+            width: 140px;
+            flex-shrink: 0;
         }
 
         .worker-status-container {
@@ -253,30 +359,88 @@
         }
 
         .worker-badge {
-            background-color: #e9ecef;
-            padding: 6px 12px;
-            border-radius: 4px;
+            background-color: #edf2f7;
+            padding: 8px 14px;
+            border-radius: 20px;
             font-size: 14px;
+            display: inline-flex;
+            align-items: center;
+            transition: all 0.2s;
+        }
+
+        .worker-badge svg {
+            margin-right: 6px;
+            width: 14px;
+            height: 14px;
         }
 
         .worker-badge-active {
-            background-color: #4fc3f7;
+            background-color: var(--accent);
             color: white;
         }
 
         .worker-badge-finished {
-            background-color: #28a745;
+            background-color: var(--success);
             color: white;
         }
 
         .worker-badge-cancelled {
-            background-color: #dc3545;
+            background-color: var(--danger);
             color: white;
         }
 
         .chart-container {
             min-height: 400px;
             margin-top: 30px;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            cursor: help;
+        }
+
+        .tooltip-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 18px;
+            height: 18px;
+            background-color: #e2e8f0;
+            color: #4a5568;
+            border-radius: 50%;
+            font-size: 12px;
+            margin-left: 6px;
+            cursor: help;
+        }
+
+        .tooltip-text {
+            visibility: hidden;
+            width: 250px;
+            background-color: #2d3748;
+            color: white;
+            text-align: center;
+            border-radius: 6px;
+            padding: 10px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 14px;
+            font-weight: normal;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        .tooltip:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
         }
 
         @media (max-width: 768px) {
@@ -297,11 +461,19 @@
 </head>
 <body>
     <div class="main-container">
-        <h1 class="header-title">Professional Vigenère Cipher Cracker</h1>
-        <p class="header-description">Advanced cryptographic analysis tool with optimized linguistic evaluation</p>
+        <div class="header">
+            <h1 class="header-title">Advanced Vigenère Cipher Cracker</h1>
+            <p class="header-description">Professional-grade cryptanalysis tool with optimized algorithms and parallel processing</p>
+        </div>
         
         <div class="settings-panel">
-            <h2 class="settings-title">Cipher Parameters</h2>
+            <h2 class="settings-title">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 15a3 3 0 100-6 3 3 0 000 6z" />
+                    <path fill-rule="evenodd" d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.487 4.471-5.705 7.697-10.677 7.697-4.97 0-9.186-3.223-10.675-7.69a1.762 1.762 0 010-1.113zM17.25 12a5.25 5.25 0 11-10.5 0 5.25 5.25 0 0110.5 0z" clip-rule="evenodd" />
+                </svg>
+                Cipher Parameters
+            </h2>
             <div class="settings-grid">
                 <div class="form-group">
                     <label for="ciphertext-input" class="form-label">Ciphertext:</label>
@@ -309,7 +481,13 @@
                 </div>
                 
                 <div class="form-group">
-                    <label for="alphabet-input" class="form-label">Alphabet:</label>
+                    <label for="alphabet-input" class="form-label">
+                        Alphabet:
+                        <span class="tooltip">
+                            <span class="tooltip-icon">i</span>
+                            <span class="tooltip-text">Define the character set used in the cipher (default: A-Z)</span>
+                        </span>
+                    </label>
                     <input type="text" id="alphabet-input" class="form-control" value="ABCDEFGHIJKLMNOPQRSTUVWXYZ">
                 </div>
                 
@@ -350,9 +528,24 @@
             </div>
             
             <div>
-                <button id="start-button" class="btn btn-success">Start Analysis</button>
-                <button id="cancel-button" class="btn btn-danger" disabled>Cancel Operation</button>
-                <button id="reset-button" class="btn btn-primary">Reset All</button>
+                <button id="start-button" class="btn btn-success">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                        <path fill-rule="evenodd" d="M4.5 5.653c0-1.426 1.529-2.33 2.779-1.643l11.54 6.348c1.295.712 1.295 2.573 0 3.285L7.28 19.991c-1.25.687-2.779-.217-2.779-1.643V5.653z" clip-rule="evenodd" />
+                    </svg>
+                    Start Analysis
+                </button>
+                <button id="cancel-button" class="btn btn-danger" disabled>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                        <path fill-rule="evenodd" d="M4.5 7.5a3 3 0 013-3h9a3 3 0 013 3v9a3 3 0 01-3 3h-9a3 3 0 01-3-3v-9z" clip-rule="evenodd" />
+                    </svg>
+                    Cancel Operation
+                </button>
+                <button id="reset-button" class="btn btn-primary">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                        <path fill-rule="evenodd" d="M4.755 10.059a7.5 7.5 0 0112.548-3.364l1.903 1.903h-3.183a.75.75 0 100 1.5h4.992a.75.75 0 00.75-.75V4.356a.75.75 0 00-1.5 0v3.18l-1.9-1.9A9 9 0 003.306 9.67a.75.75 0 101.45.388zm15.408 3.352a.75.75 0 00-.919.53 7.5 7.5 0 01-12.548 3.364l-1.902-1.903h3.183a.75.75 0 000-1.5H2.984a.75.75 0 00-.75.75v4.992a.75.75 0 001.5 0v-3.18l1.9 1.9a9 9 0 0015.059-4.035.75.75 0 00-.53-.918z" clip-rule="evenodd" />
+                    </svg>
+                    Reset All
+                </button>
             </div>
         </div>
         
@@ -364,19 +557,39 @@
         
         <div class="stats-container">
             <div class="stat-card">
-                <div class="stat-title">Keys Tested</div>
+                <div class="stat-title">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                        <path fill-rule="evenodd" d="M12 6a.75.75 0 01.75.75v9a.75.75 0 01-1.5 0v-9A.75.75 0 0112 6zM6.75 9a.75.75 0 01.75-.75h9a.75.75 0 010 1.5h-9A.75.75 0 016.75 9z" clip-rule="evenodd" />
+                    </svg>
+                    Keys Tested
+                </div>
                 <div id="keys-tested-counter" class="stat-value">0</div>
             </div>
             <div class="stat-card">
-                <div class="stat-title">Keys Per Second</div>
+                <div class="stat-title">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                        <path fill-rule="evenodd" d="M10.5 3.798v5.02a3 3 0 01-.879 2.121l-2.377 2.377a9.845 9.845 0 015.091 1.013 8.315 8.315 0 005.713.636l.285-.071-3.954-3.955a3 3 0 01-.879-2.121v-5.02a23.614 23.614 0 00-3 0zm4.5.138a.75.75 0 00.093-1.495A24.837 24.837 0 0012 2.25a25.048 25.048 0 00-3.093.191A.75.75 0 009 3.936v4.882a1.5 1.5 0 01-.44 1.06l-6.293 6.294c-1.62 1.621-.903 4.475 1.471 4.88 2.686.46 5.447.698 8.262.698 2.816 0 5.576-.239 8.262-.697 2.373-.406 3.092-3.26 1.47-4.881L15.44 9.879A1.5 1.5 0 0115 8.818V3.936z" clip-rule="evenodd" />
+                    </svg>
+                    Keys Per Second
+                </div>
                 <div id="keys-per-second-counter" class="stat-value">0</div>
             </div>
             <div class="stat-card">
-                <div class="stat-title">Time Elapsed</div>
+                <div class="stat-title">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                        <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zM12.75 6a.75.75 0 00-1.5 0v6c0 .414.336.75.75.75h4.5a.75.75 0 000-1.5h-3.75V6z" clip-rule="evenodd" />
+                    </svg>
+                    Time Elapsed
+                </div>
                 <div id="time-elapsed-counter" class="stat-value">0s</div>
             </div>
             <div class="stat-card">
-                <div class="stat-title">Keys Remaining</div>
+                <div class="stat-title">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                        <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zm-.53 14.03a.75.75 0 001.06 0l3-3a.75.75 0 10-1.06-1.06l-1.72 1.72V8.25a.75.75 0 00-1.5 0v5.69l-1.72-1.72a.75.75 0 00-1.06 1.06l3 3z" clip-rule="evenodd" />
+                    </svg>
+                    Keys Remaining
+                </div>
                 <div id="keys-remaining-counter" class="stat-value">0</div>
             </div>
         </div>
@@ -384,7 +597,12 @@
         <div id="worker-status-container" class="worker-status-container"></div>
         
         <div id="best-result-display" class="best-result-card" style="display: none;">
-            <h3 class="best-result-title">Best Candidate Found</h3>
+            <h3 class="best-result-title">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd" />
+                </svg>
+                Best Candidate Found
+            </h3>
             <div class="best-result-field">
                 <span class="best-result-label">Key:</span>
                 <span id="best-key-display"></span>
@@ -404,7 +622,13 @@
         </div>
         
         <div class="results-section">
-            <h2 class="results-title">Top 20 Key Candidates</h2>
+            <h2 class="section-title">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                    <path fill-rule="evenodd" d="M5.625 1.5c-1.036 0-1.875.84-1.875 1.875v17.25c0 1.035.84 1.875 1.875 1.875h12.75c1.035 0 1.875-.84 1.875-1.875V12.75A3.75 3.75 0 0016.5 9h-1.875a1.875 1.875 0 01-1.875-1.875V5.25A3.75 3.75 0 009 1.5H5.625zM7.5 15a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5A.75.75 0 017.5 15zm.75 2.25a.75.75 0 000 1.5H12a.75.75 0 000-1.5H8.25z" clip-rule="evenodd" />
+                    <path d="M12.971 1.816A5.23 5.23 0 0114.25 5.25v1.875c0 .207.168.375.375.375H16.5a5.23 5.23 0 013.434 1.279 9.768 9.768 0 00-6.963-6.963z" />
+                </svg>
+                Top 20 Key Candidates
+            </h2>
             <table class="results-table" id="results-table">
                 <thead>
                     <tr>
@@ -420,7 +644,12 @@
         </div>
         
         <div class="chart-container">
-            <h2 class="results-title">Performance Metrics</h2>
+            <h2 class="section-title">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M18.375 2.25c-1.035 0-1.875.84-1.875 1.875v15.75c0 1.035.84 1.875 1.875 1.875h.75c1.035 0 1.875-.84 1.875-1.875V4.125c0-1.036-.84-1.875-1.875-1.875h-.75zM9.75 8.625c0-1.036.84-1.875 1.875-1.875h.75c1.036 0 1.875.84 1.875 1.875v11.25c0 1.035-.84 1.875-1.875 1.875h-.75a1.875 1.875 0 01-1.875-1.875V8.625zM3 13.125c0-1.036.84-1.875 1.875-1.875h.75c1.036 0 1.875.84 1.875 1.875v6.75c0 1.035-.84 1.875-1.875 1.875h-.75A1.875 1.875 0 013 19.875v-6.75z" />
+                </svg>
+                Performance Metrics
+            </h2>
             <canvas id="performance-chart"></canvas>
         </div>
     </div>
@@ -429,21 +658,7 @@
     <script>
         class OptimizedTextEvaluator {
             constructor() {
-                // Enhanced word frequency data with more comprehensive coverage
-                this.wordFrequency = {
-                    'THE': 0.071, 'BE': 0.042, 'TO': 0.039, 'OF': 0.036, 'AND': 0.034,
-                    'A': 0.032, 'IN': 0.028, 'THAT': 0.020, 'HAVE': 0.017, 'I': 0.016,
-                    'IT': 0.015, 'FOR': 0.014, 'NOT': 0.013, 'ON': 0.012, 'WITH': 0.011,
-                    'HE': 0.011, 'AS': 0.010, 'YOU': 0.010, 'DO': 0.009, 'AT': 0.009,
-                    'THIS': 0.008, 'BUT': 0.007, 'HIS': 0.007, 'BY': 0.007, 'FROM': 0.007,
-                    'THEY': 0.006, 'WE': 0.006, 'SAY': 0.006, 'OR': 0.006, 'AN': 0.006,
-                    'WILL': 0.006, 'WOULD': 0.005, 'WHAT': 0.005, 'SO': 0.005, 'CAN': 0.005,
-                    'IF': 0.005, 'ARE': 0.005, 'WAS': 0.005, 'HAD': 0.005, 'MY': 0.005,
-                    'ME': 0.005, 'HIM': 0.005, 'HER': 0.005, 'SHE': 0.005, 'ONE': 0.005,
-                    'ALL': 0.005, 'WHICH': 0.005, 'THERE': 0.005, 'THEIR': 0.005, 'WHO': 0.005
-                };
-
-                // N-gram frequency data with optimized weights
+                // Enhanced n-gram frequency data with optimized weights
                 this.ngramFrequency = {
                     // 4-grams
                     'TION': 6.513, 'NTHE': 6.468, 'THER': 6.359, 'THAT': 6.216,
@@ -457,6 +672,21 @@
                     // Additional common n-grams
                     'ED': 5.733, 'ES': 5.711, 'EA': 5.699, 'TI': 5.689,
                     'IT': 5.669, 'TE': 5.659, 'OU': 5.649, 'AR': 5.639
+                };
+
+                // Precompute n-gram lengths for faster access
+                this.ngramLengths = {
+                    2: Object.keys(this.ngramFrequency).filter(k => k.length === 2),
+                    3: Object.keys(this.ngramFrequency).filter(k => k.length === 3),
+                    4: Object.keys(this.ngramFrequency).filter(k => k.length === 4)
+                };
+
+                // Word frequency data
+                this.wordFrequency = {
+                    'THE': 0.071, 'BE': 0.042, 'TO': 0.039, 'OF': 0.036, 'AND': 0.034,
+                    'A': 0.032, 'IN': 0.028, 'THAT': 0.020, 'HAVE': 0.017, 'I': 0.016,
+                    'IT': 0.015, 'FOR': 0.014, 'NOT': 0.013, 'ON': 0.012, 'WITH': 0.011,
+                    'HE': 0.011, 'AS': 0.010, 'YOU': 0.010, 'DO': 0.009, 'AT': 0.009
                 };
 
                 this.wordPattern = /[A-Z']+/g;
@@ -474,52 +704,50 @@
                 }
 
                 const scores = {
-                    dictionary: this.calculateDictionaryScore(words),
+                    ngrams: this.calculateNgramScore(upperText),
                     wordLength: this.calculateWordLengthScore(words),
                     uniqueness: this.calculateUniquenessScore(words),
-                    ngrams: this.calculateNgramScore(upperText),
                     sequences: this.calculateSequenceScore(upperText)
                 };
 
                 // Optimized weighted scoring formula
                 const combinedScore = 
-                    (scores.dictionary * 0.45) +
-                    (scores.ngrams * 0.30) +
+                    (scores.ngrams * 0.70) +
                     (scores.wordLength * 0.15) +
-                    (scores.uniqueness * 0.05) +
+                    (scores.uniqueness * 0.10) +
                     (scores.sequences * 0.05);
 
                 return Math.max(0, Math.min(1, combinedScore)) * 100; // Convert to percentage
             }
 
-            calculateDictionaryScore(words) {
-                let recognized = 0;
-                let totalFreq = 0;
-                const minWordLength = 2; // Ignore single-letter words for scoring
-
-                for (const word of words) {
-                    if (word.length >= minWordLength && this.wordFrequency[word]) {
-                        recognized++;
-                        totalFreq += this.wordFrequency[word];
-                    }
-                }
-
-                const recognitionRatio = recognized / words.length;
-                const avgFrequency = totalFreq / Math.max(1, recognized);
-
-                return (recognitionRatio * 0.7) + (avgFrequency * 0.3);
-            }
-
             calculateNgramScore(text) {
                 let totalScore = 0;
                 let ngramCount = 0;
+                const textLen = text.length;
 
-                // Check all ngram lengths (2-4)
-                for (let n = 2; n <= 4; n++) {
-                    for (let i = 0; i <= text.length - n; i++) {
-                        const ngram = text.substr(i, n);
-                        if (this.ngramFrequency[ngram]) {
-                            totalScore += this.ngramFrequency[ngram];
+                // Optimized n-gram checking with sliding window
+                for (let i = 0; i <= textLen - 2; i++) {
+                    // Check 2-grams
+                    const bigram = text.substr(i, 2);
+                    if (this.ngramFrequency[bigram]) {
+                        totalScore += this.ngramFrequency[bigram];
+                        ngramCount++;
+                    }
+
+                    // Check 3-grams when possible
+                    if (i <= textLen - 3) {
+                        const trigram = text.substr(i, 3);
+                        if (this.ngramFrequency[trigram]) {
+                            totalScore += this.ngramFrequency[trigram];
+                            ngramCount++;
+                        }
+                    }
+
+                    // Check 4-grams when possible
+                    if (i <= textLen - 4) {
+                        const quadgram = text.substr(i, 4);
+                        if (this.ngramFrequency[quadgram]) {
+                            totalScore += this.ngramFrequency[quadgram];
                             ngramCount++;
                         }
                     }
@@ -556,7 +784,7 @@
             }
         }
 
-        class OptimizedVigenereCracker {
+        class AdvancedVigenereCracker {
             constructor() {
                 this.workers = [];
                 this.results = [];
@@ -572,6 +800,11 @@
                 this.testedKeys = new Set();
                 this.keyGenerator = null;
                 this.evaluator = new OptimizedTextEvaluator();
+                this.performanceStats = {
+                    keyGenTime: 0,
+                    decryptTime: 0,
+                    scoreTime: 0
+                };
 
                 this.initUI();
                 this.initChart();
@@ -613,25 +846,45 @@
                     type: 'line',
                     data: {
                         labels: [],
-                        datasets: [{
-                            label: 'Keys Processed Per Second',
-                            data: [],
-                            borderColor: 'rgba(75, 192, 192, 1)',
-                            backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                            fill: true,
-                            tension: 0.1
-                        }]
+                        datasets: [
+                            {
+                                label: 'Keys Processed Per Second',
+                                data: [],
+                                borderColor: 'rgba(52, 152, 219, 1)',
+                                backgroundColor: 'rgba(52, 152, 219, 0.2)',
+                                fill: true,
+                                tension: 0.1
+                            },
+                            {
+                                label: 'Best Score',
+                                data: [],
+                                borderColor: 'rgba(46, 204, 113, 1)',
+                                backgroundColor: 'rgba(46, 204, 113, 0.2)',
+                                fill: false,
+                                tension: 0.1
+                            }
+                        ]
                     },
                     options: {
                         responsive: true,
                         scales: {
                             y: {
                                 beginAtZero: true,
-                                title: { display: true, text: 'Keys/Second' }
+                                title: { display: true, text: 'Keys/Second | Score' }
                             },
                             x: {
                                 title: { display: true, text: 'Elapsed Time (seconds)' }
                             }
+                        },
+                        plugins: {
+                            tooltip: {
+                                mode: 'index',
+                                intersect: false
+                            }
+                        },
+                        hover: {
+                            mode: 'nearest',
+                            intersect: true
                         }
                     }
                 });
@@ -645,7 +898,7 @@
 
             reset() {
                 this.cancel();
-                this.elements.ciphertext.value = '';
+                this.elements.ciphertext.value = 'LXFOPVEFRNHRKLLQETZVZQZQKZFEKWSKCCFEPVPQJZVMEFPGLKZ';
                 this.elements.bestResult.style.display = 'none';
                 this.elements.resultsTable.innerHTML = '';
                 this.elements.progress.style.width = '0%';
@@ -653,6 +906,7 @@
                 this.elements.workerStatus.innerHTML = '';
                 this.chart.data.labels = [];
                 this.chart.data.datasets[0].data = [];
+                this.chart.data.datasets[1].data = [];
                 this.chart.update();
                 this.keyGenerator = null;
             }
@@ -736,6 +990,7 @@
                 this.elements.workerStatus.innerHTML = '';
                 this.chart.data.labels = [];
                 this.chart.data.datasets[0].data = [];
+                this.chart.data.datasets[1].data = [];
                 this.chart.update();
             }
 
@@ -760,7 +1015,13 @@
                     const badge = document.createElement('div');
                     badge.className = 'worker-badge';
                     badge.id = `worker-${i}-badge`;
-                    badge.textContent = `Worker ${i + 1}`;
+                    badge.innerHTML = `
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                            <path fill-rule="evenodd" d="M7.5 5.25a3 3 0 013-3h3a3 3 0 013 3v.205c.933.085 1.857.197 2.774.334 1.454.218 2.476 1.483 2.476 2.917v3.033c0 1.211-.734 2.352-1.936 2.752A24.726 24.726 0 0112 15.75c-2.73 0-5.357-.442-7.814-1.259-1.202-.4-1.936-1.541-1.936-2.752V8.706c0-1.434 1.022-2.7 2.476-2.917A48.814 48.814 0 017.5 5.455V5.25zm7.5 0v.09a48.53 48.53 0 00-6 0v-.09a1.5 1.5 0 011.5-1.5h3a1.5 1.5 0 011.5 1.5zm-3 8.25a.75.75 0 100-1.5.75.75 0 000 1.5z" clip-rule="evenodd" />
+                            <path d="M3 18.4v-2.796a4.3 4.3 0 00.713.31A26.226 26.226 0 0012 17.25c2.892 0 5.68-.468 8.287-1.335.252-.084.49-.189.713-.311V18.4c0 1.452-1.047 2.728-2.523 2.923-2.12.282-4.282.427-6.477.427a49.19 49.19 0 01-6.477-.427C4.047 21.128 3 19.852 3 18.4z" />
+                        </svg>
+                        Worker ${i + 1}
+                    `;
                     this.elements.workerStatus.appendChild(badge);
                     
                     worker.onmessage = (e) => this.handleWorkerMessage(e, i);
@@ -804,14 +1065,14 @@
                     
                     const len = currentLen.length;
                     let keyIndex = this.keyGenerator.currentKeyIndex;
-                    let key = '';
+                    const keyChars = new Array(len);
                     
-                    for (let i = 0; i < len; i++) {
-                        key = alphabet[keyIndex % alphabetSize] + key;
+                    for (let i = len - 1; i >= 0; i--) {
+                        keyChars[i] = alphabet[keyIndex % alphabetSize];
                         keyIndex = Math.floor(keyIndex / alphabetSize);
                     }
                     
-                    batch.push(key);
+                    batch.push(keyChars.join(''));
                     this.keyGenerator.currentKeyIndex++;
                 }
                 
@@ -823,7 +1084,7 @@
                 } else {
                     const badge = document.getElementById(`worker-${worker.id}-badge`);
                     if (badge) {
-                        badge.textContent += ' (completed)';
+                        badge.innerHTML += ' (completed)';
                         badge.className = 'worker-badge worker-badge-finished';
                     }
                     this.checkCompletion();
@@ -832,14 +1093,6 @@
 
             getWorkerCode() {
                 return `
-                    let ciphertext = '';
-                    let alphabet = '';
-                    let charMap = {};
-                    let knownText = '';
-                    let mutationRate = 10;
-                    let exitThreshold = 95;
-                    let workerId = 0;
-                    
                     const ngrams = {
                         // 4-grams
                         'TION': 6.513, 'NTHE': 6.468, 'THER': 6.359, 'THAT': 6.216,
@@ -851,6 +1104,14 @@
                         'TH': 6.181, 'HE': 6.107, 'IN': 5.973, 'ER': 5.973,
                         'AN': 5.914, 'RE': 5.833, 'ND': 5.799, 'AT': 5.771
                     };
+                    
+                    let ciphertext = '';
+                    let alphabet = '';
+                    let charMap = {};
+                    let knownText = '';
+                    let mutationRate = 10;
+                    let exitThreshold = 95;
+                    let workerId = 0;
                     
                     function decrypt(key) {
                         const decrypted = new Array(ciphertext.length);
@@ -868,13 +1129,33 @@
                     
                     function scoreText(text) {
                         let score = 0;
+                        let ngramCount = 0;
+                        const textLen = text.length;
                         
-                        // Check all ngram lengths (2-4)
-                        for (let n = 2; n <= 4; n++) {
-                            for (let i = 0; i <= text.length - n; i++) {
-                                const ngram = text.substr(i, n);
-                                if (ngrams[ngram]) {
-                                    score += ngrams[ngram];
+                        // Optimized n-gram checking with sliding window
+                        for (let i = 0; i <= textLen - 2; i++) {
+                            // Check 2-grams
+                            const bigram = text.substr(i, 2);
+                            if (ngrams[bigram]) {
+                                score += ngrams[bigram];
+                                ngramCount++;
+                            }
+                            
+                            // Check 3-grams when possible
+                            if (i <= textLen - 3) {
+                                const trigram = text.substr(i, 3);
+                                if (ngrams[trigram]) {
+                                    score += ngrams[trigram];
+                                    ngramCount++;
+                                }
+                            }
+                            
+                            // Check 4-grams when possible
+                            if (i <= textLen - 4) {
+                                const quadgram = text.substr(i, 4);
+                                if (ngrams[quadgram]) {
+                                    score += ngrams[quadgram];
+                                    ngramCount++;
                                 }
                             }
                         }
@@ -883,7 +1164,7 @@
                             score -= 1000;
                         }
                         
-                        return score;
+                        return ngramCount > 0 ? score / (ngramCount * 5) : 0;
                     }
                     
                     function mutateKey(key) {
@@ -964,6 +1245,9 @@
                     this.keysThisSecond += data.processed;
                     this.workers[workerId].processed += data.processed;
                     
+                    // Use DocumentFragment for efficient DOM updates
+                    const fragment = document.createDocumentFragment();
+                    
                     data.results.forEach(result => {
                         if (!this.testedKeys.has(result.key)) {
                             this.results.push(result);
@@ -995,7 +1279,7 @@
                     .slice(0, 20);
                 
                 const table = this.elements.resultsTable;
-                table.innerHTML = '';
+                const fragment = document.createDocumentFragment();
                 
                 topResults.forEach((result, i) => {
                     const row = document.createElement('tr');
@@ -1006,8 +1290,11 @@
                         <td>${result.length}</td>
                         <td>${result.decrypted}</td>
                     `;
-                    table.appendChild(row);
+                    fragment.appendChild(row);
                 });
+                
+                table.innerHTML = '';
+                table.appendChild(fragment);
             }
 
             updateBestResult() {
@@ -1022,6 +1309,13 @@
                 this.elements.bestScore.textContent = best.score.toFixed(2);
                 this.elements.bestLength.textContent = best.length;
                 this.elements.bestDecrypted.textContent = best.decrypted;
+                
+                // Update chart with best score
+                const now = performance.now();
+                const elapsedSec = Math.floor((now - this.startTime) / 1000);
+                if (this.chart.data.datasets[1].data.length < 20) {
+                    this.chart.data.datasets[1].data.push(best.score);
+                }
             }
 
             updateStats() {
@@ -1088,7 +1382,7 @@
                     worker.terminate();
                     const badge = document.getElementById(`worker-${worker.id}-badge`);
                     if (badge) {
-                        badge.textContent += ' (cancelled)';
+                        badge.innerHTML += ' (cancelled)';
                         badge.className = 'worker-badge worker-badge-cancelled';
                     }
                 });
@@ -1099,7 +1393,7 @@
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            const cracker = new OptimizedVigenereCracker();
+            const cracker = new AdvancedVigenereCracker();
         });
     </script>
 </body>
