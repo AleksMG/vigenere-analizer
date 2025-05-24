@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Professional Vigenère Cipher Cracker</title>
     <style>
-        /* Complete CSS styles without any abbreviations */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             max-width: 1200px;
@@ -299,7 +298,7 @@
 <body>
     <div class="main-container">
         <h1 class="header-title">Professional Vigenère Cipher Cracker</h1>
-        <p class="header-description">Advanced cryptographic analysis tool with linguistic evaluation</p>
+        <p class="header-description">Advanced cryptographic analysis tool with optimized linguistic evaluation</p>
         
         <div class="settings-panel">
             <h2 class="settings-title">Cipher Parameters</h2>
@@ -428,70 +427,113 @@
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-        // Complete implementation without abbreviations
-        class TextMeaningfulnessEvaluator {
+        class OptimizedTextEvaluator {
             constructor() {
-                this.commonEnglishWords = {
-                    'THE': 0.071, 'BE': 0.042, 'TO': 0.039, 'OF': 0.036,
-                    'AND': 0.034, 'A': 0.032, 'IN': 0.028, 'THAT': 0.020,
-                    'HAVE': 0.017, 'I': 0.016, 'IT': 0.015, 'FOR': 0.014,
-                    'NOT': 0.013, 'ON': 0.012, 'WITH': 0.011, 'HE': 0.011,
-                    'AS': 0.010, 'YOU': 0.010, 'DO': 0.009, 'AT': 0.009,
-                    'THIS': 0.008, 'BUT': 0.007, 'HIS': 0.007, 'BY': 0.007,
-                    'FROM': 0.007, 'THEY': 0.006, 'WE': 0.006, 'SAY': 0.006,
-                    'OR': 0.006, 'AN': 0.006, 'WILL': 0.006, 'WOULD': 0.005,
-                    'WHAT': 0.005, 'SO': 0.005, 'CAN': 0.005, 'IF': 0.005
+                // Enhanced word frequency data with more comprehensive coverage
+                this.wordFrequency = {
+                    'THE': 0.071, 'BE': 0.042, 'TO': 0.039, 'OF': 0.036, 'AND': 0.034,
+                    'A': 0.032, 'IN': 0.028, 'THAT': 0.020, 'HAVE': 0.017, 'I': 0.016,
+                    'IT': 0.015, 'FOR': 0.014, 'NOT': 0.013, 'ON': 0.012, 'WITH': 0.011,
+                    'HE': 0.011, 'AS': 0.010, 'YOU': 0.010, 'DO': 0.009, 'AT': 0.009,
+                    'THIS': 0.008, 'BUT': 0.007, 'HIS': 0.007, 'BY': 0.007, 'FROM': 0.007,
+                    'THEY': 0.006, 'WE': 0.006, 'SAY': 0.006, 'OR': 0.006, 'AN': 0.006,
+                    'WILL': 0.006, 'WOULD': 0.005, 'WHAT': 0.005, 'SO': 0.005, 'CAN': 0.005,
+                    'IF': 0.005, 'ARE': 0.005, 'WAS': 0.005, 'HAD': 0.005, 'MY': 0.005,
+                    'ME': 0.005, 'HIM': 0.005, 'HER': 0.005, 'SHE': 0.005, 'ONE': 0.005,
+                    'ALL': 0.005, 'WHICH': 0.005, 'THERE': 0.005, 'THEIR': 0.005, 'WHO': 0.005
                 };
 
-                this.wordBoundaryRegex = /[A-Z']+/g;
-                this.minimumWordsForEvaluation = 3;
-                this.optimalAverageWordLength = 4.7;
+                // N-gram frequency data with optimized weights
+                this.ngramFrequency = {
+                    // 4-grams
+                    'TION': 6.513, 'NTHE': 6.468, 'THER': 6.359, 'THAT': 6.216,
+                    'INGT': 6.183, 'INTH': 6.117, 'THIS': 6.062, 'FTHE': 6.048,
+                    // 3-grams
+                    'THE': 6.508, 'AND': 5.863, 'ING': 5.853, 'ION': 5.623,
+                    'ENT': 5.623, 'HER': 5.556, 'FOR': 5.531, 'THA': 5.518,
+                    // 2-grams
+                    'TH': 6.181, 'HE': 6.107, 'IN': 5.973, 'ER': 5.973,
+                    'AN': 5.914, 'RE': 5.833, 'ND': 5.799, 'AT': 5.771,
+                    // Additional common n-grams
+                    'ED': 5.733, 'ES': 5.711, 'EA': 5.699, 'TI': 5.689,
+                    'IT': 5.669, 'TE': 5.659, 'OU': 5.649, 'AR': 5.639
+                };
+
+                this.wordPattern = /[A-Z']+/g;
+                this.minWordsForEvaluation = 3;
+                this.optimalWordLength = 4.7;
+                this.invalidSequences = ['AAA', 'BBB', 'CCC', 'ABC', 'XYZ', 'QXP', 'JJJ', 'QQQ', 'ZZZ'];
             }
 
-            evaluateTextMeaningfulness(text) {
-                const uppercaseText = text.toUpperCase();
-                const extractedWords = uppercaseText.match(this.wordBoundaryRegex) || [];
+            evaluateText(text) {
+                const upperText = text.toUpperCase();
+                const words = upperText.match(this.wordPattern) || [];
                 
-                if (extractedWords.length < this.minimumWordsForEvaluation) {
+                if (words.length < this.minWordsForEvaluation) {
                     return 0;
                 }
 
-                const dictionaryScore = this.calculateDictionaryScore(extractedWords);
-                const wordLengthScore = this.calculateWordLengthScore(extractedWords);
-                const uniquenessScore = this.calculateUniquenessScore(extractedWords);
-                const sequenceScore = this.calculateLetterSequenceScore(uppercaseText);
+                const scores = {
+                    dictionary: this.calculateDictionaryScore(words),
+                    wordLength: this.calculateWordLengthScore(words),
+                    uniqueness: this.calculateUniquenessScore(words),
+                    ngrams: this.calculateNgramScore(upperText),
+                    sequences: this.calculateSequenceScore(upperText)
+                };
 
-                const combinedScore = (dictionaryScore * 0.5) +
-                                    (wordLengthScore * 0.2) +
-                                    (uniquenessScore * 0.2) +
-                                    (sequenceScore * 0.1);
+                // Optimized weighted scoring formula
+                const combinedScore = 
+                    (scores.dictionary * 0.45) +
+                    (scores.ngrams * 0.30) +
+                    (scores.wordLength * 0.15) +
+                    (scores.uniqueness * 0.05) +
+                    (scores.sequences * 0.05);
 
-                return Math.max(0, Math.min(1, combinedScore));
+                return Math.max(0, Math.min(1, combinedScore)) * 100; // Convert to percentage
             }
 
             calculateDictionaryScore(words) {
-                let recognizedWordCount = 0;
-                let totalFrequency = 0;
+                let recognized = 0;
+                let totalFreq = 0;
+                const minWordLength = 2; // Ignore single-letter words for scoring
 
-                words.forEach(word => {
-                    if (this.commonEnglishWords[word]) {
-                        recognizedWordCount++;
-                        totalFrequency += this.commonEnglishWords[word];
+                for (const word of words) {
+                    if (word.length >= minWordLength && this.wordFrequency[word]) {
+                        recognized++;
+                        totalFreq += this.wordFrequency[word];
                     }
-                });
+                }
 
-                const recognitionRatio = recognizedWordCount / words.length;
-                const frequencyScore = totalFrequency / Math.max(1, recognizedWordCount);
+                const recognitionRatio = recognized / words.length;
+                const avgFrequency = totalFreq / Math.max(1, recognized);
 
-                return (recognitionRatio * 0.7) + (frequencyScore * 0.3);
+                return (recognitionRatio * 0.7) + (avgFrequency * 0.3);
+            }
+
+            calculateNgramScore(text) {
+                let totalScore = 0;
+                let ngramCount = 0;
+
+                // Check all ngram lengths (2-4)
+                for (let n = 2; n <= 4; n++) {
+                    for (let i = 0; i <= text.length - n; i++) {
+                        const ngram = text.substr(i, n);
+                        if (this.ngramFrequency[ngram]) {
+                            totalScore += this.ngramFrequency[ngram];
+                            ngramCount++;
+                        }
+                    }
+                }
+
+                return ngramCount > 0 ? totalScore / (ngramCount * 5) : 0; // Normalize score
             }
 
             calculateWordLengthScore(words) {
                 const totalLetters = words.reduce((sum, word) => sum + word.length, 0);
-                const averageLength = totalLetters / words.length;
-                const lengthDifference = Math.abs(averageLength - this.optimalAverageWordLength);
+                const avgLength = totalLetters / words.length;
+                const lengthDiff = Math.abs(avgLength - this.optimalWordLength);
                 
-                return Math.max(0, 1 - (lengthDifference / this.optimalAverageWordLength));
+                return Math.max(0, 1 - (lengthDiff / this.optimalWordLength));
             }
 
             calculateUniquenessScore(words) {
@@ -499,50 +541,75 @@
                 return uniqueWords.size / words.length;
             }
 
-            calculateLetterSequenceScore(text) {
-                const invalidSequences = ['AAA', 'BBB', 'CCC', 'ABC', 'XYZ', 'QXP'];
-                let invalidSequenceCount = 0;
+            calculateSequenceScore(text) {
+                let invalidCount = 0;
 
                 for (let i = 0; i < text.length - 2; i++) {
-                    const sequence = text.substr(i, 3);
-                    if (invalidSequences.includes(sequence)) {
-                        invalidSequenceCount++;
+                    const seq = text.substr(i, 3);
+                    if (this.invalidSequences.includes(seq)) {
+                        invalidCount++;
                     }
                 }
 
-                const maxPossibleInvalid = Math.max(1, text.length - 2);
-                return 1 - (invalidSequenceCount / maxPossibleInvalid);
+                const maxPossible = Math.max(1, text.length - 2);
+                return 1 - (invalidCount / maxPossible);
             }
         }
 
-        class VigenereCipherCracker {
+        class OptimizedVigenereCracker {
             constructor() {
-                this.workerPool = [];
-                this.analysisResults = [];
-                this.analysisInProgress = false;
-                this.analysisStartTimestamp = 0;
-                this.totalKeysTested = 0;
-                this.totalKeysToTest = 0;
-                this.keysPerSecondRate = 0;
-                this.keysTestedThisSecond = 0;
-                this.lastSecondUpdate = 0;
-                this.performanceMetrics = [];
-                this.performanceChart = null;
-                this.testedKeysRegistry = new Set();
-                this.keyGenerationState = null;
-                this.textEvaluator = new TextMeaningfulnessEvaluator();
+                this.workers = [];
+                this.results = [];
+                this.isRunning = false;
+                this.startTime = 0;
+                this.keysTested = 0;
+                this.totalKeys = 0;
+                this.keysPerSecond = 0;
+                this.keysThisSecond = 0;
+                this.lastUpdateTime = 0;
+                this.metrics = [];
+                this.chart = null;
+                this.testedKeys = new Set();
+                this.keyGenerator = null;
+                this.evaluator = new OptimizedTextEvaluator();
 
-                this.initializeApplicationComponents();
+                this.initUI();
+                this.initChart();
+                this.setupEventHandlers();
             }
 
-            initializeApplicationComponents() {
-                this.initializePerformanceChart();
-                this.initializeEventHandlers();
+            initUI() {
+                this.elements = {
+                    startBtn: document.getElementById('start-button'),
+                    cancelBtn: document.getElementById('cancel-button'),
+                    resetBtn: document.getElementById('reset-button'),
+                    ciphertext: document.getElementById('ciphertext-input'),
+                    alphabet: document.getElementById('alphabet-input'),
+                    knownText: document.getElementById('known-plaintext-input'),
+                    minKeyLen: document.getElementById('min-keylength-input'),
+                    maxKeyLen: document.getElementById('max-keylength-input'),
+                    workerCount: document.getElementById('worker-count-input'),
+                    batchSize: document.getElementById('batch-size-input'),
+                    mutationRate: document.getElementById('mutation-rate-input'),
+                    exitThreshold: document.getElementById('early-exit-input'),
+                    progress: document.getElementById('progress-indicator'),
+                    keysTested: document.getElementById('keys-tested-counter'),
+                    keysPerSec: document.getElementById('keys-per-second-counter'),
+                    timeElapsed: document.getElementById('time-elapsed-counter'),
+                    keysRemaining: document.getElementById('keys-remaining-counter'),
+                    workerStatus: document.getElementById('worker-status-container'),
+                    bestResult: document.getElementById('best-result-display'),
+                    bestKey: document.getElementById('best-key-display'),
+                    bestScore: document.getElementById('best-score-display'),
+                    bestLength: document.getElementById('best-length-display'),
+                    bestDecrypted: document.getElementById('best-decrypted-display'),
+                    resultsTable: document.querySelector('#results-table tbody'),
+                    chart: document.getElementById('performance-chart').getContext('2d')
+                };
             }
 
-            initializePerformanceChart() {
-                const chartCanvas = document.getElementById('performance-chart').getContext('2d');
-                this.performanceChart = new Chart(chartCanvas, {
+            initChart() {
+                this.chart = new Chart(this.elements.chart, {
                     type: 'line',
                     data: {
                         labels: [],
@@ -558,323 +625,323 @@
                     options: {
                         responsive: true,
                         scales: {
-                            yAxis: {
+                            y: {
                                 beginAtZero: true,
-                                title: {
-                                    display: true,
-                                    text: 'Keys/Second'
-                                }
+                                title: { display: true, text: 'Keys/Second' }
                             },
-                            xAxis: {
-                                title: {
-                                    display: true,
-                                    text: 'Elapsed Time (seconds)'
-                                }
+                            x: {
+                                title: { display: true, text: 'Elapsed Time (seconds)' }
                             }
                         }
                     }
                 });
             }
 
-            initializeEventHandlers() {
-                document.getElementById('start-button').addEventListener('click', () => this.beginAnalysis());
-                document.getElementById('cancel-button').addEventListener('click', () => this.cancelAnalysis());
-                document.getElementById('reset-button').addEventListener('click', () => this.resetApplicationState());
+            setupEventHandlers() {
+                this.elements.startBtn.addEventListener('click', () => this.start());
+                this.elements.cancelBtn.addEventListener('click', () => this.cancel());
+                this.elements.resetBtn.addEventListener('click', () => this.reset());
             }
 
-            resetApplicationState() {
-                this.cancelAnalysis();
-                document.getElementById('ciphertext-input').value = '';
-                document.getElementById('best-result-display').style.display = 'none';
-                document.querySelector('#results-table tbody').innerHTML = '';
-                document.getElementById('progress-indicator').style.width = '0%';
-                document.getElementById('progress-indicator').textContent = '0%';
-                document.getElementById('worker-status-container').innerHTML = '';
-                this.performanceChart.data.labels = [];
-                this.performanceChart.data.datasets[0].data = [];
-                this.performanceChart.update();
-                this.keyGenerationState = null;
+            reset() {
+                this.cancel();
+                this.elements.ciphertext.value = '';
+                this.elements.bestResult.style.display = 'none';
+                this.elements.resultsTable.innerHTML = '';
+                this.elements.progress.style.width = '0%';
+                this.elements.progress.textContent = '0%';
+                this.elements.workerStatus.innerHTML = '';
+                this.chart.data.labels = [];
+                this.chart.data.datasets[0].data = [];
+                this.chart.update();
+                this.keyGenerator = null;
             }
 
-            beginAnalysis() {
-                const ciphertextValue = document.getElementById('ciphertext-input').value.toUpperCase();
-                const alphabetValue = document.getElementById('alphabet-input').value.toUpperCase() || 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-                const minimumKeyLength = parseInt(document.getElementById('min-keylength-input').value) || 2;
-                const maximumKeyLength = parseInt(document.getElementById('max-keylength-input').value) || 10;
-                const knownPlaintextValue = document.getElementById('known-plaintext-input').value.toUpperCase();
-                const workerThreadCount = parseInt(document.getElementById('worker-count-input').value) || 4;
-                const keysPerBatch = parseInt(document.getElementById('batch-size-input').value) || 10000;
-                const keyMutationProbability = parseInt(document.getElementById('mutation-rate-input').value) || 10;
-                const earlyExitThreshold = parseInt(document.getElementById('early-exit-input').value) || 95;
+            start() {
+                const ciphertext = this.elements.ciphertext.value.toUpperCase();
+                const alphabet = this.elements.alphabet.value.toUpperCase() || 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                const minLen = parseInt(this.elements.minKeyLen.value) || 2;
+                const maxLen = parseInt(this.elements.maxKeyLen.value) || 10;
+                const knownText = this.elements.knownText.value.toUpperCase();
+                const workers = parseInt(this.elements.workerCount.value) || 4;
+                const batchSize = parseInt(this.elements.batchSize.value) || 10000;
+                const mutationRate = parseInt(this.elements.mutationRate.value) || 10;
+                const exitThreshold = parseInt(this.elements.exitThreshold.value) || 95;
                 
-                const filteredCiphertext = ciphertextValue.split('').filter(character => alphabetValue.includes(character)).join('');
+                const cleanCiphertext = ciphertext.split('').filter(c => alphabet.includes(c)).join('');
                 
-                if (!filteredCiphertext) {
+                if (!cleanCiphertext) {
                     alert('Please provide valid ciphertext using the specified alphabet');
                     return;
                 }
                 
-                this.prepareForNewAnalysis();
-                this.analysisInProgress = true;
-                this.analysisStartTimestamp = performance.now();
-                this.lastSecondUpdate = this.analysisStartTimestamp;
-                this.totalKeysTested = 0;
-                this.performanceMetrics = [];
-                this.testedKeysRegistry = new Set();
+                this.prepareAnalysis();
+                this.isRunning = true;
+                this.startTime = performance.now();
+                this.lastUpdateTime = this.startTime;
+                this.keysTested = 0;
+                this.metrics = [];
+                this.testedKeys = new Set();
                 
-                this.totalKeysToTest = this.calculateTotalKeyCombinations(alphabetValue.length, minimumKeyLength, maximumKeyLength);
-                document.getElementById('keys-remaining-counter').textContent = this.totalKeysToTest.toLocaleString();
+                this.totalKeys = this.calcTotalKeys(alphabet.length, minLen, maxLen);
+                this.elements.keysRemaining.textContent = this.totalKeys.toLocaleString();
                 
-                this.keyGenerationState = this.initializeKeyGenerator(alphabetValue, minimumKeyLength, maximumKeyLength);
+                this.keyGenerator = this.initKeyGenerator(alphabet, minLen, maxLen);
                 
-                document.getElementById('start-button').disabled = true;
-                document.getElementById('cancel-button').disabled = false;
+                this.elements.startBtn.disabled = true;
+                this.elements.cancelBtn.disabled = false;
                 
-                this.launchWorkerThreads(filteredCiphertext, alphabetValue, minimumKeyLength, maximumKeyLength, 
-                                       knownPlaintextValue, workerThreadCount, keysPerBatch, 
-                                       keyMutationProbability, earlyExitThreshold);
+                this.launchWorkers(cleanCiphertext, alphabet, minLen, maxLen, 
+                                 knownText, workers, batchSize, 
+                                 mutationRate, exitThreshold);
                 
-                this.updatePerformanceStatistics();
+                this.updateStats();
             }
 
-            calculateTotalKeyCombinations(alphabetSize, minLength, maxLength) {
-                let totalCombinations = 0;
-                for (let currentLength = minLength; currentLength <= maxLength; currentLength++) {
-                    totalCombinations += Math.pow(alphabetSize, currentLength);
+            calcTotalKeys(alphabetSize, minLen, maxLen) {
+                let total = 0;
+                for (let len = minLen; len <= maxLen; len++) {
+                    total += Math.pow(alphabetSize, len);
                 }
-                return totalCombinations;
+                return total;
             }
 
-            initializeKeyGenerator(alphabetCharacters, minLength, maxLength) {
-                const alphabetSize = alphabetCharacters.length;
-                const keyLengthDefinitions = [];
+            initKeyGenerator(alphabet, minLen, maxLen) {
+                const alphabetSize = alphabet.length;
+                const keyLengths = [];
                 
-                for (let currentLength = minLength; currentLength <= maxLength; currentLength++) {
-                    keyLengthDefinitions.push({ 
-                        length: currentLength, 
-                        count: Math.pow(alphabetSize, currentLength) 
+                for (let len = minLen; len <= maxLen; len++) {
+                    keyLengths.push({ 
+                        length: len, 
+                        count: Math.pow(alphabetSize, len) 
                     });
                 }
                 
                 return {
-                    alphabet: alphabetCharacters,
+                    alphabet: alphabet,
                     alphabetSize: alphabetSize,
-                    keyLengths: keyLengthDefinitions,
-                    totalKeys: keyLengthDefinitions.reduce((sum, keyDef) => sum + keyDef.count, 0),
+                    keyLengths: keyLengths,
+                    totalKeys: keyLengths.reduce((sum, k) => sum + k.count, 0),
                     currentLengthIndex: 0,
                     currentKeyIndex: 0
                 };
             }
 
-            prepareForNewAnalysis() {
-                this.analysisResults = [];
-                document.querySelector('#results-table tbody').innerHTML = '';
-                document.getElementById('best-result-display').style.display = 'none';
-                document.getElementById('progress-indicator').style.width = '0%';
-                document.getElementById('progress-indicator').textContent = '0%';
-                document.getElementById('worker-status-container').innerHTML = '';
-                this.performanceChart.data.labels = [];
-                this.performanceChart.data.datasets[0].data = [];
-                this.performanceChart.update();
+            prepareAnalysis() {
+                this.results = [];
+                this.elements.resultsTable.innerHTML = '';
+                this.elements.bestResult.style.display = 'none';
+                this.elements.progress.style.width = '0%';
+                this.elements.progress.textContent = '0%';
+                this.elements.workerStatus.innerHTML = '';
+                this.chart.data.labels = [];
+                this.chart.data.datasets[0].data = [];
+                this.chart.update();
             }
 
-            launchWorkerThreads(ciphertext, alphabet, minLength, maxLength, knownText, workerCount, batchSize, mutationRate, exitThreshold) {
-                this.workerPool.forEach(worker => worker.terminate());
-                this.workerPool = [];
+            launchWorkers(ciphertext, alphabet, minLen, maxLen, knownText, workerCount, batchSize, mutationRate, exitThreshold) {
+                this.workers.forEach(w => w.terminate());
+                this.workers = [];
                 
-                const characterPositionMap = {};
-                for (let position = 0; position < alphabet.length; position++) {
-                    characterPositionMap[alphabet[position]] = position;
+                const charMap = {};
+                for (let i = 0; i < alphabet.length; i++) {
+                    charMap[alphabet[i]] = i;
                 }
                 
-                const workerScript = this.generateWorkerScript();
+                const workerCode = this.getWorkerCode();
                 
-                for (let workerIndex = 0; workerIndex < workerCount; workerIndex++) {
-                    const newWorker = new Worker(URL.createObjectURL(new Blob([workerScript], { type: 'text/javascript' })));
+                for (let i = 0; i < workerCount; i++) {
+                    const worker = new Worker(URL.createObjectURL(new Blob([workerCode], { type: 'text/javascript' })));
                     
-                    newWorker.identifier = workerIndex;
-                    newWorker.processedKeys = 0;
-                    this.workerPool.push(newWorker);
+                    worker.id = i;
+                    worker.processed = 0;
+                    this.workers.push(worker);
                     
-                    const workerBadge = document.createElement('div');
-                    workerBadge.className = 'worker-badge';
-                    workerBadge.id = `worker-${workerIndex}-badge`;
-                    workerBadge.textContent = `Worker ${workerIndex + 1}`;
-                    document.getElementById('worker-status-container').appendChild(workerBadge);
+                    const badge = document.createElement('div');
+                    badge.className = 'worker-badge';
+                    badge.id = `worker-${i}-badge`;
+                    badge.textContent = `Worker ${i + 1}`;
+                    this.elements.workerStatus.appendChild(badge);
                     
-                    newWorker.onmessage = (event) => this.handleWorkerMessage(event, workerIndex);
+                    worker.onmessage = (e) => this.handleWorkerMessage(e, i);
                     
-                    newWorker.postMessage({
-                        messageType: 'initialize',
+                    worker.postMessage({
+                        type: 'init',
                         ciphertext: ciphertext,
                         alphabet: alphabet,
-                        characterMap: characterPositionMap,
+                        charMap: charMap,
                         knownText: knownText,
                         mutationRate: mutationRate,
                         exitThreshold: exitThreshold,
-                        workerId: workerIndex
+                        workerId: i
                     });
                     
-                    this.assignKeyBatchToWorker(newWorker, batchSize);
+                    this.assignBatch(worker, batchSize);
                 }
             }
 
-            assignKeyBatchToWorker(worker, batchSize) {
-                if (!this.analysisInProgress || !this.keyGenerationState) return;
+            assignBatch(worker, batchSize) {
+                if (!this.isRunning || !this.keyGenerator) return;
                 
-                const keyBatch = [];
-                const alphabetCharacters = this.keyGenerationState.alphabet;
-                const alphabetSize = this.keyGenerationState.alphabetSize;
+                const batch = [];
+                const alphabet = this.keyGenerator.alphabet;
+                const alphabetSize = this.keyGenerator.alphabetSize;
                 
-                while (keyBatch.length < batchSize && this.keyGenerationState.currentKeyIndex < this.keyGenerationState.totalKeys) {
-                    let currentLengthDefinition = this.keyGenerationState.keyLengths[this.keyGenerationState.currentLengthIndex];
-                    while (this.keyGenerationState.currentKeyIndex >= currentLengthDefinition.count) {
-                        this.keyGenerationState.currentKeyIndex = 0;
-                        this.keyGenerationState.currentLengthIndex++;
-                        if (this.keyGenerationState.currentLengthIndex >= this.keyGenerationState.keyLengths.length) {
+                while (batch.length < batchSize && this.keyGenerator.currentKeyIndex < this.keyGenerator.totalKeys) {
+                    let currentLen = this.keyGenerator.keyLengths[this.keyGenerator.currentLengthIndex];
+                    while (this.keyGenerator.currentKeyIndex >= currentLen.count) {
+                        this.keyGenerator.currentKeyIndex = 0;
+                        this.keyGenerator.currentLengthIndex++;
+                        if (this.keyGenerator.currentLengthIndex >= this.keyGenerator.keyLengths.length) {
                             break;
                         }
-                        currentLengthDefinition = this.keyGenerationState.keyLengths[this.keyGenerationState.currentLengthIndex];
+                        currentLen = this.keyGenerator.keyLengths[this.keyGenerator.currentLengthIndex];
                     }
                     
-                    if (this.keyGenerationState.currentLengthIndex >= this.keyGenerationState.keyLengths.length) {
+                    if (this.keyGenerator.currentLengthIndex >= this.keyGenerator.keyLengths.length) {
                         break;
                     }
                     
-                    const keyLength = currentLengthDefinition.length;
-                    let keyIndex = this.keyGenerationState.currentKeyIndex;
-                    let generatedKey = '';
+                    const len = currentLen.length;
+                    let keyIndex = this.keyGenerator.currentKeyIndex;
+                    let key = '';
                     
-                    for (let position = 0; position < keyLength; position++) {
-                        generatedKey = alphabetCharacters[keyIndex % alphabetSize] + generatedKey;
+                    for (let i = 0; i < len; i++) {
+                        key = alphabet[keyIndex % alphabetSize] + key;
                         keyIndex = Math.floor(keyIndex / alphabetSize);
                     }
                     
-                    keyBatch.push(generatedKey);
-                    this.keyGenerationState.currentKeyIndex++;
+                    batch.push(key);
+                    this.keyGenerator.currentKeyIndex++;
                 }
                 
-                if (keyBatch.length > 0) {
+                if (batch.length > 0) {
                     worker.postMessage({
-                        messageType: 'process',
-                        keys: keyBatch
+                        type: 'process',
+                        keys: batch
                     });
                 } else {
-                    const workerBadge = document.getElementById(`worker-${worker.identifier}-badge`);
-                    if (workerBadge) {
-                        workerBadge.textContent += ' (completed)';
-                        workerBadge.className = 'worker-badge worker-badge-finished';
+                    const badge = document.getElementById(`worker-${worker.id}-badge`);
+                    if (badge) {
+                        badge.textContent += ' (completed)';
+                        badge.className = 'worker-badge worker-badge-finished';
                     }
-                    this.verifyCompletionStatus();
+                    this.checkCompletion();
                 }
             }
 
-            generateWorkerScript() {
+            getWorkerCode() {
                 return `
-                    let ciphertextData = '';
-                    let alphabetData = '';
-                    let alphabetPositionMap = {};
-                    let knownPlaintextData = '';
-                    let keyMutationProbability = 10;
-                    let earlyExitScoreThreshold = 95;
-                    let workerIdentifier = 0;
+                    let ciphertext = '';
+                    let alphabet = '';
+                    let charMap = {};
+                    let knownText = '';
+                    let mutationRate = 10;
+                    let exitThreshold = 95;
+                    let workerId = 0;
                     
-                    const ngramFrequencyData = {
+                    const ngrams = {
+                        // 4-grams
                         'TION': 6.513, 'NTHE': 6.468, 'THER': 6.359, 'THAT': 6.216,
                         'INGT': 6.183, 'INTH': 6.117, 'THIS': 6.062, 'FTHE': 6.048,
+                        // 3-grams
                         'THE': 6.508, 'AND': 5.863, 'ING': 5.853, 'ION': 5.623,
                         'ENT': 5.623, 'HER': 5.556, 'FOR': 5.531, 'THA': 5.518,
+                        // 2-grams
                         'TH': 6.181, 'HE': 6.107, 'IN': 5.973, 'ER': 5.973,
                         'AN': 5.914, 'RE': 5.833, 'ND': 5.799, 'AT': 5.771
                     };
                     
-                    function decryptWithVigenere(key) {
-                        const decryptedResult = new Array(ciphertextData.length);
-                        const keyLength = key.length;
-                        const alphabetLength = alphabetData.length;
+                    function decrypt(key) {
+                        const decrypted = new Array(ciphertext.length);
+                        const keyLen = key.length;
+                        const alphaLen = alphabet.length;
                         
-                        for (let position = 0; position < ciphertextData.length; position++) {
-                            const cipherCharIndex = alphabetPositionMap[ciphertextData[position]];
-                            const keyCharIndex = alphabetPositionMap[key[position % keyLength]];
-                            decryptedResult[position] = alphabetData[(cipherCharIndex - keyCharIndex + alphabetLength) % alphabetLength];
+                        for (let i = 0; i < ciphertext.length; i++) {
+                            const cipherPos = charMap[ciphertext[i]];
+                            const keyPos = charMap[key[i % keyLen]];
+                            decrypted[i] = alphabet[(cipherPos - keyPos + alphaLen) % alphaLen];
                         }
                         
-                        return decryptedResult.join('');
+                        return decrypted.join('');
                     }
                     
-                    function calculateTextQualityScore(text) {
-                        let totalScore = 0;
+                    function scoreText(text) {
+                        let score = 0;
                         
-                        for (const [ngram, weightValue] of Object.entries(ngramFrequencyData)) {
-                            let foundPosition = -1;
-                            while ((foundPosition = text.indexOf(ngram, foundPosition + 1)) !== -1) {
-                                totalScore += weightValue;
+                        // Check all ngram lengths (2-4)
+                        for (let n = 2; n <= 4; n++) {
+                            for (let i = 0; i <= text.length - n; i++) {
+                                const ngram = text.substr(i, n);
+                                if (ngrams[ngram]) {
+                                    score += ngrams[ngram];
+                                }
                             }
                         }
                         
-                        if (knownPlaintextData && !text.includes(knownPlaintextData)) {
-                            totalScore -= 100;
+                        if (knownText && !text.includes(knownText)) {
+                            score -= 1000;
                         }
                         
-                        return totalScore;
+                        return score;
                     }
                     
-                    function applyKeyMutation(originalKey) {
-                        if (Math.random() * 100 >= keyMutationProbability || originalKey.length < 1) {
-                            return originalKey;
+                    function mutateKey(key) {
+                        if (Math.random() * 100 >= mutationRate || key.length < 1) {
+                            return key;
                         }
                         
-                        const mutationPosition = Math.floor(Math.random() * originalKey.length);
-                        const newCharacter = alphabetData[Math.floor(Math.random() * alphabetData.length)];
-                        return originalKey.substring(0, mutationPosition) + newCharacter + originalKey.substring(mutationPosition + 1);
+                        const pos = Math.floor(Math.random() * key.length);
+                        const newChar = alphabet[Math.floor(Math.random() * alphabet.length)];
+                        return key.substring(0, pos) + newChar + key.substring(pos + 1);
                     }
                     
-                    self.onmessage = function(event) {
-                        const receivedData = event.data;
+                    self.onmessage = function(e) {
+                        const data = e.data;
                         
-                        if (receivedData.messageType === 'initialize') {
-                            ciphertextData = receivedData.ciphertext;
-                            alphabetData = receivedData.alphabet;
-                            alphabetPositionMap = receivedData.characterMap;
-                            knownPlaintextData = receivedData.knownText;
-                            keyMutationProbability = receivedData.mutationRate;
-                            earlyExitScoreThreshold = receivedData.exitThreshold;
-                            workerIdentifier = receivedData.workerId;
+                        if (data.type === 'init') {
+                            ciphertext = data.ciphertext;
+                            alphabet = data.alphabet;
+                            charMap = data.charMap;
+                            knownText = data.knownText;
+                            mutationRate = data.mutationRate;
+                            exitThreshold = data.exitThreshold;
+                            workerId = data.workerId;
                             
-                            self.postMessage({ messageType: 'ready', workerId: workerIdentifier });
+                            self.postMessage({ type: 'ready', workerId: workerId });
                             return;
                         }
                         
-                        if (receivedData.messageType === 'process') {
-                            const keysToProcess = receivedData.keys;
-                            const processingResults = [];
-                            let highestScore = -Infinity;
+                        if (data.type === 'process') {
+                            const keys = data.keys;
+                            const results = [];
+                            let bestScore = -Infinity;
                             
-                            for (const currentKey of keysToProcess) {
-                                const mutatedKey = applyKeyMutation(currentKey);
-                                const decryptedContent = decryptWithVigenere(mutatedKey);
-                                const qualityScore = calculateTextQualityScore(decryptedContent);
+                            for (const key of keys) {
+                                const mutatedKey = mutateKey(key);
+                                const decrypted = decrypt(mutatedKey);
+                                const score = scoreText(decrypted);
                                 
-                                processingResults.push({
+                                results.push({
                                     key: mutatedKey,
-                                    score: qualityScore,
-                                    decrypted: decryptedContent.substring(0, 100),
+                                    score: score,
+                                    decrypted: decrypted.substring(0, 100),
                                     length: mutatedKey.length
                                 });
                                 
-                                if (qualityScore > highestScore) {
-                                    highestScore = qualityScore;
+                                if (score > bestScore) {
+                                    bestScore = score;
                                 }
                             }
                             
-                            const shouldExitEarly = highestScore >= earlyExitScoreThreshold;
+                            const shouldExit = bestScore >= exitThreshold;
                             
                             self.postMessage({ 
-                                messageType: 'results', 
-                                results: processingResults, 
-                                processedCount: keysToProcess.length,
-                                earlyExit: shouldExitEarly,
-                                workerId: workerIdentifier 
+                                type: 'results', 
+                                results: results, 
+                                processed: keys.length,
+                                earlyExit: shouldExit,
+                                workerId: workerId 
                             });
                         }
                     };
@@ -882,157 +949,157 @@
             }
 
             handleWorkerMessage(event, workerId) {
-                if (!this.analysisInProgress) return;
+                if (!this.isRunning) return;
                 
-                const workerBadge = document.getElementById(`worker-${workerId}-badge`);
-                const messageData = event.data;
+                const badge = document.getElementById(`worker-${workerId}-badge`);
+                const data = event.data;
                 
-                if (messageData.messageType === 'ready') {
-                    workerBadge.classList.add('worker-badge-active');
+                if (data.type === 'ready') {
+                    badge.classList.add('worker-badge-active');
                     return;
                 }
                 
-                if (messageData.messageType === 'results') {
-                    this.totalKeysTested += messageData.processedCount;
-                    this.keysTestedThisSecond += messageData.processedCount;
-                    this.workerPool[workerId].processedKeys += messageData.processedCount;
+                if (data.type === 'results') {
+                    this.keysTested += data.processed;
+                    this.keysThisSecond += data.processed;
+                    this.workers[workerId].processed += data.processed;
                     
-                    messageData.results.forEach(result => {
-                        if (!this.testedKeysRegistry.has(result.key)) {
-                            this.analysisResults.push(result);
-                            this.testedKeysRegistry.add(result.key);
+                    data.results.forEach(result => {
+                        if (!this.testedKeys.has(result.key)) {
+                            this.results.push(result);
+                            this.testedKeys.add(result.key);
                         }
                     });
                     
-                    this.updateResultsDisplay();
-                    this.updateBestResultDisplay();
+                    this.updateResults();
+                    this.updateBestResult();
                     
-                    if (messageData.earlyExit) {
-                        this.cancelAnalysis();
-                        alert(`Early termination triggered with high-quality match found!`);
+                    if (data.earlyExit) {
+                        this.cancel();
+                        alert(`Early exit triggered with high-scoring key found!`);
                         return;
                     }
                     
-                    if (this.analysisInProgress) {
-                        this.assignKeyBatchToWorker(
-                            this.workerPool[workerId], 
-                            parseInt(document.getElementById('batch-size-input').value) || 10000
+                    if (this.isRunning) {
+                        this.assignBatch(
+                            this.workers[workerId], 
+                            parseInt(this.elements.batchSize.value) || 10000
                         );
                     }
                 }
             }
 
-            updateResultsDisplay() {
-                const sortedResults = [...this.analysisResults]
-                    .sort((firstResult, secondResult) => secondResult.score - firstResult.score)
+            updateResults() {
+                const topResults = [...this.results]
+                    .sort((a, b) => b.score - a.score)
                     .slice(0, 20);
                 
-                const resultsTableBody = document.querySelector('#results-table tbody');
-                resultsTableBody.innerHTML = '';
+                const table = this.elements.resultsTable;
+                table.innerHTML = '';
                 
-                sortedResults.forEach((result, index) => {
-                    const tableRow = document.createElement('tr');
-                    tableRow.innerHTML = `
-                        <td>${index + 1}</td>
+                topResults.forEach((result, i) => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${i + 1}</td>
                         <td><strong>${result.key}</strong></td>
                         <td>${result.score.toFixed(2)}</td>
                         <td>${result.length}</td>
                         <td>${result.decrypted}</td>
                     `;
-                    resultsTableBody.appendChild(tableRow);
+                    table.appendChild(row);
                 });
             }
 
-            updateBestResultDisplay() {
-                if (this.analysisResults.length === 0) return;
+            updateBestResult() {
+                if (this.results.length === 0) return;
                 
-                const bestCandidate = this.analysisResults.reduce((currentBest, candidate) => 
-                    candidate.score > currentBest.score ? candidate : currentBest
+                const best = this.results.reduce((best, current) => 
+                    current.score > best.score ? current : best
                 );
                 
-                document.getElementById('best-result-display').style.display = 'block';
-                document.getElementById('best-key-display').textContent = bestCandidate.key;
-                document.getElementById('best-score-display').textContent = bestCandidate.score.toFixed(2);
-                document.getElementById('best-length-display').textContent = bestCandidate.length;
-                document.getElementById('best-decrypted-display').textContent = bestCandidate.decrypted;
+                this.elements.bestResult.style.display = 'block';
+                this.elements.bestKey.textContent = best.key;
+                this.elements.bestScore.textContent = best.score.toFixed(2);
+                this.elements.bestLength.textContent = best.length;
+                this.elements.bestDecrypted.textContent = best.decrypted;
             }
 
-            updatePerformanceStatistics() {
-                if (!this.analysisInProgress) return;
+            updateStats() {
+                if (!this.isRunning) return;
                 
-                const currentTimestamp = performance.now();
-                const elapsedTimeInSeconds = (currentTimestamp - this.analysisStartTimestamp) / 1000;
+                const now = performance.now();
+                const elapsedSec = (now - this.startTime) / 1000;
                 
-                if (currentTimestamp - this.lastSecondUpdate >= 1000) {
-                    this.keysPerSecondRate = this.keysTestedThisSecond / ((currentTimestamp - this.lastSecondUpdate) / 1000);
-                    this.keysTestedThisSecond = 0;
-                    this.lastSecondUpdate = currentTimestamp;
+                if (now - this.lastUpdateTime >= 1000) {
+                    this.keysPerSecond = this.keysThisSecond / ((now - this.lastUpdateTime) / 1000);
+                    this.keysThisSecond = 0;
+                    this.lastUpdateTime = now;
                     
-                    this.performanceMetrics.push({
-                        time: Math.floor(elapsedTimeInSeconds),
-                        processingRate: Math.floor(this.keysPerSecondRate)
+                    this.metrics.push({
+                        time: Math.floor(elapsedSec),
+                        rate: Math.floor(this.keysPerSecond)
                     });
                     
-                    if (this.performanceMetrics.length > 20) {
-                        this.performanceMetrics.shift();
+                    if (this.metrics.length > 20) {
+                        this.metrics.shift();
                     }
                     
-                    this.performanceChart.data.labels = this.performanceMetrics.map(metric => metric.time);
-                    this.performanceChart.data.datasets[0].data = this.performanceMetrics.map(metric => metric.processingRate);
-                    this.performanceChart.update();
+                    this.chart.data.labels = this.metrics.map(m => m.time);
+                    this.chart.data.datasets[0].data = this.metrics.map(m => m.rate);
+                    this.chart.update();
                 }
                 
-                document.getElementById('keys-tested-counter').textContent = this.totalKeysTested.toLocaleString();
-                document.getElementById('keys-per-second-counter').textContent = Math.floor(this.keysPerSecondRate).toLocaleString();
-                document.getElementById('time-elapsed-counter').textContent = `${Math.floor(elapsedTimeInSeconds)}s`;
+                this.elements.keysTested.textContent = this.keysTested.toLocaleString();
+                this.elements.keysPerSec.textContent = Math.floor(this.keysPerSecond).toLocaleString();
+                this.elements.timeElapsed.textContent = `${Math.floor(elapsedSec)}s`;
                 
-                const completionPercentage = (this.totalKeysTested / this.totalKeysToTest) * 100;
-                const progressElement = document.getElementById('progress-indicator');
-                progressElement.style.width = `${Math.min(100, completionPercentage)}%`;
-                progressElement.textContent = `${Math.min(100, completionPercentage).toFixed(2)}%`;
+                const percentComplete = (this.keysTested / this.totalKeys) * 100;
+                const progress = this.elements.progress;
+                progress.style.width = `${Math.min(100, percentComplete)}%`;
+                progress.textContent = `${Math.min(100, percentComplete).toFixed(2)}%`;
                 
-                const remainingKeysCount = Math.max(0, this.totalKeysToTest - this.totalKeysTested);
-                document.getElementById('keys-remaining-counter').textContent = remainingKeysCount.toLocaleString();
+                const remaining = Math.max(0, this.totalKeys - this.keysTested);
+                this.elements.keysRemaining.textContent = remaining.toLocaleString();
                 
-                requestAnimationFrame(() => this.updatePerformanceStatistics());
+                requestAnimationFrame(() => this.updateStats());
             }
 
-            verifyCompletionStatus() {
-                if (this.keyGenerationState && this.keyGenerationState.currentKeyIndex >= this.keyGenerationState.totalKeys) {
-                    const allWorkersFinished = this.workerPool.every(worker => {
-                        const workerElement = document.getElementById(`worker-${worker.identifier}-badge`);
-                        return workerElement && workerElement.textContent.includes('completed');
+            checkCompletion() {
+                if (this.keyGenerator && this.keyGenerator.currentKeyIndex >= this.keyGenerator.totalKeys) {
+                    const allDone = this.workers.every(worker => {
+                        const badge = document.getElementById(`worker-${worker.id}-badge`);
+                        return badge && badge.textContent.includes('completed');
                     });
                     
-                    if (allWorkersFinished) {
-                        this.analysisInProgress = false;
-                        document.getElementById('start-button').disabled = false;
-                        document.getElementById('cancel-button').disabled = true;
+                    if (allDone) {
+                        this.isRunning = false;
+                        this.elements.startBtn.disabled = false;
+                        this.elements.cancelBtn.disabled = true;
                         
-                        const elapsedSeconds = (performance.now() - this.analysisStartTimestamp) / 1000;
-                        alert(`Analysis completed successfully! Processed ${this.totalKeysTested.toLocaleString()} keys in ${elapsedSeconds.toFixed(2)} seconds.`);
+                        const elapsed = (performance.now() - this.startTime) / 1000;
+                        alert(`Analysis complete! Processed ${this.keysTested.toLocaleString()} keys in ${elapsed.toFixed(2)} seconds.`);
                     }
                 }
             }
 
-            cancelAnalysis() {
-                this.analysisInProgress = false;
-                this.workerPool.forEach(worker => {
+            cancel() {
+                this.isRunning = false;
+                this.workers.forEach(worker => {
                     worker.terminate();
-                    const workerElement = document.getElementById(`worker-${worker.identifier}-badge`);
-                    if (workerElement) {
-                        workerElement.textContent += ' (cancelled)';
-                        workerElement.className = 'worker-badge worker-badge-cancelled';
+                    const badge = document.getElementById(`worker-${worker.id}-badge`);
+                    if (badge) {
+                        badge.textContent += ' (cancelled)';
+                        badge.className = 'worker-badge worker-badge-cancelled';
                     }
                 });
                 
-                document.getElementById('start-button').disabled = false;
-                document.getElementById('cancel-button').disabled = true;
+                this.elements.startBtn.disabled = false;
+                this.elements.cancelBtn.disabled = true;
             }
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            const cipherCracker = new VigenereCipherCracker();
+            const cracker = new OptimizedVigenereCracker();
         });
     </script>
 </body>
